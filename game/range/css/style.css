@@ -1,0 +1,85 @@
+body, input {
+  font-family: helvetica;
+  color: #333;
+  font-size: 13px;
+  text-align: center;
+  padding: 60px 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+a { color: #c55; text-decoration: none; }
+
+.range {
+  margin: 50px auto;
+  height: 1px;
+  line-height: 0;
+  white-space: nowrap;
+  position: relative;
+  width: 90%;
+  display: table;
+}
+
+.range:before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: #999;
+  position: absolute;
+  width: 100%;
+}
+
+.dot:hover:before {
+  background: red;
+}
+
+.dot {
+  cursor: pointer;
+  display: table-cell;
+  text-align: center;
+  position: relative;
+}
+
+.dot:hover:after {
+  background: #08c;
+}
+
+.dot:before {
+  margin: auto;
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2px;
+  height: 5px;
+  width: 5px;
+  left: 0;
+  background: #000;
+}
+
+.dot:after {
+  content: attr(data-number);
+  display: block;
+  position: absolute;
+  margin: -30px -12px 0;
+  background: #000;
+  color: #fff;
+  line-height: 1;
+  text-align: center;
+  width: 20px;
+  padding: 5px;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 30px;
+}
+
+.dot.boom:after {
+  background: red;
+}
+
+.guessing {
+  opacity: 0.5;
+}
