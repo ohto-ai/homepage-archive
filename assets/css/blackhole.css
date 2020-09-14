@@ -1,0 +1,60 @@
+@charset "utf-8";
+
+
+.black-hole .outer-circle {
+  z-index: -2;
+  position: fixed;
+  left: calc(50% - 100px);
+  top: calc(50% - 100px);
+  height: 200px;
+  width: 200px;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 50%;
+  animation: rotate 1.5s linear infinite;
+}
+
+.black-hole .outer-circle span {
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 100px);
+  height: 200px;
+  width: 200px;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 50%;
+}
+
+.black-hole span:nth-child(1) {
+  filter: blur(5px);
+}
+
+.black-hole span:nth-child(2) {
+  filter: blur(10px);
+}
+
+.black-hole span:nth-child(3) {
+  filter: blur(25px);
+}
+
+.black-hole span:nth-child(4) {
+  filter: blur(150px);
+}
+
+.black-hole .inner-circle {
+  height: 180px;
+  width: 180px;
+  position: absolute;
+  background: black;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  z-index: 9;
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}

@@ -1,0 +1,239 @@
+@media screen and (max-width: 2400px) {
+    html{font-size: 48px;}
+}
+@media screen and (max-width: 2200px) {
+    html{font-size: 44px;}
+}
+@media screen and (max-width: 2000px) {
+    html{font-size: 40px;}
+}
+@media screen and (max-width: 1800px) {
+    html{font-size: 36px;}
+}
+@media screen and (max-width: 1600px) {
+    html{font-size: 32px;}
+}
+@media screen and (max-width: 1400px) {
+    html{font-size: 28px;}
+}
+@media screen and (max-width: 1200px) {
+    html{font-size: 24px;}
+}
+@media screen and (max-width: 1000px) {
+    html{font-size: 20px;}
+}
+@media screen and (max-width: 800px) {
+    html{font-size: 16px;}
+}
+@media screen and (max-width: 600px) {
+    html{font-size: 12px;}
+}
+@media screen and (max-width: 500px) {
+    html{font-size: 10px;}
+}
+@media screen and (max-width: 400px) {
+    html{font-size: 8px;}
+}
+@media screen and (max-width: 300px) {
+    html{font-size: 6px;}
+}
+@media screen and (max-width: 200px) {
+    html{font-size: 4px;}
+}
+@media screen and (max-width: 100px) {
+    html{font-size: 2px;}
+}
+
+
+
+html
+{
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    margin: 0; 
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.main-page
+{
+    margin: 0; 
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    color: #F0F0F0;
+    background-color: #1D1D1D;
+    text-align: center;
+}
+
+/* 标题logo */
+.main-page .logo-text-box
+{
+    margin: 1rem;
+    text-align: left;
+    position: static;
+    left:1rem;
+    top:0.2rem;
+}
+.main-page .logo-text-box img
+{
+    margin: auto;
+    width: 12rem;
+}
+
+.main-page .socal-ico-box
+{
+    z-index: 999999;
+    position: fixed;
+    text-align: right;
+    right:0.2rem;
+    top:0.2rem;
+
+}
+
+.main-page .socal-ico-box a
+{
+    line-height: 32px;
+}
+.main-page .socal-ico-box img
+{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border:3px solid #FFF;
+}
+.main-page .socal-ico-box a:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0.1rem;
+    width: 100%;
+    background: #4285f4;
+    transform: scale(0);
+    transition: all 0.5s;
+}
+.main-page .socal-ico-box a:hover:before{
+    transform: scale(1);
+}
+
+/* 不显示滚动条 */
+.main-page::-webkit-scrollbar {
+    display: none;
+}
+
+/* 背景六边形 */
+.main-page #canvas-club {
+    margin: 0; 
+    padding: 0;
+    background-color: #1D1D1D;
+    z-index: -1;
+    position: fixed;
+    left:0;
+    top:0;
+    display: block;
+}
+
+/* 下划线动画 */
+.main-page a{
+    position: relative;
+    text-decoration: none;
+    color: #F0F0F0;
+}
+.main-page a:hover{
+    color: #FF9900;
+}
+.main-page a:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    height: 0.1rem;
+    width: 100%;
+    transform: scale(0);
+    transition: all 0.5s;
+}
+.main-page a:hover:before{
+    transform: scale(1);
+}
+.main-page caption{
+    position: relative;
+    color: #F0F0F0;
+}
+.main-page caption:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    height: 0.1rem;
+    width: 100%;
+    background: #4285f4;
+    transform: scale(0);
+    transition: all 0.5s;
+}
+.main-page caption:hover:before{
+    transform: scale(1);
+}
+
+/*** 看板娘 ***/
+#live2dcanvas {
+    border: 0 !important;
+}
+/*
+Mourning day
+html {
+filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+-webkit-filter: grayscale(100%);
+}*/
+
+.simple-center-table-div
+{
+    margin: 2rem;
+    font-family: sans-serif,
+    tahoma,"KaiTi_GB2312","KaiTi";
+    font-size: 1rem;
+    text-align: center;
+}
+.simple-center-table
+{
+    width: 40rem;
+    margin: 2rem;
+    user-select: none;
+    margin: auto;
+    border: #F0F0F0 0.3rem solid;
+}
+.simple-center-table caption
+{
+    margin-bottom: 0.5rem;
+}
+.simple-center-table tr
+{
+    height: 3rem;
+}
+.simple-center-table td, .simple-center-table th
+{
+    text-align: center;
+    border: 0;
+    transition: all 2s;
+    border: #F0F0F0 0.2rem solid;
+}
+.simple-center-table tr:nth-child(odd)
+{
+    border: 0;
+    background-color: rgba(20,20,20,0.5);
+}
+.simple-center-table tr:nth-child(even)
+{
+    border: 0;
+    background-color: rgba(100,100,100,0.5);
+}
+.simple-center-table tr th, .simple-center-table tr th a
+{
+    color: #1D1D1D;
+    background-color: rgba(240,240,240,1);
+}
