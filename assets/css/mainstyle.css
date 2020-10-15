@@ -122,6 +122,70 @@ html
     transform: scale(1);
 }
 
+.glow-static
+{
+    color: #fff;
+    -webkit-animation: Glow 1.5s ease infinite alternate;
+            animation: Glow 1.5s ease infinite alternate;
+}
+
+.glow-anim
+{
+    -webkit-transition: all 1.5s ease;
+    transition: all 1.5s ease;
+}
+.glow-anim:hover
+{
+    color: #fff;
+    -webkit-animation: Glow 1.5s ease infinite alternate;
+            animation: Glow 1.5s ease infinite alternate;
+}
+
+
+@-webkit-keyframes Glow {
+    from {
+        text-shadow: 0 0 10px #fff,
+                     0 0 20px #fff,
+                     0 0 30px #fff,
+                     0 0 40px #+,
+                     0 0 70px #007ACC,
+                     0 0 80px #007ACC,
+                     0 0 100px #007ACC,
+                     0 0 150px #007ACC;
+    }
+    to {
+        text-shadow: 0 0 5px #fff,
+                     0 0 10px #fff,
+                     0 0 15px #fff,
+                     0 0 20px #007ACC,
+                     0 0 35px #007ACC,
+                     0 0 40px #007ACC,
+                     0 0 50px #007ACC,
+                     0 0 75px #007ACC;
+    }
+}
+@keyframes Glow {
+    from {
+        text-shadow: 0 0 10px #fff,
+                     0 0 20px #fff,
+                     0 0 30px #fff,
+                     0 0 40px #007ACC,
+                     0 0 70px #007ACC,
+                     0 0 80px #007ACC,
+                     0 0 100px #007ACC,
+                     0 0 150px #007ACC;
+    }
+    to {
+        text-shadow: 0 0 5px #fff,
+                     0 0 10px #fff,
+                     0 0 15px #fff,
+                     0 0 20px #007ACC,
+                     0 0 35px #007ACC,
+                     0 0 40px #007ACC,
+                     0 0 50px #007ACC,
+                     0 0 75px #007ACC;
+    }
+}
 /* 不显示滚动条 */
 .main-page::-webkit-scrollbar {
     display: none;
