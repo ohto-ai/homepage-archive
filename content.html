@@ -21,12 +21,14 @@
     onselectstart="return false" onselect="document.selection.empty()" oncopy="document.selection.empty()"
     onbeforecopy="return false">
 
+    <!-- 标题 -->
     <div style="margin: 1rem;text-align: left;position: static;left:1rem;top:0.2rem;">
         <a href="content.html"><img style="margin: auto; width: 12rem;" src="assets/images/thatboy-text-frame.svg"></a>
         <br><em style=" color: #F0F0F0;">我会成为你们的</em><em class="glow-static">护盾</em><em
             style=" color: #F0F0F0;">要撑不住了</em>
     </div>
 
+    <!-- 媒体跳转列表 -->
     <div class="socal-ico-box">
         <img id="showSocialBn" onclick="changeSocialShow();callSound();" src="assets/images/ui/fold.png">
         <table onclick="callSound()" id="socialTable">
@@ -139,7 +141,7 @@
             </tr>
         </table>
     </div>
-
+    <!-- 左下角 -->
     <div id="left-bottom-box" style="position: fixed; bottom: 3rem">
         <div id="friend-website">
             <img style="height:2rem; width:auto; transform: scaleX(-1);" src="assets/images/Annoying_Dog.gif">
@@ -157,7 +159,13 @@
         </div>
     </div>
 
-    <div class="grain"></div>
+    <!-- 登录按钮 -->
+    <div class= "login-area">
+        <button id="login" onclick="location.href='login.html'">Sign in</button>
+    </div>
+
+    <!--<div class="grain"></div>-->
+    <!-- 主项 -->
     <div class="intro">
         <div class="center">
             <div class="core" style="text-align: center;">
@@ -448,30 +456,25 @@
             </div>
         </div>
     </div>
-
-
-    <footer>
-        <!-- <script type="text/javascript" charset="utf-8" src="assets/js/L2Dwidget.0.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="assets/js/L2Dwidget.min.js"></script>
-        <script type="text/javascript">
-            L2Dwidget.init({
-                "display": {
-                    "superSample": 1,
-                    "width": 200,
-                    "height": 400,
-                    "position": "left",
-                    "hOffset": 0,
-                    "vOffset": 0
-                }
-            });
-        </script> -->
-
-        <audio id="sound" src="assets/sound/for_the_union.ogg"></audio>
-    </footer>
-
 </body>
 
 <footer>
+    <!-- <script type="text/javascript" charset="utf-8" src="assets/js/L2Dwidget.0.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="assets/js/L2Dwidget.min.js"></script>
+    <script type="text/javascript">
+        L2Dwidget.init({
+            "display": {
+                "superSample": 1,
+                "width": 200,
+                "height": 400,
+                "position": "left",
+                "hOffset": 0,
+                "vOffset": 0
+            }
+        });
+    </script> -->
+
+    <audio id="sound" src="assets/sound/for_the_union.ogg"></audio>
     <a title="不加这个会被警察蜀黍暴打嗷┗|｀O′|┛ ~~" style="position: fixed; bottom: 2rem; left: 1rem; font-size: 0.5rem;"
         target="_blank" href="http://www.beian.miit.gov.cn">
         <img style="width: 0.5rem;height:0.5rem;" src="assets/images/beian.png">苏ICP备19061327号-1</a>

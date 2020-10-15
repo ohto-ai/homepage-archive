@@ -141,6 +141,32 @@ html
             animation: Glow 1.5s ease infinite alternate;
 }
 
+.login-area
+{
+    display: block;
+    white-space: normal;
+    width: 4rem;
+    position: fixed;
+    right: 0rem;
+    top:-1rem;
+    outline: 0;
+}
+.login-area button{
+    color: #fff;
+    background: #54aff9;
+    font-size: 16px;
+    outline: 0;
+    border:0;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+.login-area button:hover
+{
+    border-radius: 0.5rem;
+    transition-duration: 0.4s;  
+    outline: 0;
+    text-decoration: none;
+}
 
 @-webkit-keyframes Glow {
     from {
