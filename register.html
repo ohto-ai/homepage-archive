@@ -9,9 +9,9 @@
     <meta name="theme-color" content="#4285f4">
     <title>thatboy-register</title>
     <!-- css -->
-    <link href="/assets/css/base.min.css" rel="stylesheet">
-    <link href="/assets/css/project.min.css" rel="stylesheet">
-    <link href="/assets/css/auth.css" rel="stylesheet">
+    <link href="assets/css/base.min.css" rel="stylesheet">
+    <link href="assets/css/project.min.css" rel="stylesheet">
+    <link href="assets/css/auth.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <style>
         .divcss5 {
@@ -21,7 +21,7 @@
     </style>
     <!-- favicon -->
     <!-- js -->
-    <script src="/assets/js/fuck.js"></script>
+    <script src="assets/js/fuck.js"></script>
     <!-- ... -->
 </head>
 
@@ -34,13 +34,13 @@
             <section class="content-inner">
                 <div class="auth-main auth-row">
                     <div class="auth-top auth-row">
-                        <a class="boardtop-left" href="/">
+                        <a class="boardtop-left" href="content.html">
                             <div>首 页</div>
                         </a>
                         <div class="auth-logo">
-                            <img src="/assets/images/boy.png">
+                            <img src="assets/images/boy.png">
                         </div>
-                        <a href="/login.html" class="boardtop-right">
+                        <a href="login.html" class="boardtop-right">
                             <div>登 录</div>
                         </a>
                     </div>
@@ -120,7 +120,7 @@
                     </div>
                     <div class="auth-bottom auth-row auth-reg">
                         <div class="tgauth">
-                            <p>注册即代表同意<a href="/404.html">服务条款</a>，以及保证所录入信息的真实性，如有不实信息会导致账号被删除。</p>
+                            <p>注册即代表同意<a href="404.html">服务条款</a>，以及保证所录入信息的真实性，如有不实信息会导致账号被删除。</p>
                         </div>
                     </div>
                 </div>
@@ -191,8 +191,8 @@
     <!-- js -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.1"></script>
     <script src="//static.geetest.com/static/tools/gt.js"></script>
-    <script src="/assets/js/base.min.js"></script>
-    <script src="/assets/js/project.min.js"></script>
+    <script src="assets/js/base.min.js"></script>
+    <script src="assets/js/project.min.js"></script>
 
 </body>
 
@@ -258,7 +258,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/auth/register",
+                url: "auth/register",
                 dataType: "json",
                 data: {
                     email: $$getValue('email'),
