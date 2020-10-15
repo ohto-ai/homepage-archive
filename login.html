@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+    <meta name="theme-color" content="#4285f4">
+    <title>CNIX</title>
+    <!-- css -->
+    <link href="/assets/css/base.min.css" rel="stylesheet">
+    <link href="/assets/css/project.min.css" rel="stylesheet">
+    <link href="/assets/css/auth.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+    <style>
+        .divcss5 {
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+    <!-- favicon -->
+    <!-- js -->
+    <script src="/assets/js/fuck.js"></script>
+    <!-- ... -->
+</head>
+
+<body class="page-brand">
+    <div class="authpage">
+        <div class="container">
+            <form action="javascript:void(0);" method="POST">
+                <div class="auth-main auth-row auth-col-one">
+                    <div class="auth-top auth-row">
+                        <a class="boardtop-left" href="/">
+                            <div>首 页</div>
+                        </a>
+                        <div class="auth-logo">
+                            <img src="assets/images/boy.png">
+                        </div>
+                        <a href="/auth/register" class="boardtop-right">
+                            <div>注 册</div>
+                        </a>
+                    </div>
+                    <div class="auth-row">
+                        <div class="form-group-label auth-row row-login">
+                            <label class="floating-label" for="email">邮箱</label>
+                            <input class="form-control maxwidth-auth" id="email" type="email" name="Email"
+                                inputmode="email" autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="auth-row">
+                        <div class="form-group-label auth-row row-login">
+                            <label class="floating-label" for="passwd">密码</label>
+                            <input class="form-control maxwidth-auth" id="passwd" type="password" name="Password"
+                                autocomplete="current-password">
+                        </div>
+                    </div>
+                    <div class="btn-auth auth-row">
+                        <button id="login" type="submit" class="btn btn-block btn-brand waves-attach waves-light">
+                            确认登录
+                        </button>
+                    </div>
+                    <div class="auth-help auth-row">
+                        <div class="auth-help-table auth-row">
+                            <div class="checkbox checkbox-adv">
+                                <label for="remember_me">
+                                    <input class="access-hide" value="week" id="remember_me" name="remember_me"
+                                        type="checkbox">记住我</input>
+                                    <span class="checkbox-circle"></span>
+                                    <span class="checkbox-circle-check"></span>
+                                    <span class="checkbox-circle-icon icon">done</span>
+                                </label>
+                            </div>
+                            <a href="/password/reset">忘记密码？</a>
+                        </div>
+                    </div>
+                    <div class="auth-bottom auth-row">
+                        <div class="tgauth">
+                            <button class="btn" style="cursor:unset;"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card auth-tg cust-model">
+                <div class="card-main">
+                    <nav class="tab-nav margin-top-no margin-bottom-no">
+                        <ul class="nav nav-justified">
+                            <li class="active">
+                                <a class="waves-attach" data-toggle="tab" href="#number_login">一键/验证码登录</a>
+                            </li>
+                            <li>
+                                <a class="waves-attach" data-toggle="tab" href="#qrcode_login">二维码登录</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="ui-footer">
+        <div class="container">
+            &copy;2020 THATBOY | Powered by <a href="//github.com/thatboy-echo">Myself</a>
+        </div>
+    </footer>
+
+    <!-- Google Analytics -->
+    <script>
+        window.ga = window.ga || function () {
+            (ga.q = ga.q || []).push(arguments)
+        };
+        ga.l = +new Date;
+        ga('create', 'UA-111801619-3', 'auto');
+        var hostDomain = window.location.host || document.location.host || document.domain;
+        ga('set', 'dimension1', hostDomain);
+        ga('send', 'pageview');
+
+        (function () {
+            function perfops() {
+                var js = document.createElement('script');
+                js.src = 'https://cdn.jsdelivr.net/npm/perfops-rom';
+                document.body.appendChild(js);
+            }
+
+            if (document.readyState === 'complete') {
+                perfops();
+            } else {
+                window.addEventListener('load', perfops);
+            }
+        })();
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    <!-- End Google Analytics -->
+
+    <!-- js -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.1"></script>
+    <script src="/assets/js/base.min.js"></script>
+    <script src="/assets/js/project.min.js"></script>
+
+</body>
+
+</html>
+</div>
+
+<script>
+    let calltgbtn = document.querySelector('#calltgauth');
+    let tgboard = document.querySelector('.card.auth-tg.cust-model');
+    if (calltgbtn && tgboard) {
+        custModal(calltgbtn, tgboard);
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        function login() {
+
+            document.getElementById("login").disabled = true;
+
+            $.ajax({
+                type: "POST",
+                url: "/auth/login",
+                dataType: "json",
+                data: {
+                    email: $$getValue('email'),
+                    passwd: $$getValue('passwd'),
+                    code: $$getValue('code'), remember_me: $("#remember_me:checked").val()
+                },
+                success: (data) => {
+                    if (data.ret == 1) {
+                        $("#result").modal();
+                        $$.getElementById('msg').innerHTML = data.msg;
+                        window.setTimeout("location.href='/user'", 1200);
+                    } else {
+                        $("#result").modal();
+                        $$.getElementById('msg').innerHTML = data.msg;
+                        document.getElementById("login").disabled = false;
+                    }
+                },
+                error: (jqXHR) => {
+                    $("#msg-error").hide(10);
+                    $("#msg-error").show(100);
+                    $$.getElementById('msg').innerHTML = `发生错误：${
+                        jqXHR.status
+                        }`;
+                    document.getElementById("login").disabled = false;
+                }
+            });
+        }
+
+        $("html").keydown(function (event) {
+            if (event.keyCode == 13) {
+                login();
+            }
+        });
+        $("#login").click(function () {
+            login();
+        });
+
+        $('div.modal').on('shown.bs.modal', function () {
+            $("div.gt_slider_knob").hide();
+        });
+
+        $('div.modal').on('hidden.bs.modal', function () {
+            $("div.gt_slider_knob").show();
+        });
+    })
+</script>
