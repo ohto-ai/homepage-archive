@@ -14,7 +14,8 @@ var musicList = new Array(
     // "assets/music/洛少爷,流风 - 有美人兮（翻自 音阙诗听）.mp3",
     // "assets/music/黑凤梨 洛天依.mp3",
     // "/assets/music/闹闹丶,FFF君,小欧Ω - 老街北.flac"
-    "assets/music/Mittsies - Vitality.flac"
+    // "assets/music/Mittsies - Vitality.mp3"
+    "assets/music/ShangShangang-background.mp3"
 );
 var soundList = new Array(
     "assets/sound/attacking.ogg",
