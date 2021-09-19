@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>OhtoAi - API Documents</title>
+</head>
+<xmp theme="united" style="display:none;">
+# Documents on building...
+# 文档建设中...
+
+- /api/img
+> 年龄分级、头像、上传 正在实现  
+
+GET  
+```plain
+Params:
+    op      <get|upload|load>
+        描述操作，默认为get
+            get: 获取图片等信息
+            load: 重新加载库中的图片
+    region  <wallpaper|avatar>
+        描述图片范围，默认为wallpaper
+            wallpaper: 壁纸
+            avatar: 头像
+    type    <page|direct|dump|list>
+        描述返回类型，默认为page
+            page: 返回html页面
+            direct: 重定向到图片
+            dump: 返回json格式图片信息
+                name: 图片文件名
+                size: 图片大小
+                url: 图像地址
+                age: 年龄分级
+            list: 返回json格式图片信息列表
+    age     <0|15|18|-1>
+        选择图像年龄分级，默认为0
+            0: 全年龄
+            15: 15+
+            18: 18+
+            -1: 全范围
+
+POST
+
+Params:
+    op      <upload>
+        描述操作
+            upload: 上传图片
+```
+</xmp>
+
+<script src="//strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>

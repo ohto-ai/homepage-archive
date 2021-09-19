@@ -1,0 +1,80 @@
+/* hide scrollbar */
+*::-webkit-scrollbar {
+    display: none;
+}
+
+/* remove body border */
+body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.main-page
+{
+    width: 100%;
+    height: 100%;
+}
+.blur-div
+{
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: #3f51b5;
+    background-image: url(https://thatboy.info/api/img?op=get&region=wallpaper&type=direct);
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: -1;
+    filter: blur(5px);
+}
+
+.main-page-content
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.main-content
+{
+    transition: 1s;
+    
+    position:fixed;
+    top:0;
+    left:0;
+    margin: 1%;
+    /* left: -420px; */
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    height: 100%;
+}
+
+
+.main-menu
+{
+    margin: 0!important;
+    width: 100%;
+    margin: 0;
+}
+
+.sub-frame-wrapper
+{
+    margin: 0;
+    width: 100%;
+    height: 90%;
+}
+
+.inner_frames
+{
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
