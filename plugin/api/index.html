@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>OhtoAi - API Documents</title>
 </head>
-<xmp theme="united" style="display:none;">
+<xmp theme="sketchy" style="display:none;">
 # Documents on building...
 # 文档建设中...
 
@@ -32,12 +32,12 @@ Params:
                 url: 图像地址
                 age: 年龄分级
             list: 返回json格式图片信息列表
-    age     <0|15|18|-1>
-        选择图像年龄分级，默认为0
+    age     [0|15|18|-1]
+        选择图像年龄分级，默认为0，可重复传参
             0: 全年龄
             15: 15+
             18: 18+
-            -1: 全范围
+            -1: 未定义
 
 POST
 
@@ -48,5 +48,5 @@ Params:
 ```
 </xmp>
 
-<script src="//strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="/strapdown/strapdown.js"></script>
 </html>
