@@ -9,14 +9,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>OhtoAi - Home</title>
-    <link rel="stylesheet" href="/assets/css/style.main.css">
-    <link rel="stylesheet" href="/assets/css/style.emoji.css">
-    <link rel="stylesheet" href="/assets/css/style.peronal.css">
-    <link rel="stylesheet" href="/assets/css/style.svg_button.css">
-    <link rel="stylesheet" href="/assets/css/style.beian.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/style.main.css" />
+    <link rel="stylesheet" href="/assets/css/style.emoji.css" />
+    <link rel="stylesheet" href="/assets/css/style.peronal.css" />
+    <link rel="stylesheet" href="/assets/css/style.svg_button.css" />
+    <link rel="stylesheet" href="/assets/css/style.beian.css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
 
@@ -47,21 +47,24 @@
     </style>
 
     <script>
-
         // loading
         // 监听加载状态改变
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
-                $("#loading").animate({
-                    "opacity": "0"
-                }, 1000).hide(1000);
+                $("#loading")
+                    .animate(
+                        {
+                            opacity: "0",
+                        },
+                        1000
+                    )
+                    .hide(1000);
             }
-        }
+        };
     </script>
 </head>
 
 <body>
-
     <!-- background -->
     <div class="blur-div"></div>
 
@@ -71,21 +74,6 @@
         </iframe>
     </div>
 
-
-    <!-- music plugin -->
-    <!-- <div>
-        <iframe class="music-box" style="display: flex;
-        width:430px;
-        height:200px;
-        border-radius: 25px;
-        /* box-shadow: 5px 5px 2px #888888; */
-        border:5px inset #09c4d100;
-        position:fixed;
-        bottom:1%;
-        z-index: 22;
-        right: 1%;" src="/plugin/music/index.html"></iframe>
-    </div> -->
-
     <!-- main page -->
     <div class="main-page">
         <div class="main-page-content">
@@ -94,26 +82,30 @@
                 <a>
                     <span class="avatar">
                         <img src="https://sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=320"
-                            alt="Ohto-Ai">
+                            alt="Ohto-Ai" />
                     </span>
                 </a>
                 <h1>Ohto-Ai</h1>
                 <h5><b>C++ Developer</b></h5>
-                <h5>Write Everywhere, <br>Read Nowhere.</h5>
+                <h5>Write Everywhere, <br />Read Nowhere.</h5>
                 <ul>
-                    <li><a href="//github.com/Ohto-Ai"><i class="fa fa-github-square" aria-hidden="true"></i></a>
+                    <li>
+                        <a href="//github.com/Ohto-Ai"><i class="fa fa-github-square" aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="//twitter.com/OhtoAi_OvO"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                    <li>
+                        <a href="//twitter.com/OhtoAi_OvO"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="//www.facebook.com/thatboy.echo"><i class="fa fa-facebook-square"
+                    <li>
+                        <a href="//www.facebook.com/thatboy.echo"><i class="fa fa-facebook-square"
                                 aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="//steamcommunity.com/id/Matoi-R/"><i class="fa fa-steam-square"
+                    <li>
+                        <a href="//steamcommunity.com/id/Matoi-R"><i class="fa fa-steam-square"
                                 aria-hidden="true"></i></a>
                     </li>
                 </ul>
                 <a class="beian" title="不加这个会被警察蜀黍暴打嗷┗|｀O′|┛ ~~" target="_blank" href="http://www.beian.miit.gov.cn">
-                    <img class="beian-img" src="/assets/img/beian.png">
+                    <img class="beian-img" src="/assets/img/beian.png" />
                     <div class="beian-text">苏ICP备19061327号-1</div>
                 </a>
             </div>
@@ -126,7 +118,10 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>Home</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    Home
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -135,7 +130,10 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>Pan</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    Pan
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -144,7 +142,10 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>Image</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    Image
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -153,7 +154,10 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>Beiklive</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    Beiklive
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -162,7 +166,10 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>ZhouhBlog</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    ZhouhBlog
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -180,8 +187,11 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a target="_blank" href="//ohto-ai.github.io/main/"><span class="spot"></span>Old Page<i
-                                        class="fa fa-external-link" aria-hidden="true"></i></a>
+                                <a target="_blank" href="//ohto-ai.github.io/main/">
+                                    <span class="spot"></span>
+                                    Old Page
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -190,8 +200,11 @@
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a target="_blank" href="//github.com/Ohto-Ai"><span class="spot"></span>Github<i
-                                        class="fa fa-external-link" aria-hidden="true"></i></a>
+                                <a target="_blank" href="//github.com/Ohto-Ai">
+                                    <span class="spot"></span>
+                                    Github
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </a>
                             </div>
                         </svg>
                     </div>
@@ -201,10 +214,10 @@
                     <!-- todo frames -->
                     <iframe id="home_frame" style="display: inline-block;" class="inner_frames"
                         src="/plugin/card/"></iframe>
-                    <iframe id="pan_frame" class="inner_frames" src="//pan.thatboy.info"></iframe>
-                    <iframe id="img_frame" class="inner_frames" src="//img.thatboy.info"></iframe>
-                    <iframe id="dj_frame" class="inner_frames" src="//beiklive.cn"></iframe>
-                    <iframe id="zh_frame" class="inner_frames" src="//zhouhuan1004.gitee.io"></iframe>
+                    <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
+                    <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
+                    <iframe id="dj_frame" class="inner_frames" data-src="//beiklive.cn"></iframe>
+                    <iframe id="zh_frame" class="inner_frames" data-src="//zhouhuan1004.gitee.io"></iframe>
                     <!-- <iframe id="zh2_frame" class="inner_frames" src="//47.94.82.132"></iframe> -->
                 </div>
             </div>
@@ -215,36 +228,42 @@
     var switchFrame = function (id, change_button = true) {
         $(".sub-frame-wrapper iframe").each(function () {
             this.style.display = "none";
-        })
+        });
 
         $(".svg-wrapper").each(function () {
             this.setAttribute("choosed", "false");
-        })
+        });
 
-        if (id != null) {
-            document.getElementById(id + "_frame").style.display = "inline-block";
+        if (id != null && id != "") {
+            var frame = document.getElementById(id + "_frame");
+
+            if (frame.src == null || frame.src == "")
+                frame.src = frame.getAttribute("data-src");
+            frame.style.display = "inline-block";
             if (change_button) {
-                document.getElementById(id + "_button").setAttribute("choosed", "true");
+                document
+                    .getElementById(id + "_button")
+                    .setAttribute("choosed", "true");
             }
         }
-    }
+    };
 
-    $('#pan_button').click(function () {
+    $("#pan_button").click(function () {
         switchFrame("pan");
     });
-    $('#img_button').click(function () {
+    $("#img_button").click(function () {
         switchFrame("img");
     });
-    $('#dj_button').click(function () {
+    $("#dj_button").click(function () {
         switchFrame("dj");
     });
-    $('#zh_button').click(function () {
+    $("#zh_button").click(function () {
         switchFrame("zh");
     });
     // $('#zh2_button').click(function () {
     //     switchFrame("zh2");
     // });
-    $('#home_button').click(function () {
+    $("#home_button").click(function () {
         switchFrame("home", false);
     });
 </script>
