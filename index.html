@@ -149,6 +149,18 @@
                             </div>
                         </svg>
                     </div>
+                    <!-- Upload button -->
+                    <div class="svg-wrapper" id="upload_button">
+                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
+                            <rect class="svg_button" height="40" width="150" />
+                            <div id="text_div">
+                                <a>
+                                    <span class="spot"></span>
+                                    Upload
+                                </a>
+                            </div>
+                        </svg>
+                    </div>
                     <!-- Dongje button -->
                     <div class="svg-wrapper" id="dj_button">
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
@@ -216,6 +228,7 @@
                         src="/plugin/card/"></iframe>
                     <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
                     <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
+                    <iframe id="upload_frame" class="inner_frames" data-src="/upload/"></iframe>
                     <iframe id="dj_frame" class="inner_frames" data-src="//beiklive.cn"></iframe>
                     <iframe id="zh_frame" class="inner_frames" data-src="//zhouhuan1004.gitee.io"></iframe>
                     <!-- <iframe id="zh2_frame" class="inner_frames" src="//47.94.82.132"></iframe> -->
@@ -253,6 +266,9 @@
     });
     $("#img_button").click(function () {
         switchFrame("img");
+    });
+    $("#upload_button").click(function () {
+        switchFrame("upload");
     });
     $("#dj_button").click(function () {
         switchFrame("dj");

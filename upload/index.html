@@ -1,0 +1,210 @@
+<!--
+ * @Author: OhtoAi
+ * @Date: 2021-09-21 01:06:12
+ * @LastEditors: OhtoAi
+ * @LastEditTime: 2021-09-21 01:18:55
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Wallpaper Upload</title>
+    <link rel="stylesheet" href="/strapdown/sketchy.min.css" />
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<style>
+    [type=radio] {
+        width: auto;
+        height: auto;
+        ;
+    }
+
+    [type=radio]::before {
+        position: static;
+    }
+
+    #dropbox {
+        font-size: 30px;
+        color: #333333;
+        background-color: rgba(230,230,230,0.5);
+        min-width: 300px;
+        min-height: 100px;
+        border: 3px dashed silver;
+    }
+
+    [type=text] {
+        background-color: rgba(200,200,200, 0.4);
+    }
+
+    body {
+        background-color: rgba(255,255,255, 0.5);
+    }
+</style>
+<script>
+    var uploadFileList = new Array();
+
+    $(function () {
+        //阻止浏览器默认行为。 
+        $(document).on({
+            dragleave: function (e) {    //拖离 
+                e.preventDefault();
+            },
+            drop: function (e) {  //拖后放 
+                e.preventDefault();
+            },
+            dragenter: function (e) {    //拖进 
+                e.preventDefault();
+            },
+            dragover: function (e) {    //拖来拖去 
+                e.preventDefault();
+            }
+        });
+
+        var box = document.getElementById('dropbox'); //拖拽区域 
+
+        box.addEventListener("drop", function (e) {
+            e.preventDefault(); //取消默认浏览器拖拽效果 
+            var fileList = e.dataTransfer.files; //获取文件对象 
+            //检测是否是拖拽文件到页面的操作 
+            if (fileList.length == 0) {
+                return false;
+            }
+            addFiles(fileList);
+        }, false);
+
+
+    });
+
+    function reload() {
+        location.reload();
+    }
+
+    function uploadFiles() {
+
+        if ($("#author").val() == '') {
+            alert("需要填写Author字段");
+            return;
+        }
+
+        var author = $("#author").val();
+        var tags = $("input[name='age']:checked").val();
+        if ($("#cust_tags").val() != '')
+            tags += "," + $("#cust_tags").val();
+
+        addFiles(new Array());
+        if (uploadFileList.length <= 0) {
+            reload();
+            return;
+        }
+
+        var FileController = "/api/img?op=upload&author=" + author + "&tags=" + tags;                   // 接收上传文件的后台地址
+        // FormData 对象
+
+        var form = new FormData();
+        form.append("file", uploadFileList[0]);
+        // XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", FileController, true);
+        xhr.onload = function () {
+            uploadFiles();
+        };
+        xhr.send(form);
+        uploadFileList.splice(0, 1);
+    }
+
+    function onFileUploadButtonChange() {
+        var files = document.getElementById("file").files;
+
+        if (files.length < 0) {
+            return;
+        }
+        addFiles(files);
+    }
+
+    function formatFileSize(value) {
+        if (value == null || value == '') {
+            return "0 Bytes";
+        }
+        var unitArr = new Array("Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
+        var index = 0;
+        var srcsize = parseFloat(value);
+        index = Math.floor(Math.log(srcsize) / Math.log(1024));
+        var size = srcsize / Math.pow(1024, index);
+        size = size.toFixed(2);//保留的小数位数
+        return size + unitArr[index];
+
+    }
+
+    function addFiles(files) {
+        var errstr = "";
+        for (var i = 0; i < files.length; i++) {
+            var filename = files[i].name;
+            var isfind = false;
+            for (var j = 0; j < uploadFileList.length; j++) {
+                if (uploadFileList[j].name == filename) {
+                    isfind = true;
+                    break;
+                }
+            }
+
+            var index1 = filename.lastIndexOf(".");
+            var index2 = filename.length;
+            var postf = filename.substring(index1 + 1, index2);//后缀名  
+            var suffixAllow = new Array('JPG', 'jpg', 'jpeg', 'JPEG', 'gif', 'GIF', 'png', 'PNG', 'bmp', 'BMP');
+
+            if ($.inArray(postf, suffixAllow) == -1) {
+                errstr += filename + "/";
+                continue;
+            }
+            if (isfind == false) {
+                uploadFileList.push(files[i]);
+            }
+        }
+
+        if (errstr != "") {
+            alert("文件格式错误:" + errstr);
+        }
+
+        var fileListString = "";
+
+        for (var j = 0; j < uploadFileList.length; j++) {
+            fileListString += uploadFileList[j].name + " 大小:"
+                + formatFileSize(uploadFileList[j].size) + "</br>";
+        }
+
+        document.getElementById("fileListDiv").innerHTML = fileListString;
+    }
+
+</script>
+
+<body>
+    <h1>Upload wallpaper</h1>
+
+    <div style="margin: 40px;">
+        Author: <input type="text" id="author" placeholder="上传者" /><br>
+        Tags: <input type="text" id="cust_tags" placeholder="英文逗号分隔标签" /><br>
+        Age: <input type="radio" name="age" value="G" checked>G
+        <input type="radio" name="age" value="PG-12">PG-12
+        <input type="radio" name="age" value="R-15">R-15
+        <input type="radio" name="age" value="R-18">R-18
+    </div>
+
+    <div name="dropbox" id="dropbox">
+        <p style="line-height: 100px; text-align: center;">拖拽文件上传</p>
+    </div>
+
+    <div style="text-align: center; ">
+        <a class="upload" href="javascript:void(0);">
+            <input id="file" class="filePrew" type="file" name="file" multiple="multiple"
+                onchange="javascript:onFileUploadButtonChange();" accept="image/jpeg,image/png,image/bmp,image/gif" />
+        </a>
+        <button class="button" type="submit" onclick="javascript:uploadFiles();">上传</button>
+    </div>
+
+    <div id="fileListDiv" style="background-color:#cccccc;  color:#333333; ">
+    </div>
+</body>
+
+</html>
