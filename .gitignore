@@ -1,1 +1,3 @@
 logs/*
+plugin/bin/server.dev/*
+plugin/bin/image_proxy
