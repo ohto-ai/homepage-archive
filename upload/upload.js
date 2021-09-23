@@ -1,6 +1,3 @@
-var uploadFileList = new Array();
-var imageList = new Array();
-
 $(function () {
     //阻止浏览器默认行为。
     $(document).on({
@@ -77,10 +74,8 @@ function uploadFiles() {
     if ($("#cust_tags").val() != "") tags += "," + $("#cust_tags").val();
 
     function uploadOneFile() {
-        addFiles(new Array());
 
-        // stop when uploadFileList is empty
-        if (uploadFileList.length <= 0) {
+        if (!hasAnyImagToUpload()) {
             // reload();
             return;
         }
@@ -88,18 +83,24 @@ function uploadFiles() {
         var uploadPath = "/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
         // FormData 对象
 
+        var onLoadDiv = getFirstReadyImageDiv();
+        
         var form = new FormData();
-        form.append("file", blobToFile(dataURLtoBlob(img.attr('src'))));
+        form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src'))));
         // XMLHttpRequest 对象
         var xhr = new XMLHttpRequest();
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
-            uploadFileList.splice(0, 1);
-            imageList.splice(0, 1);
-            document.getElementsByClassName('upload-image-preview-div')[0].remove()
+            onLoadDiv.attr('upload-status', 'loaded');
             uploadOneFile();
         };
-        document.getElementsByClassName('upload-image-preview-div')[0].setAttribute('onupload', 'onUpload');
+        xhr.upload.addEventListener("progress", function (evt) {
+            if (evt.lengthComputable) {
+                var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                console.log("正在提交." + percentComplete.toString() + '%');        //在控制台打印上传进度
+            }
+        }, false);
+        onLoadDiv.attr('upload-status', 'onupload')
         xhr.send(form);
     }
     uploadOneFile();
@@ -151,14 +152,6 @@ function addFiles(files) {
             errstr += f.name + "\n";
             addToList(index + 1);
             return;
-        }
-
-        // 查重
-        for (var i = 0; i < uploadFileList.length; i++) {
-            if (uploadFileList[i].name == f.name) {
-                addToList(index + 1);
-                return;
-            }
         }
 
         var reader = new FileReader();
