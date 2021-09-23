@@ -67,7 +67,7 @@ function uploadFiles() {
         alert("需要填写Author字段");
         return;
     }
-    
+
     $('.upload_button').attr('disabled', true);
     $('#upload-list-info').attr('on-upload', true);
 
@@ -96,7 +96,7 @@ function uploadFiles() {
         xhr.onload = function () {
             console.log(xhr.responseText);
             // todo 将展示中的图片链接替换
-            onLoadDiv.children('img').attr('src',JSON.parse(xhr.responseText).list[0].url);
+            onLoadDiv.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
             onLoadDiv.attr('upload-status', 'uploaded');
             updateListInfo();
             uploadOneFile();
@@ -104,7 +104,7 @@ function uploadFiles() {
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                console.log(onLoadDiv.children('img').attr('file')+"上传中." + percentComplete.toString() + '%');        //在控制台打印上传进度
+                console.log(onLoadDiv.children('img').attr('file') + "上传中." + percentComplete.toString() + '%');        //在控制台打印上传进度
             }
         }, false);
         onLoadDiv.attr('upload-status', 'onupload')
@@ -121,7 +121,6 @@ function onFileUploadButtonChange() {
         return;
     }
     addFiles(files);
-    $('#file').val('');
 }
 
 function formatFileSize(value) {
@@ -161,8 +160,10 @@ function addFiles(files) {
     var errstr = "";
 
     function addToList(index = 0) {
-        if (index >= files.length)
+        if (index >= files.length) {
+            $('#file').val('');
             return;
+        }
         var f = files[index];
 
         // 查类型
