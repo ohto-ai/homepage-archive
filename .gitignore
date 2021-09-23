@@ -2,3 +2,4 @@ logs/*
 plugin/bin/server.dev/*
 plugin/bin/image_proxy
 plugin/bin/imageproxy.log
+assets/img/storage/*
