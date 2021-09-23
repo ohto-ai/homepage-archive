@@ -39,10 +39,33 @@ $(function () {
     );
 });
 
-// function reload() {
-//     location.reload();
-// }
-// upload files one by one
+
+function getFirstReadyImageDiv() {
+    return $('.upload-image-preview-div:not([upload-status])').first();
+}
+function hasAnyImagToUpload() {
+    return $('.upload-image-preview-div:not([upload-status])').length > 0;
+}
+//将base64转换为blob
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+
+//将blob转换为file
+function blobToFile(theBlob, fileName) {
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+}
+
 function uploadFiles() {
     if ($("#author").val() == "") {
         alert("需要填写Author字段");
@@ -62,15 +85,14 @@ function uploadFiles() {
             return;
         }
 
-        var FileController =
-            "/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
+        var uploadPath = "/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
         // FormData 对象
 
         var form = new FormData();
-        form.append("file", uploadFileList[0]);
+        form.append("file", blobToFile(dataURLtoBlob(img.attr('src'))));
         // XMLHttpRequest 对象
         var xhr = new XMLHttpRequest();
-        xhr.open("post", FileController, true);
+        xhr.open("post", uploadPath, true);
         xhr.onload = function () {
             uploadFileList.splice(0, 1);
             imageList.splice(0, 1);
@@ -106,14 +128,14 @@ function formatFileSize(value) {
 }
 
 function onImageAdded(f, img) {
-    uploadFileList.push(f);
-    imageList.push(img);
     document.getElementById("fileListDiv").innerHTML +=
         `<div class="upload-image-preview-div">`
         + `<img src="` + img.src + `"/>`
-        + `<i class="del"></i><p class ="dj-name">` + f.name + `</p>`
-        + `<p class ="dj-size"> 大小: ` + formatFileSize(f.size) + `</p>`
-        + `<div class="loader"></div></div>`;
+        + `<i class="del"></i>`
+        + `<p class ="upload-image-name">` + f.name + `</p>`
+        + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
+        + `<div class="upload-image-loader-wrapper">`
+        + `<div class="upload-image-loader"></div></div></div>`;
 }
 
 function addFiles(files) {
@@ -164,9 +186,5 @@ function addFiles(files) {
 
 //删除图片
 $(".upload-image-wrapper").on("click", ".del", function () {
-    var index = $(this).parent().index();
-    console.log(index);
-    imageList.splice(index, 1);
-    uploadFileList.splice(index, 1);
     $(this).parent().remove();
 });
