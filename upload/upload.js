@@ -62,13 +62,14 @@ function blobToFile(theBlob, fileName) {
 }
 
 function uploadFiles() {
-    $('.upload_button').attr('disabled', true);
-    $('#upload-list-info').attr('on-upload', true);
 
     if ($("#author").val() == "") {
         alert("需要填写Author字段");
         return;
     }
+    
+    $('.upload_button').attr('disabled', true);
+    $('#upload-list-info').attr('on-upload', true);
 
     var author = $("#author").val();
     var tags = $("input[name='age']:checked").val();
