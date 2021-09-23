@@ -43,7 +43,7 @@ function getFirstReadyImageDiv() {
 function hasAnyImagToUpload() {
     return $('.upload-image-preview-div:not([upload-status])').length > 0;
 }
-//将base64转换为blob
+
 function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
@@ -58,9 +58,7 @@ function dataURLtoBlob(dataurl) {
 
 //将blob转换为file
 function blobToFile(theBlob, fileName) {
-    theBlob.lastModifiedDate = new Date();
-    theBlob.name = fileName;
-    return theBlob;
+    return new File([theBlob], fileName)
 }
 
 function uploadFiles() {
@@ -90,11 +88,12 @@ function uploadFiles() {
         var onLoadDiv = getFirstReadyImageDiv();
 
         var form = new FormData();
-        form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src'))));
+        form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
         // XMLHttpRequest 对象
         var xhr = new XMLHttpRequest();
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
+            console.log(xhr.responseText);
             onLoadDiv.attr('upload-status', 'uploaded');
             updateListInfo();
             uploadOneFile();
@@ -102,7 +101,7 @@ function uploadFiles() {
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                console.log("正在提交." + percentComplete.toString() + '%');        //在控制台打印上传进度
+                console.log(onLoadDiv.attr('file')+"上传中." + percentComplete.toString() + '%');        //在控制台打印上传进度
             }
         }, false);
         onLoadDiv.attr('upload-status', 'onupload')
@@ -144,7 +143,7 @@ function updateListInfo() {
 function onImageAdded(f, img) {
     $("#fileListDiv").append(
         `<div class="upload-image-preview-div">`
-        + `<img src="` + img.src + `"/>`
+        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
