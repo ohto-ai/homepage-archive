@@ -64,6 +64,9 @@ function blobToFile(theBlob, fileName) {
 }
 
 function uploadFiles() {
+    $('.upload_button').attr('disabled', true);
+    $('#upload-list-info').attr('on-upload', true);
+
     if ($("#author").val() == "") {
         alert("需要填写Author字段");
         return;
@@ -76,7 +79,8 @@ function uploadFiles() {
     function uploadOneFile() {
 
         if (!hasAnyImagToUpload()) {
-            // reload();
+            $('.upload_button').removeAttr('disabled');
+            $('#upload-list-info').removeAttr('on-upload');
             return;
         }
 
@@ -132,7 +136,7 @@ function formatFileSize(value) {
 function updateListInfo() {
     $('#upload-list-info').html(
         `<p>Ready(` + $('.upload-image-preview-div:not([upload-status])').length + `)</p>`
-        + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=onupload]').length + `)</p>`
+        // + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=onupload]').length + `)</p>`
         + `<p>Uploaded(` + $('.upload-image-preview-div[upload-status=uploaded]').length + `)</p>`
     )
 }
