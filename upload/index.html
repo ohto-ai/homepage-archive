@@ -11,258 +11,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Wallpaper Upload</title>
-    <link rel="stylesheet" href="/strapdown/sketchy.min.css" />
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="upload.css" />
+    <script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 </head>
-<style>
-    [type=radio] {
-        width: auto;
-        height: auto;
-        ;
-    }
 
-    [type=radio]::before {
-        position: static;
-    }
-
-    #dropbox {
-        font-size: 30px;
-        color: #333333;
-        background-color: rgba(230, 230, 230, 0.5);
-        min-width: 300px;
-        min-height: 100px;
-        border: 3px dashed silver;
-    }
-
-    [type=text] {
-        background-color: rgba(200, 200, 200, 0.4);
-    }
-
-    body {
-        background-color: rgba(255, 255, 255, 0.5);
-    }
-</style>
-<script>
-    var uploadFileList = new Array();
-    var imageList = new Array();
-
-    $(function () {
-        //阻止浏览器默认行为。 
-        $(document).on({
-            dragleave: function (e) {    //拖离 
-                e.preventDefault();
-            },
-            drop: function (e) {  //拖后放 
-                e.preventDefault();
-            },
-            dragenter: function (e) {    //拖进 
-                e.preventDefault();
-            },
-            dragover: function (e) {    //拖来拖去 
-                e.preventDefault();
-            }
-        });
-
-        var box = document.getElementById('dropbox'); //拖拽区域 
-
-        box.addEventListener("drop", function (e) {
-            e.preventDefault(); //取消默认浏览器拖拽效果 
-            var fileList = e.dataTransfer.files; //获取文件对象 
-            //检测是否是拖拽文件到页面的操作 
-            if (fileList.length == 0) {
-                return false;
-            }
-            addFiles(fileList);
-        }, false);
-
-
-    });
-
-    function reload() {
-        location.reload();
-    }
-    // upload files one by one
-    function uploadFiles() {
-
-        if ($("#author").val() == '') {
-            alert("需要填写Author字段");
-            return;
-        }
-
-        var author = $("#author").val();
-        var tags = $("input[name='age']:checked").val();
-        if ($("#cust_tags").val() != '')
-            tags += "," + $("#cust_tags").val();
-
-        function uploadOneFile() {
-
-            addFiles(new Array());
-
-            // stop when uploadFileList is empty
-            if (uploadFileList.length <= 0) {
-                reload();
-                return;
-            }
-
-            var FileController = "/api/img?op=upload&author=" + author + "&tags=" + tags;                   // 接收上传文件的后台地址
-            // FormData 对象
-
-            var form = new FormData();
-            form.append("file", uploadFileList[0]);
-            // XMLHttpRequest 对象
-            var xhr = new XMLHttpRequest();
-            xhr.open("post", FileController, true);
-            xhr.onload = function () {
-                uploadOneFile();
-            };
-            xhr.send(form);
-            uploadFileList.splice(0, 1);
-        };
-        uploadOneFile();
-    }
-
-    function onFileUploadButtonChange() {
-        var files = document.getElementById("file").files;
-
-        if (files.length < 0) {
-            return;
-        }
-        addFiles(files);
-    }
-
-    function formatFileSize(value) {
-        if (value == null || value == '') {
-            return "0 B";
-        }
-        var unitArr = new Array("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
-        var index = 0;
-        var srcsize = parseFloat(value);
-        index = Math.floor(Math.log(srcsize) / Math.log(1024));
-        var size = srcsize / Math.pow(1024, index);
-        size = size.toFixed(2);//保留的小数位数
-        return size + unitArr[index];
-
-    }
-
-    function addFiles(files) {
-        var errstr = "";
-        for (var i = 0; i < files.length; i++) {
-            var filename = files[i].name;
-            var hasInUploadFileList = false;
-            for (var fileIndex = 0; fileIndex < uploadFileList.length; fileIndex++) {
-                if (uploadFileList[fileIndex].name == filename) {
-                    hasInUploadFileList = true;
-                    break;
-                }
-            }
-
-            if (files[i].type.substr(0, 6) != "image/") {
-                errstr += filename + "\n";
-                continue;
-            }
-
-
-            if (!hasInUploadFileList) {
-                uploadFileList.push(files[i]);
-            }
-        }
-
-        if (errstr != "") {
-            alert("文件格式错误:" + errstr);
-        }
-
-        document.getElementById("fileListDiv").innerHTML = "";
-
-        function showImagePreview(fileIndex = 0) {
-            if (fileIndex >= uploadFileList.length) {
-                return;
-            }
-            var f = uploadFileList[fileIndex];
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                var data = e.target.result;
-                //加载图片获取图片真实宽度和高度
-                var image = new Image();
-
-                image.onload = function () {
-                    imageList.push(image);
-                    document.getElementById("fileListDiv").innerHTML +=
-                        `<div class="upload-image-preview-div"><img src="` + imageList[fileIndex].src + `"/><i class="del"></i>
-                            <p>`+ uploadFileList[fileIndex].name + " 大小:" + formatFileSize(uploadFileList[fileIndex].size) + `</p>
-                        </div>`;
-
-                    showImagePreview(fileIndex + 1);
-                }
-                image.src = data;
-            };
-            reader.readAsDataURL(uploadFileList[fileIndex]);
-        };
-        showImagePreview();
-    }
-
-</script>
-<style>
-    .upload-image-preview-div img {
-        max-width: 100px;
-        max-height: 100px;
-    }
-
-    .upload-image-wrapper {
-        background-color: #cccccc;
-        color: #333333;
-    }
-
-    .del {
-        background: url(/assets/img/delete.svg) no-repeat;
-        background-size: cover;
-        display: block;
-        width: 20px;
-        height: 20px;
-        position: relative;
-        right: -90px;
-        top: -110px;
-    }
-</style>
 
 <body>
-    <h1>Upload wallpaper</h1>
+    <div class="app">
+        <div class="dj-head">
+            <h1>Upload wallpaper</h1>
+        </div>
+        <div style=" display: flex;flex-direction:row;align-items: flex-start;height: 100%;width: 100%;" width: 100%>
+            <div class="dj-box">
+                <div class="dj-choosebox">
+                    <div style="margin: 40px;">
+                        <p class="dj-p1">Author: <input type="text" id="author" placeholder="上传者" /></p>
+                        <p class="dj-p1">Tags:<input type="text" id="cust_tags" placeholder="英文逗号分隔标签" />
+                        <p class="dj-p1">Age:<input type="radio" name="age" value="G" checked>G
+                            <input type="radio" name="age" value="PG-12">PG-12
+                            <input type="radio" name="age" value="R-15">R-15
+                            <input type="radio" name="age" value="R-18">R-18
+                        </p>
 
-    <div style="margin: 40px;">
-        Author: <input type="text" id="author" placeholder="上传者" /><br>
-        Tags: <input type="text" id="cust_tags" placeholder="英文逗号分隔标签" /><br>
-        Age: <input type="radio" name="age" value="G" checked>G
-        <input type="radio" name="age" value="PG-12">PG-12
-        <input type="radio" name="age" value="R-15">R-15
-        <input type="radio" name="age" value="R-18">R-18
-    </div>
+                        <button class="upload_button" type="submit" onclick="javascript:uploadFiles();">上传</button>
+                    </div>
+                </div>
 
-    <div name="dropbox" id="dropbox">
-        <p style="line-height: 100px; text-align: center;">拖拽文件上传</p>
-    </div>
+                <div class="dj-dragbox">
+                    <div onclick="file.click()" name="dropbox" id="dropbox">
+                        <p style=" line-height: 100px; text-align: center;">拖拽文件上传</p>
+                        <input id="file" class="fileUploadInput" type="file" name="file" multiple="multiple"
+                            onchange="onFileUploadButtonChange();" accept="image/*" />
+                    </div>
+                </div>
+            </div>
 
-    <div style="text-align: center; ">
-        <a class="upload" href="javascript:void(0);">
-            <input id="file" class="filePrew" type="file" name="file" multiple="multiple"
-                onchange="onFileUploadButtonChange();" accept="image/*" />
-        </a>
-        <button class="upload_button" type="submit" onclick="javascript:uploadFiles();">上传</button>
-    </div>
+            <div id="fileListDiv" class="upload-image-wrapper">
 
-    <div id="fileListDiv" class="upload-image-wrapper">
+                <div class="upload-image-preview-div">
+                    <img src="https://thatboy.info/img/51806deb-ca42-4fcc-a122-7466e86977a3.jpg" />
+                    <i class="del"></i>
+                    <p class="dj-name">test.jpg</p>
+                    <p class="dj-size"> 大小: 1.2MB</p>
+                    <div class="loader"></div>
+                </div>
+            </div>
+        </div>
     </div>
+    </div>
+    <script>
+
+    </script>
 </body>
-
-<script>
-    
-    //删除图片
-    $(".upload-image-wrapper").on("click",".del",function(){
-        var index = $(this).parent().index();
-        console.log(index);
-        imageList.splice(index, 1);
-        uploadFileList.splice(index, 1);
-        $(this).parent().remove();
-    });
-</script>
+<script src="upload.js"></script>
 
 </html>

@@ -24,7 +24,7 @@ body {
 }
 .header-image {
   height: 220px;
-  background-image: url(https://sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=640);
+  background-image: url(https://sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=400);
   background-size: cover;
   background-position: center;
   margin-bottom: 3rem;
@@ -103,10 +103,10 @@ body {
   overflow-y: scroll;
 }
 .book--expanded .overlay {
-  opacity: 0.95;
+  opacity: 0.65;
 }
 .book--expanded .article-title {
-  color: white;
+  color: rgba(0, 0, 0, 0.8);
   font-size: 64px;
   letter-spacing: 0.05em;
 }
@@ -125,6 +125,7 @@ body {
   opacity: 1;
 }
 .book--expanded .header-image {
+  background-image: url(//thatboy.info/img/95b9bd58-d21a-43ea-b399-5cf21083fdd0.jpg);
   height: 100%;
 }
 span{

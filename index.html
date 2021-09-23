@@ -52,9 +52,9 @@
                         {
                             opacity: "0",
                         },
-                        1000
+                        3000
                     )
-                    .hide(1000);
+                    .hide(1);
             }
         };
     </script>
@@ -62,7 +62,8 @@
 
 <body>
     <!-- background -->
-    <div class="blur-div"> <!-- use-backround-imag -->
+    <div class="blur-div">
+        <!-- use-backround-imag -->
         <iframe src="/extra/bilibili/"></iframe>
     </div>
 
@@ -79,8 +80,7 @@
             <div class="personal-box">
                 <a>
                     <span class="avatar">
-                        <img src="//sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=320"
-                            alt="Ohto-Ai" />
+                        <img src="//sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=320" alt="Ohto-Ai" />
                     </span>
                 </a>
                 <h1>Ohto-Ai</h1>
@@ -242,7 +242,8 @@
                     <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
                     <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
                     <iframe id="upload_frame" class="inner_frames" data-src="/upload/"></iframe>
-                    <iframe id="wallpaper_frame" always-reload class="inner_frames" data-src="/api/img?op=get&tags=R-15,wallpaper"></iframe>
+                    <iframe id="wallpaper_frame" always-reload class="inner_frames"
+                        data-src="/api/img?op=get&tags=R-15,wallpaper"></iframe>
                     <iframe id="draw_frame" class="inner_frames" data-src="/extra/draw/"></iframe>
                     <iframe id="tip_frame" class="inner_frames" data-src="/extra/tips/"></iframe>
                 </div>
@@ -261,24 +262,23 @@
         if (id != null && id != "") {
             var frame = document.getElementById(id + "_frame");
 
-            if (frame.src == null || frame.src == "" || frame.getAttribute('always-reload')!=undefined)
+            if (frame.src == null || frame.src == "" || frame.getAttribute('always-reload') != undefined)
                 frame.src = frame.getAttribute("data-src");
             frame.style.display = "inline-block";
             if (change_button) {
-                $("#"+id + "_button").attr("checked", "checked");
+                $("#" + id + "_button").attr("checked", "checked");
             }
         }
     };
 
-    $('.inner_frames').each(function(){
+    $('.inner_frames').each(function () {
         var id_suffix = this.id.split('_')[0]
-        var frame = "#"+this.id;
-        var button = "#"+id_suffix+"_button";
-        $(button).click(function()
-        {
+        var frame = "#" + this.id;
+        var button = "#" + id_suffix + "_button";
+        $(button).click(function () {
             switchFrame(id_suffix);
         })
-  });
+    });
 </script>
 
 </html>

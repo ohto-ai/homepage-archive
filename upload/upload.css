@@ -1,0 +1,292 @@
+/* 页面整体 */
+.app{
+    /* background-color: rgba(0, 170, 255, 0.247); */
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    top: 0;
+    width:100%;
+    height: 99%;
+    flex-direction:column;
+}
+
+/* 标题 */
+.dj-head{
+    position: relative;
+    background-color: rgba(238, 238, 238, 0.89);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    border-color: aliceblue;
+ 
+    box-shadow: 0px 2px 2px #bebaba;
+    width: 100%;
+
+    
+    /* margin-top: auto;
+    margin-left: 0%; */
+}
+/* 任务盒 */
+.dj-box{
+    /* background-color: rgba(131, 211, 180, 0.329); */
+    display: flex;
+    position: relative;
+    width: 400px;
+    height: 97%;
+    /* border-radius: 25px;
+    box-shadow: 5px 5px 2px #bebaba; */
+    top: 1%;
+  
+    align-items: flex-start;
+    flex-direction:column;
+}
+
+/* 选择框 */
+.dj-choosebox{
+    position: relative;
+    width: 400px;
+    min-width: 400px;
+    height: 200px;
+    
+    background-color: rgba(197, 197, 197, 0.363);
+    display: flex;
+    flex-direction:column;
+    margin-left: 0%;
+    border-radius: 25px;
+    box-shadow: 5px 5px 2px #bebaba;
+
+    font-family:'Courier New', Courier, monospace;
+}
+/* 拖拽框 */
+.dj-dragbox{
+    position: relative;
+    background-color: rgba(196, 196, 196, 0.329);
+
+    width: 400px;
+    min-width: 400px;
+    height: 98%;
+    top: 2%;
+    border-radius: 25px;
+    box-shadow: 5px 5px 2px #bebaba;
+}
+
+
+
+.upload-image-wrapper {
+    position: relative;
+    background-color: #9e9e9e65;
+    width: calc(calc(98%) - calc(400px));
+    height: 99%;
+    
+
+    top: 1%;
+    left: 1%;
+    border-radius: 25px;
+    box-shadow: 5px 5px 2px #bebaba;
+    overflow:scroll;
+    overflow-x: hidden;
+    /* color: #333333; */
+    /* display: grid; */
+    display: flex;
+    flex-wrap: wrap;
+
+
+}
+.upload-image-wrapper::-webkit-scrollbar { width: 0 !important }
+.upload-image-wrapper { -ms-overflow-style: none; }
+.upload-image-wrapper { overflow: -moz-scrollbars-none; }
+.upload-image-preview-div{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-shadow: 5px 5px 2px #bebaba;
+    /* background-color: rgba(221, 46, 46, 0.884); */
+    background: linear-gradient(to bottom right, rgba(182, 182, 182, 0.7) , rgba(248, 248, 248, 0.7) , rgba(182, 182, 182, 0.7));
+    border-radius: 25px;
+    width: calc(calc(99% / 4) - 10px);
+    max-width: 250px;
+    min-width: 250px;
+    height: 170px;
+    margin: 5px;
+    /* box-sizing: border-box; */
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-image-preview-div img {
+    position: absolute;
+    border-radius: 10px;
+    left: 20px;
+    top: 10px;
+    max-width: 200px;
+    max-height: 100px;
+}
+
+.upload-image-preview-div .dj-name {
+    position: absolute;
+    /* margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto; */
+    /* max-width: 220px; */
+    width: max-content;
+    max-height: 50px;
+    top: 100px;
+    left: 20px;
+    overflow: hidden;
+}
+.upload-image-preview-div .dj-size {
+    position: absolute;
+    /* margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto; */
+    max-width: 220px;
+    max-height: 50px;
+    top: 130px;
+    left: 20px;
+    overflow: hidden;
+}
+
+
+.del {
+    background: url(/assets/img/delete.svg) no-repeat;
+
+    box-shadow: -2px -2px 2px #5e5e5e;
+    background-size: cover;
+    border-radius: 100%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+.loader-wrapper
+{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+
+}
+
+.loader{
+    /* display: none; */
+    opacity: 0.6;
+    border:16px solid #f3f3f3;
+    border-color:#00ffff #00ccff #0099ff #0066ff;
+    border-radius: 50%;
+    width:100px;
+    height:100px;
+    animation:load 2s linear infinite;
+    position: relative; 
+    z-index: 99999;
+    margin: auto;
+    top: 20px;
+
+
+    /* left: 60px;
+    top:20px; */
+    
+}
+
+@keyframes load{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+.upload-image-preview-div[onupload] .loader
+{
+    display: inline;
+}
+
+.upload-image-preview-div[onupload]
+{
+    background-color: red;
+}
+.upload-image-preview-div[onupload] .loader
+{
+    display: inline;
+}
+
+[type=radio] {
+    width: auto;
+    height: auto;
+    ;
+}
+
+[type=radio]::before {
+    position: static;
+}
+
+#dropbox {
+    font-size: 30px;
+    color: #333333;
+    background-color: rgba(230, 230, 230, 0.5);
+    min-width: 300px;
+    min-height: 100px;
+    height: 100%;
+    border: 3px dashed silver;
+    border-radius: 25px;
+}
+.dj-p1{
+    position: relative;
+    left: 0;
+    top: -30px;
+}
+
+[type=text] {
+    background-color: rgba(200, 200, 200, 0.4);
+    position: absolute;
+
+    font-size: 14px; 
+    color: #555555; 
+    background-color: #ffffff; 
+    border: 1px solid #cccccc; 
+    border-radius: 4px; 
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); 
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; 
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; 
+
+}
+[type=text]:focus { 
+    border-color: #66afe9; 
+    outline: 0; 
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); 
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); 
+} 
+
+#author{
+    right: 50px;
+    top: -5px;
+    height: 25px;
+}
+
+#cust_tags{
+    right: 50px;
+    top: -5px;
+    height: 25px;
+}
+
+.upload_button{
+    position: relative;
+    border-radius: 10px;
+    width: 200px;
+    height: 30px;
+    left: 55px;
+    top: -20px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); 
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); 
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; 
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; 
+}
+.upload_button:hover{
+    
+    border-color: #66afe9; 
+    outline: 0; 
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); 
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6); 
+}
+.fileUploadInput{
+    display: none;
+}
