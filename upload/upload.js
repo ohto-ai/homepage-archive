@@ -91,7 +91,7 @@ function uploadFiles() {
         var xhr = new XMLHttpRequest();
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
-            onLoadDiv.attr('upload-status', 'loaded');
+            onLoadDiv.attr('upload-status', 'uploaded');
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
