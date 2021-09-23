@@ -84,7 +84,7 @@ function uploadFiles() {
         // FormData 对象
 
         var onLoadDiv = getFirstReadyImageDiv();
-        
+
         var form = new FormData();
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src'))));
         // XMLHttpRequest 对象
@@ -92,6 +92,7 @@ function uploadFiles() {
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
             onLoadDiv.attr('upload-status', 'uploaded');
+            updateListInfo();
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
@@ -128,15 +129,24 @@ function formatFileSize(value) {
     return size + unitArr[index];
 }
 
+function updateListInfo() {
+    $('#upload-list-info').html(
+        `<p>Ready(` + $('.upload-image-preview-div:not([upload-status])').length + `)</p>`
+        + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=onupload]').length + `)</p>`
+        + `<p>Uploaded(` + $('.upload-image-preview-div[upload-status=uploaded]').length + `)</p>`
+    )
+}
+
 function onImageAdded(f, img) {
-    document.getElementById("fileListDiv").innerHTML +=
+    $("#fileListDiv").append(
         `<div class="upload-image-preview-div">`
         + `<img src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
         + `<div class="upload-image-loader-wrapper">`
-        + `<div class="upload-image-loader"></div></div></div>`;
+        + `<div class="upload-image-loader"></div></div></div>`);
+    updateListInfo();
 }
 
 function addFiles(files) {
@@ -180,4 +190,5 @@ function addFiles(files) {
 //删除图片
 $(".upload-image-wrapper").on("click", ".del", function () {
     $(this).parent().remove();
+    updateListInfo();
 });

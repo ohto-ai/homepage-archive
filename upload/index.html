@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-21 01:06:12
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-24 00:33:33
+ * @LastEditTime: 2021-09-24 01:14:01
  * @Description: file content
 -->
 <!DOCTYPE html>
@@ -21,25 +21,23 @@
         <div class="dj-head">
             <h1>Upload wallpaper</h1>
         </div>
-        <div style=" display: flex;flex-direction:row;align-items: flex-start;height: 100%;width: 100%;" width: 100%>
+        <div class="dj-main-content">
             <div class="dj-box">
                 <div class="dj-choosebox">
-                    <div style="margin: 40px;">
-                        <p class="dj-p1">Author: <input type="text" id="author" placeholder="上传者" /></p>
-                        <p class="dj-p1">Tags:<input type="text" id="cust_tags" placeholder="英文逗号分隔标签" />
-                        <p class="dj-p1">Age:<input type="radio" name="age" value="G" checked>G
-                            <input type="radio" name="age" value="PG-12">PG-12
-                            <input type="radio" name="age" value="R-15">R-15
-                            <input type="radio" name="age" value="R-18">R-18
-                        </p>
-
-                        <button class="upload_button" type="submit" onclick="javascript:uploadFiles();">上传</button>
-                    </div>
+                    <p>Author: <input type="text" id="author" placeholder="上传者" /></p>
+                    <p>Tags:<input type="text" id="cust_tags" placeholder="英文逗号分隔标签" /></p>
+                    <p>Age:<input type="radio" name="age" value="G" checked>G
+                        <input type="radio" name="age" value="PG-12">PG-12
+                        <input type="radio" name="age" value="R-15">R-15
+                        <input type="radio" name="age" value="R-18">R-18
+                    </p>
+                    <span id='upload-list-info'></span>
+                    <button class="upload_button" type="submit" onclick="javascript:uploadFiles();">上传</button>
                 </div>
 
-                <div class="dj-dragbox">
+                <div class="dj-dropbox">
                     <div onclick="file.click()" name="dropbox" id="dropbox">
-                        <p style=" line-height: 100px; text-align: center;">拖拽文件上传</p>
+                        <p>拖拽文件上传</p>
                         <input id="file" class="fileUploadInput" type="file" name="file" multiple="multiple"
                             onchange="onFileUploadButtonChange();" accept="image/*" />
                     </div>
@@ -47,7 +45,7 @@
             </div>
 
             <div id="fileListDiv" class="upload-image-wrapper">
-                
+
                 <!-- <div class="upload-image-preview-div" upload-status='onupload'>
                     <img src="https://thatboy.info/img/51806deb-ca42-4fcc-a122-7466e86977a3.jpg" />
                     <i class="del"></i>
