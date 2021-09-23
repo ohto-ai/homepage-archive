@@ -9,14 +9,17 @@
 # 文档建设中...
 
 - /api/img
-> 年龄分级、头像、上传 正在实现  
 
 GET  
 ```plain
 Params:
-    op      <get>
+    op      <get|sync|delete|reload|upload>
         描述操作，默认为get
             get: 获取图片等信息
+            sync: 将列表与文件同步，移除已删除文件
+            delete: 删除文件，带有storage参数可以指定单一文件，否则将根据tags标签删除匹配的文件
+            reload: 重新加载配置信息
+            upload: 跳转到上传页面
     type    <page|direct|dump|list>
         描述返回类型，默认为page
             page: 返回html页面
@@ -27,17 +30,10 @@ Params:
                 url: 图像地址
                 age: 年龄分级
             list: 返回json格式图片信息列表
-    region  <wallpaper|avatar>
-        描述图片范围，默认为wallpaper
-            wallpaper: 壁纸
-            avatar: 头像
-    age     [0|15|18|-1]
-        选择图像年龄分级，默认为0，可重复传参
-            0: 全年龄
-            15: 15+
-            18: 18+
-            -1: 未定义
-
+    tags    [any...]
+        描述图片标签，每个标签使用英文逗号分隔，一般图像均带有G|PG-12|R-15|R-18之一的标签
+    storage [image-file-name]
+        用于指定文件，一般用于delete操作
 POST
 
 Params:
