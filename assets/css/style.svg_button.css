@@ -10,11 +10,7 @@
     opacity: 0.8;
 }
 
-.svg-wrapper .external-link
-{
-}
-
-.svg-wrapper[choosed="true"] {
+.svg-wrapper[checked="checked"] {
     background-color: darkblue;
 }
 
@@ -27,7 +23,7 @@
     transition: 1s all ease;
 }
 
-.svg-wrapper:hover .svg_button, .svg-wrapper[choosed="true"] .svg_button {
+.svg-wrapper:hover .svg_button, .svg-wrapper[checked="checked"] .svg_button {
     stroke-dasharray: 50 0;
     stroke-width: 4px;
     stroke-dashoffset: 0;

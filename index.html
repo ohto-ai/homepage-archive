@@ -21,10 +21,6 @@
     <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
 
     <style>
-        *::-webkit-scrollbar {
-            display: none;
-        }
-
         #loading {
             position: fixed;
             top: 0px;
@@ -66,11 +62,13 @@
 
 <body>
     <!-- background -->
-    <div class="blur-div"></div>
+    <div class="blur-div"> <!-- use-backround-imag -->
+        <iframe src="/extra/bilibili/"></iframe>
+    </div>
 
     <!-- loading page -->
     <div id="loading">
-        <iframe class="loading-iframe" src="extra/overwatch-loader/index.html">
+        <iframe class="loading-iframe" src="extra/OwO/">
         </iframe>
     </div>
 
@@ -161,39 +159,42 @@
                             </div>
                         </svg>
                     </div>
-                    <!-- Dongje button -->
-                    <div class="svg-wrapper" id="dj_button">
+                    <!-- Wallpaper button -->
+                    <div class="svg-wrapper" id="wallpaper_button">
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
                                 <a>
                                     <span class="spot"></span>
-                                    Beiklive
+                                    Wallpaper
                                 </a>
                             </div>
                         </svg>
                     </div>
-                    <!-- Zhouhuan button -->
-                    <div class="svg-wrapper" id="zh_button">
+                    <!-- Draw button -->
+                    <div class="svg-wrapper" id="draw_button">
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
                                 <a>
                                     <span class="spot"></span>
-                                    ZhouhBlog
+                                    Paint
                                 </a>
                             </div>
                         </svg>
                     </div>
-                    <!-- Zhouhuan2 button -->
-                    <!-- <div class="svg-wrapper" id="zh2_button">
+                    <!-- tip button -->
+                    <div class="svg-wrapper" id="tip_button">
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
                             <rect class="svg_button" height="40" width="150" />
                             <div id="text_div">
-                                <a><span class="spot"></span>Jnchou</a>
+                                <a>
+                                    <span class="spot"></span>
+                                    More
+                                </a>
                             </div>
                         </svg>
-                    </div> -->
+                    </div>
                     <!-- Old Page button -->
                     <div class="svg-wrapper external-link" id="old_button">
                         <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
@@ -227,7 +228,8 @@
                             <div id="text_div">
                                 <a>
                                     <span class="spot"></span>
-                                    <img src="https://www.mfwzjsq.com/hit.php?id=zuapxa&nd=1&style=7" border="0" alt="访问量">
+                                    <img src="https://www.mfwzjsq.com/hit.php?id=zuapxa&nd=1&style=20" border="0"
+                                        alt="访问量">
                                 </a>
                             </div>
                         </svg>
@@ -236,13 +238,13 @@
                 <div class="sub-frame-wrapper">
                     <!-- todo frames -->
                     <iframe id="home_frame" style="display: inline-block;" class="inner_frames"
-                        src="/plugin/card/"></iframe>
+                        src="/extra/book_card/"></iframe>
                     <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
                     <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
                     <iframe id="upload_frame" class="inner_frames" data-src="/upload/"></iframe>
-                    <iframe id="dj_frame" class="inner_frames" data-src="//beiklive.cn"></iframe>
-                    <iframe id="zh_frame" class="inner_frames" data-src="//zhouhuan1004.gitee.io"></iframe>
-                    <!-- <iframe id="zh2_frame" class="inner_frames" src="//47.94.82.132"></iframe> -->
+                    <iframe id="wallpaper_frame" always-reload class="inner_frames" data-src="/api/img?op=get&tags=R-15,wallpaper"></iframe>
+                    <iframe id="draw_frame" class="inner_frames" data-src="/extra/draw/"></iframe>
+                    <iframe id="tip_frame" class="inner_frames" data-src="/extra/tips/"></iframe>
                 </div>
             </div>
         </div>
@@ -254,45 +256,29 @@
             this.style.display = "none";
         });
 
-        $(".svg-wrapper").each(function () {
-            this.setAttribute("choosed", "false");
-        });
+        $(".svg-wrapper").removeAttr("checked");
 
         if (id != null && id != "") {
             var frame = document.getElementById(id + "_frame");
 
-            if (frame.src == null || frame.src == "")
+            if (frame.src == null || frame.src == "" || frame.getAttribute('always-reload')!=undefined)
                 frame.src = frame.getAttribute("data-src");
             frame.style.display = "inline-block";
             if (change_button) {
-                document
-                    .getElementById(id + "_button")
-                    .setAttribute("choosed", "true");
+                $("#"+id + "_button").attr("checked", "checked");
             }
         }
     };
 
-    $("#pan_button").click(function () {
-        switchFrame("pan");
-    });
-    $("#img_button").click(function () {
-        switchFrame("img");
-    });
-    $("#upload_button").click(function () {
-        switchFrame("upload");
-    });
-    $("#dj_button").click(function () {
-        switchFrame("dj");
-    });
-    $("#zh_button").click(function () {
-        switchFrame("zh");
-    });
-    // $('#zh2_button').click(function () {
-    //     switchFrame("zh2");
-    // });
-    $("#home_button").click(function () {
-        switchFrame("home", false);
-    });
+    $('.inner_frames').each(function(){
+        var id_suffix = this.id.split('_')[0]
+        var frame = "#"+this.id;
+        var button = "#"+id_suffix+"_button";
+        $(button).click(function()
+        {
+            switchFrame(id_suffix);
+        })
+  });
 </script>
 
 </html>

@@ -81,6 +81,7 @@
         location.reload();
     }
 
+    // upload files one by one
     function uploadFiles() {
 
         if ($("#author").val() == '') {
@@ -93,25 +94,32 @@
         if ($("#cust_tags").val() != '')
             tags += "," + $("#cust_tags").val();
 
-        addFiles(new Array());
-        if (uploadFileList.length <= 0) {
-            reload();
-            return;
-        }
+        function uploadOneFile()
+        {
 
-        var FileController = "/api/img?op=upload&author=" + author + "&tags=" + tags;                   // 接收上传文件的后台地址
-        // FormData 对象
+            addFiles(new Array());
 
-        var form = new FormData();
-        form.append("file", uploadFileList[0]);
-        // XMLHttpRequest 对象
-        var xhr = new XMLHttpRequest();
-        xhr.open("post", FileController, true);
-        xhr.onload = function () {
-            uploadFiles();
+            // stop when uploadFileList is empty
+            if (uploadFileList.length <= 0) {
+                reload();
+                return;
+            }
+
+            var FileController = "/api/img?op=upload&author=" + author + "&tags=" + tags;                   // 接收上传文件的后台地址
+            // FormData 对象
+
+            var form = new FormData();
+            form.append("file", uploadFileList[0]);
+            // XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", FileController, true);
+            xhr.onload = function () {
+                uploadOneFile();
+            };
+            xhr.send(form);
+            uploadFileList.splice(0, 1);
         };
-        xhr.send(form);
-        uploadFileList.splice(0, 1);
+        uploadOneFile();
     }
 
     function onFileUploadButtonChange() {
@@ -138,27 +146,26 @@
     }
 
     function addFiles(files) {
+        console.log(files);
         var errstr = "";
         for (var i = 0; i < files.length; i++) {
             var filename = files[i].name;
-            var isfind = false;
+            var hasInUploadFileList = false;
             for (var j = 0; j < uploadFileList.length; j++) {
                 if (uploadFileList[j].name == filename) {
-                    isfind = true;
+                    hasInUploadFileList = true;
                     break;
                 }
             }
 
-            var index1 = filename.lastIndexOf(".");
-            var index2 = filename.length;
-            var postf = filename.substring(index1 + 1, index2);//后缀名  
-            var suffixAllow = new Array('JPG', 'jpg', 'jpeg', 'JPEG', 'gif', 'GIF', 'png', 'PNG', 'bmp', 'BMP');
-
-            if ($.inArray(postf, suffixAllow) == -1) {
-                errstr += filename + "/";
+            if(file.type.substr(0,6) != "image/")
+            {
+                errstr += filename + "\n";
                 continue;
             }
-            if (isfind == false) {
+
+
+            if (!hasInUploadFileList) {
                 uploadFileList.push(files[i]);
             }
         }
@@ -198,9 +205,9 @@
     <div style="text-align: center; ">
         <a class="upload" href="javascript:void(0);">
             <input id="file" class="filePrew" type="file" name="file" multiple="multiple"
-                onchange="javascript:onFileUploadButtonChange();" accept="image/jpeg,image/png,image/bmp,image/gif" />
+                onchange="javascript:onFileUploadButtonChange();" accept="image/*" />
         </a>
-        <button class="button" type="submit" onclick="javascript:uploadFiles();">上传</button>
+        <button class="upload_button" type="submit" onclick="javascript:uploadFiles();">上传</button>
     </div>
 
     <div id="fileListDiv" style="background-color:#cccccc;  color:#333333; ">

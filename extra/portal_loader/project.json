@@ -1,4 +1,5 @@
 {
+	"description" : "Aperture Technology\nhttp://codepen.io/MarcMalignan/pen/utyjp\n BY Marc Malignan",
 	"file" : "index.html",
 	"general" : 
 	{
@@ -14,8 +15,8 @@
 		}
 	},
 	"preview" : "preview.jpg",
-	"tags" : [ "Game" ],
-	"title" : "Ark UI 1",
+	"tags" : [ "Technology", "Game" ],
+	"title" : "portal-loader",
 	"type" : "web",
-	"visibility" : "private"
+	"visibility" : "public"
 }

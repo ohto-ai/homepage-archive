@@ -103,7 +103,7 @@ window.wallpaperPropertyListener = {
 window.onload = function () {
     init();
     animate();
-    window.wallpaperRegisterAudioListener(wallpaperAudioListener);
+    // window.wallpaperRegisterAudioListener(wallpaperAudioListener);
 }
 
 function rgb2hex(rgb) {
