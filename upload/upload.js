@@ -108,7 +108,7 @@ function uploadFiles() {
         var onLoadDiv = getFirstReadyImageDiv();
         if (onLoadDiv.attr('uid') == undefined) {
             onLoadDiv.attr('uid', uuid());
-            console.log('generate uid ' + onLoadDiv.attr('uid'))；
+            console.log('generate uid ' + onLoadDiv.attr('uid'));
         }
 
         let uid = onLoadDiv.attr('uid');
