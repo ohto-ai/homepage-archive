@@ -36,6 +36,15 @@ $(function () {
     );
 });
 
+window.onload = function()
+{
+    if(self.location.host.substr(0,9)=='127.0.0.1'
+    || self.location.host.substr(0,9)=='localhost')
+        return;
+    if (self == top) { 
+    　　$('.app').attr('top-page', true);
+    }
+}
 
 function getFirstReadyImageDiv() {
     return $('.upload-image-preview-div:not([upload-status])').first();
@@ -95,7 +104,7 @@ function uploadFiles() {
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
             console.log(xhr.responseText);
-            // todo 将展示中的图片链接替换
+            
             onLoadDiv.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
             onLoadDiv.attr('upload-status', 'uploaded');
             updateListInfo();
