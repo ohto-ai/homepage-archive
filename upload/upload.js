@@ -46,7 +46,7 @@ window.onload = function () {
 }
 
 function getDivByUid(uid) {
-    return $('.upload-image-preview-div[uid='+uid+']').first();
+    return $('.upload-image-preview-div[uid=' + uid + ']').first();
 }
 function getFirstReadyImageDiv() {
     return $('.upload-image-preview-div:not([upload-status])').first();
@@ -106,9 +106,9 @@ function uploadFiles() {
         // FormData 对象
 
         var onLoadDiv = getFirstReadyImageDiv();
-        if(onLoadDiv.attr('uid') == undefined)
-        {
-            onLoadDiv.attr('uid', uuid() );
+        if (onLoadDiv.attr('uid') == undefined) {
+            onLoadDiv.attr('uid', uuid());
+            console.log('generate uid ' + onLoadDiv.attr('uid'))；
         }
 
         let uid = onLoadDiv.attr('uid');
@@ -131,17 +131,18 @@ function uploadFiles() {
         }
         xhr.onload = function () {
             console.log(xhr.responseText);
-
-            getDivByUid(uid).attr('upload-status', 'success');
+            var div = getDivByUid(uid);
+            div.attr('upload-status', 'success');
             updateListInfo();
-            getDivByUid(uid).children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
+            div.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
+                var div = getDivByUid(uid);
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                $('.upload-image-background', getDivByUid(uid)).css('height', (100 - percentComplete) + '%')
-                console.log(getDivByUid(uid).children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
+                $('.upload-image-background', div).css('height', (100 - percentComplete) + '%')
+                console.log(div.children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
             }
         }, false);
         xhr.send(form);
@@ -183,7 +184,7 @@ function updateListInfo() {
 
 function onImageAdded(f, img) {
     $("#fileListDiv").append(
-        `<div class="upload-image-preview-div">`
+        `<div class="upload-image-preview-div" uid=` + uuid()`>`
         + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
