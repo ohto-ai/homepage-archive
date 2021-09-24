@@ -45,6 +45,9 @@ window.onload = function () {
     }
 }
 
+function getDivByUid(uid) {
+    return $('.upload-image-preview-div[uid='+uid+']').first();
+}
 function getFirstReadyImageDiv() {
     return $('.upload-image-preview-div:not([upload-status])').first();
 }
@@ -62,6 +65,13 @@ function dataURLtoBlob(dataurl) {
         u8arr[n] = bstr.charCodeAt(n);
     }
     return new Blob([u8arr], { type: mime });
+}
+
+function uuid() {
+    function S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    }
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
 //将blob转换为file
@@ -96,6 +106,12 @@ function uploadFiles() {
         // FormData 对象
 
         var onLoadDiv = getFirstReadyImageDiv();
+        if(onLoadDiv.attr('uid') == undefined)
+        {
+            onLoadDiv.attr('uid', uuid() );
+        }
+
+        let uid = onLoadDiv.attr('uid');
 
         var form = new FormData();
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
@@ -106,8 +122,9 @@ function uploadFiles() {
 
         xhr.open("post", uploadPath, true);
         xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                onLoadDiv.attr('upload-status', 'failed')
+            if (xhr.readyState == 4 && xhr.status != 200) {
+                console.log(xhr.responseText);
+                getDivByUid(uid).attr('upload-status', 'failed')
                 updateListInfo();
                 uploadOneFile();
             }
@@ -115,16 +132,16 @@ function uploadFiles() {
         xhr.onload = function () {
             console.log(xhr.responseText);
 
-            onLoadDiv.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
-            onLoadDiv.attr('upload-status', 'success');
+            getDivByUid(uid).attr('upload-status', 'success');
             updateListInfo();
+            getDivByUid(uid).children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                $('.upload-image-background', onLoadDiv).css('height', (100 - percentComplete) + '%')
-                console.log(onLoadDiv.children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
+                $('.upload-image-background', getDivByUid(uid)).css('height', (100 - percentComplete) + '%')
+                console.log(getDivByUid(uid).children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
             }
         }, false);
         xhr.send(form);
