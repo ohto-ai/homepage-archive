@@ -36,13 +36,12 @@ $(function () {
     );
 });
 
-window.onload = function()
-{
-    if(self.location.host.substr(0,9)=='127.0.0.1'
-    || self.location.host.substr(0,9)=='localhost')
+window.onload = function () {
+    if (self.location.host.substr(0, 9) == '127.0.0.1'
+        || self.location.host.substr(0, 9) == 'localhost')
         return;
-    if (self == top) { 
-    　　$('.app').attr('top-page', true);
+    if (self == top) {
+        $('.app').attr('top-page', true);
     }
 }
 
@@ -79,6 +78,7 @@ function uploadFiles() {
 
     $('.upload_button').attr('disabled', true);
     $('#upload-list-info').attr('on-upload', true);
+    $('.upload-image-preview-div[upload-status=failed]').removeAttr('upload-status');
 
     var author = $("#author").val();
     var tags = $("input[name='age']:checked").val();
@@ -92,7 +92,7 @@ function uploadFiles() {
             return;
         }
 
-        var uploadPath = "/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
+        var uploadPath = "//thatboy.info/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
         // FormData 对象
 
         var onLoadDiv = getFirstReadyImageDiv();
@@ -101,22 +101,32 @@ function uploadFiles() {
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
         // XMLHttpRequest 对象
         var xhr = new XMLHttpRequest();
+
+        onLoadDiv.attr('upload-status', 'doing')
+
         xhr.open("post", uploadPath, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                onLoadDiv.attr('upload-status', 'failed')
+                updateListInfo();
+                uploadOneFile();
+            }
+        }
         xhr.onload = function () {
             console.log(xhr.responseText);
-            
+
             onLoadDiv.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
-            onLoadDiv.attr('upload-status', 'uploaded');
+            onLoadDiv.attr('upload-status', 'success');
             updateListInfo();
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                $('.upload-image-background',onLoadDiv).css('height',percentComplete.toString()+'%')
                 console.log(onLoadDiv.children('img').attr('file') + "上传中." + percentComplete.toString() + '%');        //在控制台打印上传进度
             }
         }, false);
-        onLoadDiv.attr('upload-status', 'onupload')
         xhr.send(form);
     }
     uploadOneFile();
@@ -148,8 +158,9 @@ function formatFileSize(value) {
 function updateListInfo() {
     $('#upload-list-info').html(
         `<p>Ready(` + $('.upload-image-preview-div:not([upload-status])').length + `)</p>`
-        // + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=onupload]').length + `)</p>`
-        + `<p>Uploaded(` + $('.upload-image-preview-div[upload-status=uploaded]').length + `)</p>`
+        + `<p>Failed(` + $('.upload-image-preview-div[upload-status=failed]').length + `)</p>`
+        // + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=doing]').length + `)</p>`
+        + `<p>Uploaded(` + $('.upload-image-preview-div[upload-status=success]').length + `)</p>`
     )
 }
 
@@ -161,6 +172,7 @@ function onImageAdded(f, img) {
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
         + `<div class="upload-image-loader-wrapper">`
+        + `<div class="upload-image-background"></div>`
         + `<div class="upload-image-loader"></div></div></div>`);
     updateListInfo();
 }
