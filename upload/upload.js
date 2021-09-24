@@ -95,7 +95,7 @@ function uploadFiles() {
         xhr.open("post", uploadPath, true);
         xhr.onload = function () {
             console.log(xhr.responseText);
-            // todo 将展示中的图片链接替换
+            
             onLoadDiv.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
             onLoadDiv.attr('upload-status', 'uploaded');
             updateListInfo();

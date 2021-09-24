@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="/assets/css/style.svg_button.css" />
     <link rel="stylesheet" href="/assets/css/style.beian.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
+    <script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//use.fontawesome.com/d1341f9b7a.js"></script>
 
     <style>
         #loading {
@@ -236,7 +236,7 @@
                     </div>
                 </div>
                 <div class="sub-frame-wrapper">
-                    <iframe id="home_frame" style="display: inline-block;" class="inner_frames"
+                    <iframe id="home_frame" no-button-change current-page class="inner_frames"
                         src="/extra/book_card/"></iframe>
                     <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
                     <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
@@ -251,31 +251,24 @@
     </div>
 </body>
 <script>
-    var switchFrame = function (id, change_button = true) {
-        $(".sub-frame-wrapper iframe").each(function () {
-            this.style.display = "none";
-        });
-
-        $(".svg-wrapper").removeAttr("checked");
-
-        if (id != null && id != "") {
-            var frame = document.getElementById(id + "_frame");
-
-            if (frame.src == null || frame.src == "" || frame.getAttribute('always-reload') != undefined)
-                frame.src = frame.getAttribute("data-src");
-            frame.style.display = "inline-block";
-            if (change_button) {
-                $("#" + id + "_button").attr("checked", "checked");
-            }
-        }
-    };
-
     $('.inner_frames').each(function () {
-        var id_suffix = this.id.split('_')[0]
+        var id = this.id.split('_')[0]
         var frame = "#" + this.id;
-        var button = "#" + id_suffix + "_button";
+        var button = "#" + id + "_button";
         $(button).click(function () {
-            switchFrame(id_suffix);
+            $(".inner_frames").removeAttr('current-page');
+            $(".svg-wrapper").removeAttr('current-page');
+            if (id != null && id != "") {
+                var frame = $("#" + id + "_frame");
+                if (frame.attr('src') == null || frame.attr('src') == ""
+                    || frame.attr('always-reload') != undefined)
+                    frame.attr('src', frame.attr('data-src'));
+
+                frame.attr("current-page", true);
+                if (frame.attr('no-button-change') == undefined) {
+                    $("#" + id + "_button").attr("current-page", true);
+                }
+            }
         })
     });
 </script>
