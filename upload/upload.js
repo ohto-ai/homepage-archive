@@ -123,8 +123,8 @@ function uploadFiles() {
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                $('.upload-image-background',onLoadDiv).css('height',percentComplete.toString()+'%')
-                console.log(onLoadDiv.children('img').attr('file') + "上传中." + (100 - percentComplete) + '%');        //在控制台打印上传进度
+                $('.upload-image-background', onLoadDiv).css('height', (100 - percentComplete) + '%')
+                console.log(onLoadDiv.children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
             }
         }, false);
         xhr.send(form);
