@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-24 13:14:10
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-24 13:26:02
+ * @LastEditTime: 2021-09-24 13:59:48
  * @Description: file content
  */
 
@@ -48,8 +48,10 @@ window.onload = function () {
             }
 
             if (frame.attr('src') == null || frame.attr('src') == ""
-                || button.attr('always-reload') != undefined)
-                frame.attr('src', frame.attr('data-src'));
+                || button.attr('always-reload') != undefined) {
+                frame.attr('src', button.attr('data-src') + "&token=" + Math.random());
+                console.log("load wp_page");
+            }
 
             frame.attr("current-page", true);
             if (button.attr('no-button-change') == undefined) {
