@@ -124,7 +124,7 @@ function uploadFiles() {
             if (evt.lengthComputable) {
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
                 $('.upload-image-background',onLoadDiv).css('height',percentComplete.toString()+'%')
-                console.log(onLoadDiv.children('img').attr('file') + "上传中." + percentComplete.toString() + '%');        //在控制台打印上传进度
+                console.log(onLoadDiv.children('img').attr('file') + "上传中." + (100 - percentComplete) + '%');        //在控制台打印上传进度
             }
         }, false);
         xhr.send(form);
