@@ -184,7 +184,7 @@ function updateListInfo() {
 
 function onImageAdded(f, img) {
     $("#fileListDiv").append(
-        `<div class="upload-image-preview-div" uid=` + uuid()`>`
+        `<div class="upload-image-preview-div" uid=` + uuid() + `>`
         + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
