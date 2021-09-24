@@ -1,3 +1,10 @@
+/*
+ * @Author: OhtoAi
+ * @Date: 2021-09-24 13:14:10
+ * @LastEditors: OhtoAi
+ * @LastEditTime: 2021-09-24 13:26:02
+ * @Description: file content
+ */
 
 window.onload = function () {
     $('.svg-wrapper').each(function () {
@@ -19,6 +26,7 @@ window.onload = function () {
         }
 
         if ($(this).attr('external-link') != undefined) {
+            $('a', $(this)).attr('href', $(this).attr('external-link'));
             $('a', $(this)).append(`<i class="fa fa-external-link" aria-hidden="true"></i>`);
             return;
         }
