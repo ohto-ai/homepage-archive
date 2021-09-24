@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-14 14:08:33
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-24 13:12:53
+ * @LastEditTime: 2021-09-24 13:14:45
  * @Description: file content
 -->
 <!DOCTYPE html>
@@ -12,52 +12,15 @@
     <meta charset="UTF-8" />
     <title>OhtoAi - Home</title>
     <link rel="stylesheet" href="/assets/css/style.main.css" />
-    <link rel="stylesheet" href="/assets/css/style.emoji.css" />
     <link rel="stylesheet" href="/assets/css/style.peronal.css" />
     <link rel="stylesheet" href="/assets/css/style.svg_button.css" />
     <link rel="stylesheet" href="/assets/css/style.beian.css" />
+    <link rel="stylesheet" href="/assets/css/style.loading-page.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://use.fontawesome.com/d1341f9b7a.js"></script>
-
-    <style>
-        #loading {
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            z-index: 999999;
-        }
-
-        .loading-iframe {
-            overflow: hidden;
-            top: 0px;
-            left: 0px;
-            border-width: 0px;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            z-index: 999999;
-        }
-    </style>
-
-    <script>
-        // loading
-        // 监听加载状态改变
-        document.onreadystatechange = function () {
-            if (document.readyState == "complete") {
-                $("#loading")
-                    .animate(
-                        {
-                            opacity: "0",
-                        },
-                        2000
-                    )
-                    .hide(1);
-            }
-        };
-    </script>
+    <script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//use.fontawesome.com/d1341f9b7a.js"></script>
+    <script src='/assets/js/loading-page.js'>    </script>
+    <script src="/assets/js/main-page.js"></script>
 </head>
 
 <body>
@@ -112,172 +75,44 @@
                 <!-- menu -->
                 <div class="main-menu">
                     <!-- Home button -->
-                    <div class="svg-wrapper" id="home_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Home
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Home' id="home_button" no-button-change>
                     </div>
                     <!-- Pan button -->
-                    <div class="svg-wrapper" id="pan_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Pan
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Pan' id="pan_button" data-src="//pan.thatboy.info">
                     </div>
                     <!-- Image button -->
-                    <div class="svg-wrapper" id="img_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Image
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Image' id="img_button" data-src="//img.thatboy.info">
                     </div>
                     <!-- Upload button -->
-                    <div class="svg-wrapper" id="upload_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Upload
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Upload' id="upload_button" data-src="/upload/">
                     </div>
                     <!-- Wallpaper button -->
-                    <div class="svg-wrapper" id="wallpaper_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Wallpaper
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Wallpaper' id="wp_button" data-src="/api/img?tags=R-15,wallpaper"
+                        always-reload>
                     </div>
                     <!-- Draw button -->
-                    <div class="svg-wrapper" id="draw_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    Paint
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Paint' id="draw_button" data-src="/extra/draw/">
                     </div>
                     <!-- tip button -->
-                    <div class="svg-wrapper" id="tip_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    More
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='More' id="tip_button" data-src="/extra/tips/">
                     </div>
                     <!-- Old Page button -->
-                    <div class="svg-wrapper external-link" id="old_button">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a target="_blank" href="//ohto-ai.github.io/main/">
-                                    <span class="spot"></span>
-                                    Old Page
-                                    <i class="fa fa-external-link" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Old Page' external-link id="old_button">
                     </div>
                     <!-- Github button -->
-                    <div class="svg-wrapper external-link">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a target="_blank" href="//github.com/Ohto-Ai">
-                                    <span class="spot"></span>
-                                    Github
-                                    <i class="fa fa-external-link" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper" content='Github' external-link>
                     </div>
                     <!-- mfwzjsq -->
-                    <div class="svg-wrapper">
-                        <svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
-                            <rect class="svg_button" height="40" width="150" />
-                            <div id="text_div">
-                                <a>
-                                    <span class="spot"></span>
-                                    <img src="https://www.mfwzjsq.com/hit.php?id=zuapxa&nd=1&style=20" border="0"
-                                        alt="访问量">
-                                </a>
-                            </div>
-                        </svg>
+                    <div class="svg-wrapper"
+                        content='<img src="https://www.mfwzjsq.com/hit.php?id=zuapxa&nd=1&style=20" border="0"'>
                     </div>
                 </div>
                 <div class="sub-frame-wrapper">
-                    <iframe id="home_frame" style="display: inline-block;" class="inner_frames"
-                        src="/extra/book_card/"></iframe>
-                    <iframe id="pan_frame" class="inner_frames" data-src="//pan.thatboy.info"></iframe>
-                    <iframe id="img_frame" class="inner_frames" data-src="//img.thatboy.info"></iframe>
-                    <iframe id="upload_frame" class="inner_frames" data-src="/upload/"></iframe>
-                    <iframe id="wallpaper_frame" always-reload class="inner_frames"
-                        data-src="//thatboy.info/api/img?op=get&tags=R-15,wallpaper"></iframe>
-                    <iframe id="draw_frame" class="inner_frames" data-src="/extra/draw/"></iframe>
-                    <iframe id="tip_frame" class="inner_frames" data-src="/extra/tips/"></iframe>
+                    <iframe id="home_frame" current-page class="inner_frames" src="/extra/book_card/"></iframe>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script>
-    var switchFrame = function (id, change_button = true) {
-        $(".sub-frame-wrapper iframe").each(function () {
-            this.style.display = "none";
-        });
-
-        $(".svg-wrapper").removeAttr("checked");
-
-        if (id != null && id != "") {
-            var frame = document.getElementById(id + "_frame");
-
-            if (frame.src == null || frame.src == "" || frame.getAttribute('always-reload') != undefined)
-                frame.src = frame.getAttribute("data-src");
-            frame.style.display = "inline-block";
-            if (change_button) {
-                $("#" + id + "_button").attr("checked", "checked");
-            }
-        }
-    };
-
-    $('.inner_frames').each(function () {
-        var id_suffix = this.id.split('_')[0]
-        var frame = "#" + this.id;
-        var button = "#" + id_suffix + "_button";
-        $(button).click(function () {
-            switchFrame(id_suffix);
-        })
-    });
-</script>
 
 </html>

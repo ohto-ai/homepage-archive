@@ -86,8 +86,11 @@ body{
 
 .inner_frames
 {
-    border: none;
+    display: none;
     width: 100%;
     height: 100%;
-    display: none;
+}
+.inner_frames[current-page]
+{
+    display: inline-block;
 }
