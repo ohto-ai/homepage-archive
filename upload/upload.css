@@ -3,7 +3,7 @@
 *::-webkit-scrollbar {
   display: none;
 }
-body{
+body {
   margin: 0;
 }
 
@@ -22,8 +22,7 @@ body{
   align-content: stretch;
 }
 
-.app[top-page]
-{
+.app[top-page] {
   background-size: cover;
   background-image: url(https://thatboy.info/api/img?op=get&type=direct&tags=R-15,wallpaper);
 }
@@ -31,7 +30,7 @@ body{
 /* 标题 */
 .dj-head {
   padding: 0 10px;
-  background-color: rgba(238, 238, 238, 0.80);
+  background-color: rgba(238, 238, 238, 0.8);
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-style: italic;
   border-color: aliceblue;
@@ -39,7 +38,7 @@ body{
   height: 7vh;
 }
 
-.dj-head h1{
+.dj-head h1 {
   margin: 0;
 }
 
@@ -71,7 +70,6 @@ body{
   position: relative;
   width: 360px;
   padding: 20px;
-  /* padding-top: 40px; */
 
   background-color: rgba(197, 197, 197, 0.363);
   display: flex;
@@ -83,18 +81,12 @@ body{
   font-family: "Courier New", Courier, monospace;
 }
 
-#author {
-  right: 50px;
-  top: -5px;
-  height: 25px;
-}
-
+#author,
 #cust_tags {
   right: 50px;
   top: -5px;
   height: 25px;
 }
-
 
 .dj-choosebox p {
   position: relative;
@@ -102,13 +94,12 @@ body{
 
 /* 拖拽框 */
 .dj-dropbox {
-  position: relative;
-  background-color: rgba(196, 196, 196, 0.329);
-
   width: 400px;
-  min-width: 400px;
-  height: 98%;
-  top: 2%;
+  /* height: 100%; */
+  font-size: 30px;
+  color: #333333;
+  background-color: rgba(230, 230, 230, 0.5);
+  border: 3px dashed silver;
   border-radius: 25px;
   box-shadow: 5px 5px 2px #bebaba;
 }
@@ -119,7 +110,7 @@ body{
 }
 
 .upload_button {
-  align-self:center;
+  align-self: center;
   border-radius: 10px;
   width: 200px;
   height: 30px;
@@ -137,15 +128,13 @@ body{
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
 }
-.upload_button:disabled 
-{
- background-color: rgba(20,255,40,0.5); 
+.upload_button:disabled {
+  background-color: rgba(20, 255, 40, 0.5);
 }
 
-#upload-list-info[on-upload]
-{
+#upload-list-info[on-upload] {
   color: red;
-  animation: blink 1s linear infinite;  
+  animation: blink 1s linear infinite;
   /* 其它浏览器兼容性前缀 */
   -webkit-animation: blink 1s linear infinite;
   -moz-animation: blink 1s linear infinite;
@@ -210,20 +199,20 @@ body{
 }
 
 .upload-image-preview-div .upload-image-name {
-    position: absolute;
-    width: max-content;
-    max-height: 50px;
-    top: 110px;
-    left: 20px;
-    overflow: hidden;
+  position: absolute;
+  width: max-content;
+  max-height: 50px;
+  top: 110px;
+  left: 20px;
+  overflow: hidden;
 }
 .upload-image-preview-div .upload-image-size {
-    position: absolute;
-    max-width: 220px;
-    max-height: 50px;
-    top: 132px;
-    left: 20px;
-    overflow: hidden;
+  position: absolute;
+  max-width: 220px;
+  max-height: 50px;
+  top: 132px;
+  left: 20px;
+  overflow: hidden;
 }
 
 .del {
@@ -238,10 +227,12 @@ body{
   position: absolute;
   right: 8px;
   top: 8px;
+
+  z-index: 99;
 }
 
 .upload-image-loader-wrapper {
-  display: none;
+  display: flex;
   width: 100%;
   height: 100%;
   justify-content: center;
@@ -269,15 +260,10 @@ body{
   }
 }
 
-.upload-image-preview-div[upload-status] > .upload-image-loader-wrapper {
-  display: flex;
-}
-
 .upload-image-preview-div[upload-status="doing"] .upload-image-loader {
   display: inline;
 }
-.upload-image-preview-div[upload-status="doing"]
-  .upload-image-background {
+.upload-image-preview-div[upload-status="doing"] .upload-image-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -289,8 +275,7 @@ body{
   height: 100%;
 }
 
-.upload-image-preview-div[upload-status="failed"]
-  .upload-image-background {
+.upload-image-preview-div[upload-status="failed"] .upload-image-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -299,35 +284,19 @@ body{
   opacity: 0.6;
   z-index: 1;
   width: 100%;
-  height: 100%;
+  height: 100% !important;
 }
 
-.upload-image-preview-div[upload-status="doing"] > .del {
+.upload-image-preview-div[upload-status="doing"] .del {
   display: none;
 }
-.upload-image-preview-div[upload-status="success"] > .del {
-  display: unset;
+.upload-image-preview-div[upload-status="failed"] .del {
+  background: url(/assets/img/delete.svg) no-repeat;
+  background-size: cover;
+}
+.upload-image-preview-div[upload-status="success"] .del {
   background: url(/assets/img/success.svg) no-repeat;
-}
-
-[type="radio"] {
-  width: auto;
-  height: auto;
-}
-
-[type="radio"]::before {
-  position: static;
-}
-
-#dropbox {
-  font-size: 30px;
-  color: #333333;
-  background-color: rgba(230, 230, 230, 0.5);
-  min-width: 300px;
-  min-height: 100px;
-  height: 100%;
-  border: 3px dashed silver;
-  border-radius: 25px;
+  background-size: cover;
 }
 
 [type="text"] {
@@ -354,28 +323,46 @@ body{
     0 0 8px rgba(102, 175, 233, 0.6);
 }
 
-
 /* 定义keyframe动画，命名为blink */
-@keyframes blink{
-  0%{opacity: 1;}
-      
-  100%{opacity: 0;} 
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 /* 添加兼容性前缀 */
 @-webkit-keyframes blink {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-moz-keyframes blink {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-ms-keyframes blink {
-    0% {opacity: 1; } 
-    100% { opacity: 0;}
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-o-keyframes blink {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-

@@ -102,10 +102,9 @@ function uploadFiles() {
             return;
         }
 
-        var uploadPath = "//thatboy.info/api/img?op=upload&author=" + author + "&tags=" + tags; // 接收上传文件的后台地址
-        // FormData 对象
-
         var onLoadDiv = getFirstReadyImageDiv();
+        onLoadDiv.attr('upload-status', 'doing')
+
         if (onLoadDiv.attr('uid') == undefined) {
             onLoadDiv.attr('uid', uuid());
             console.log('generate uid ' + onLoadDiv.attr('uid'));
@@ -113,19 +112,23 @@ function uploadFiles() {
 
         let uid = onLoadDiv.attr('uid');
 
+        // args
+        var uploadPath = "/api/img?op=upload";
+        uploadPath += "&author=" + author;
+        uploadPath += "&tags=" + tags;
+        uploadPath += "&width=" + onLoadDiv.children('img').attr('ori-width');
+        uploadPath += "&height=" + onLoadDiv.children('img').attr('ori-height');
+
         var form = new FormData();
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
-        // XMLHttpRequest 对象
+
+
         var xhr = new XMLHttpRequest();
-
-        onLoadDiv.attr('upload-status', 'doing')
-
         xhr.open("post", uploadPath, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status != 200) {
                 console.log(xhr.responseText);
                 getDivByUid(uid).attr('upload-status', 'failed')
-                updateListInfo();
                 uploadOneFile();
             }
         }
@@ -141,8 +144,9 @@ function uploadFiles() {
             if (evt.lengthComputable) {
                 var div = getDivByUid(uid);
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                $('.upload-image-background', div).css('height', (100 - percentComplete) + '%')
-                console.log(div.children('img').attr('file') + "上传中." + percentComplete + '%');        //在控制台打印上传进度
+                div.attr('upload-percent', percentComplete);
+                $('.upload-image-background', div).css('height', percentComplete == 100 ? '' : (100 - percentComplete) + '%');
+                console.log(div.children('img').attr('file') + "上传中." + percentComplete + '%');
             }
         }, false);
         xhr.send(form);
@@ -177,8 +181,7 @@ function updateListInfo() {
     $('#upload-list-info').html(
         `<p>Ready(` + $('.upload-image-preview-div:not([upload-status])').length + `)</p>`
         + `<p>Failed(` + $('.upload-image-preview-div[upload-status=failed]').length + `)</p>`
-        // + `<p>Uploading(` + $('.upload-image-preview-div[upload-status=doing]').length + `)</p>`
-        + `<p>Uploaded(` + $('.upload-image-preview-div[upload-status=success]').length + `)</p>`
+        + `<p>Success(` + $('.upload-image-preview-div[upload-status=success]').length + `)</p>`
     )
 }
 
@@ -192,7 +195,6 @@ function onImageAdded(f, img) {
         + `<div class="upload-image-loader-wrapper">`
         + `<div class="upload-image-background"></div>`
         + `<div class="upload-image-loader"></div></div></div>`);
-    updateListInfo();
 }
 
 function addFiles(files) {
@@ -235,8 +237,21 @@ function addFiles(files) {
     }
 }
 
-//删除图片
-$(".upload-image-wrapper").on("click", ".del", function () {
-    $(this).parent().remove();
-    updateListInfo();
-});
+window.onload = function () {
+    //删除图片
+    $(".upload-image-wrapper").on("click", ".del", function () {
+        $(this).parent().remove();
+    });
+
+    // 上传文件
+    $('.upload_button').click(uploadFiles);
+
+    // 选择文件
+    $('#dropbox').click(() => file.click());
+
+    // change
+    $(".upload-image-wrapper").bind('DOMNodeInserted', updateListInfo);
+    $(".upload-image-wrapper").bind('DOMNodeRemoved', updateListInfo);
+    $(".upload-image-wrapper").bind('DOMNodeRemovedFromDocument', updateListInfo);
+    $(".upload-image-wrapper").bind('DOMAttrmodified', updateListInfo);
+}
