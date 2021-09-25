@@ -1,5 +1,4 @@
 logs/*
-plugin/bin/server.dev/*
 plugin/bin/image_proxy
 plugin/bin/imageproxy.log
 plugin/bin/imageproxy.config

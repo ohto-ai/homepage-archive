@@ -121,6 +121,10 @@ function uploadFiles() {
 
         var form = new FormData();
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
+        form.append("author", author);
+        form.append("tags", tags);
+        form.append("width", onLoadDiv.children('img').attr('ori-width'));
+        form.append("height", onLoadDiv.children('img').attr('ori-height'));
 
 
         var xhr = new XMLHttpRequest();
