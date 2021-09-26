@@ -114,15 +114,12 @@ function uploadFiles() {
 
         // args
         var uploadPath = "/api/img?op=upload";
-        uploadPath += "&author=" + author;
-        uploadPath += "&tags=" + tags;
-        uploadPath += "&width=" + onLoadDiv.children('img').attr('ori-width');
-        uploadPath += "&height=" + onLoadDiv.children('img').attr('ori-height');
 
         var form = new FormData();
         form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
         form.append("author", author);
         form.append("tags", tags);
+        form.append("type", onLoadDiv.children('img').attr('ori-type'));
         form.append("width", onLoadDiv.children('img').attr('ori-width'));
         form.append("height", onLoadDiv.children('img').attr('ori-height'));
 
@@ -192,7 +189,7 @@ function updateListInfo() {
 function onImageAdded(f, img) {
     $("#fileListDiv").append(
         `<div class="upload-image-preview-div" uid=` + uuid() + `>`
-        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` src="` + img.src + `"/>`
+        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` ori-type=` + f.type + ` src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
