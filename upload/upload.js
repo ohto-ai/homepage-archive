@@ -189,7 +189,7 @@ function updateListInfo() {
 function onImageAdded(f, img) {
     $("#fileListDiv").append(
         `<div class="upload-image-preview-div" uid=` + uuid() + `>`
-        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` ori-type=` + f.type + ` src="` + img.src + `"/>`
+        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` ori-type=` + f.type.substr(f.type.lastIndexOf('/') + 1) + ` src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
