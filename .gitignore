@@ -5,8 +5,10 @@ plugin/bin/*.dat
 assets/img/storage/*
 dev/**/Debug/
 dev/**/*.exe
+dev/**/*.dat
 dev/**/storage/*
 dev/**/*.log
 **/*.user
 **/*.pdb
-
+**/.vs
+dev/**/image_proxy.config
