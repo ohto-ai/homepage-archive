@@ -68,10 +68,10 @@ function dataURLtoBlob(dataurl) {
 }
 
 function uuid() {
-    function S4() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    }
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    var temp_url = URL.createObjectURL(new Blob());
+    var uuid = temp_url.toString();
+    URL.revokeObjectURL(temp_url);
+    return uuid.substr(uuid.lastIndexOf("/") + 1);
 }
 
 //将blob转换为file
