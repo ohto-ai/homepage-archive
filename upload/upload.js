@@ -138,7 +138,7 @@ function uploadFiles() {
             var div = getDivByUid(uid);
             div.attr('upload-status', 'success');
             updateListInfo();
-            div.children('img').attr('src', JSON.parse(xhr.responseText).list[0].url);
+            div.children('img').attr('src', JSON.parse(xhr.responseText).img.url);
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
