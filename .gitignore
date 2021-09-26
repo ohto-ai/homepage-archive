@@ -1,5 +1,12 @@
 logs/*
 plugin/bin/image_proxy
-plugin/bin/imageproxy.log
-plugin/bin/imageproxy.config
+plugin/bin/image_proxy.log
+plugin/bin/*.dat
 assets/img/storage/*
+dev/**/Debug/
+dev/**/*.exe
+dev/**/storage/*
+dev/**/*.log
+**/*.user
+**/*.pdb
+
