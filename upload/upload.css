@@ -24,7 +24,7 @@ body {
 
 .app[top-page] {
   background-size: cover;
-  background-image: url(https://thatboy.info/api/img?op=get&type=direct&tags=R-15,wallpaper);
+  background-image: url(https://thatboy.info/api/img?op=get&type=direct&tags=pc,wallpaper);
 }
 
 /* 标题 */

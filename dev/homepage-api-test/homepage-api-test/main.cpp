@@ -158,9 +158,36 @@ int main()
 				j["status"] = 200;
 				res.set_content(j.dump(4), "application/json");
 			}
+			else if(op == "refresh")
+			{
+				proxy.saveConfig();
+				
+				nlohmann::json j;
+				j["error"] = "ok";
+				j["status"] = 200;
+				res.set_content(j.dump(4), "application/json");
+			}
 			else if(op == "upload")
 			{
 				res.set_redirect("//thatboy.info/upload/");
+			}
+			else if(op ==  "shutdown")
+			{
+				if(req.get_param_value("key") == "thatboy0609")
+				{
+					s.stop();
+					nlohmann::json j;
+					j["error"] = "ok";
+					j["status"] = 200;
+					res.set_content(j.dump(4), "application/json");
+				}
+				else
+				{
+					nlohmann::json j;
+					j["error"] = "no permission";
+					j["status"] = 403;
+					res.set_content(j.dump(4), "application/json");
+				}
 			}
 			else
 			{
@@ -204,16 +231,13 @@ int main()
 			res.set_content(j.dump(4), "application/json");
 		});
 
-	s.Get("/shutdown", [&](const auto&, auto&)
-		{
-			s.stop();
-		});
-
 	s.set_mount_point("/", ".");
 #if defined WIN32 || defined _WIN32
 	s.set_mount_point("/img", ohtoai::ImageProxy::instance().getFileStorageBase().c_str());
 	s.set_mount_point("/", "../../../");
+	return s.listen("0.0.0.0", 80);
+#else 
+	return s.listen("0.0.0.0", 8002);
 #endif
 
-	return s.listen("0.0.0.0", 80);
 }

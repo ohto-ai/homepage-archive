@@ -46,7 +46,7 @@ namespace ohtoai
 		ImageProxy()
 		{
 			::srand(static_cast<unsigned int>(::time(nullptr)));
-
+			LOG_INFO("[[Image Proxy start.]]");
 			loadConfig();
 		}
 
@@ -195,7 +195,7 @@ namespace ohtoai
 		std::thread{
 			[=] {
 					nlohmann::json j = *this;
-					auto storageData{ j.dump() };
+					auto storageData{ j.dump(4) };
 					std::ofstream ofs(SettingConfigPath);
 					ofs.write(storageData.data(), storageData.size());
 					ofs.close();
@@ -315,6 +315,8 @@ namespace ohtoai
 	{
 		saveConfig();
 		saveData();
+		
+		LOG_INFO("[[Image Proxy stopped.]]");
 	}
 
 	inline ImageProxy& ImageProxy::instance()

@@ -36,15 +36,6 @@ $(function () {
     );
 });
 
-window.onload = function () {
-    if (self.location.host.substr(0, 9) == '127.0.0.1'
-        || self.location.host.substr(0, 9) == 'localhost')
-        return;
-    if (self == top) {
-        $('.app').attr('top-page', true);
-    }
-}
-
 function getDivByUid(uid) {
     return $('.upload-image-preview-div[uid=' + uid + ']').first();
 }
@@ -239,6 +230,19 @@ function addFiles(files) {
 }
 
 window.onload = function () {
+    
+    // change wallpaper
+    if (self.location.host.substr(0, 9) == '127.0.0.1'
+        || self.location.host.substr(0, 9) == 'localhost')
+    {
+        console.log('local server test.')
+        return;
+    }
+    if (self == top) {
+        console.log('use top-age wallpaper as background.')
+        $('.app').attr('top-page', true);
+    }
+    
     //删除图片
     $(".upload-image-wrapper").on("click", ".del", function () {
         $(this).parent().remove();
@@ -255,4 +259,5 @@ window.onload = function () {
     $(".upload-image-wrapper").bind('DOMNodeRemoved', updateListInfo);
     $(".upload-image-wrapper").bind('DOMNodeRemovedFromDocument', updateListInfo);
     $(".upload-image-wrapper").bind('DOMAttrmodified', updateListInfo);
+
 }
