@@ -100,11 +100,11 @@ window.wallpaperPropertyListener = {
     }
 }
 
-window.onload = function () {
+$(function () {
     init();
     animate();
     // window.wallpaperRegisterAudioListener(wallpaperAudioListener);
-}
+});
 
 function rgb2hex(rgb) {
     rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);

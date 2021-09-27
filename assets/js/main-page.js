@@ -6,7 +6,7 @@
  * @Description: file content
  */
 
-window.onload = function () {
+$(function () {
     $('.svg-wrapper').each(function () {
 
         if ($(this).attr('user-define-content') == undefined) {
@@ -59,4 +59,4 @@ window.onload = function () {
             }
         })
     })
-}
+});
