@@ -4,6 +4,7 @@ plugin/bin/image_proxy.log
 plugin/bin/*.dat
 assets/img/storage/*
 dev/**/Debug/
+dev/**/Release/
 dev/**/*.exe
 dev/**/*.dat
 dev/**/storage/*
