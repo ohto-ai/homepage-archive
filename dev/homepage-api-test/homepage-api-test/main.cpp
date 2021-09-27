@@ -1,24 +1,18 @@
 ﻿#include "ImageProxy.hpp"
-
-#ifdef OHTOAI_WINDOWS_PLATFORM
 #include <signal.h>
-#endif
 
 httplib::Server s;
 
 void atExit(int sig = 0)
 {
-	LOG_DEBUG("Capture signal", sig);
+	LOG_DEBUG("Capture quit signal", sig);
 	s.stop();
 }
 
 int main()
 {
-#ifndef OHTOAI_WINDOWS_PLATFORM
 	signal(SIGINT, atExit);
 	signal(SIGTERM, atExit);
-	signal(SIGQUIT, atExit);
-#endif
 
 	auto splitToSet = [](std::string list)
 	{
@@ -243,15 +237,15 @@ int main()
 			}
 			else
 			{
-				LOG_DEBUG("Unknow command", req.get_param_value("op"));
-				j["error"] = "unknow command";
+				LOG_DEBUG("Unknown command", req.get_param_value("op"));
+				j["error"] = "unknown command";
 				j["status"] = 404;
 			}
 			res.set_content(j.dump(4), "application/json");
 		});
 
 	s.set_mount_point("/", ".");
-#if OHTOAI_WINDOWS_PLATFORM
+#ifdef OHTOAI_WINDOWS_PLATFORM
 	s.set_mount_point("/img", ohtoai::ImageProxy::instance().getFileStorageBase().c_str());
 	s.set_mount_point("/", "../../../");
 	return s.listen("0.0.0.0", 80);
