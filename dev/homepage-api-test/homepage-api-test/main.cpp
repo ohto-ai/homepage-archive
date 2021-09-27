@@ -14,7 +14,7 @@ void atExit(int sig = 0)
 
 int main()
 {
-#ifdef OHTOAI_WINDOWS_PLATFORM
+#ifndef OHTOAI_WINDOWS_PLATFORM
 	signal(SIGINT, atExit);
 	signal(SIGTERM, atExit);
 	signal(SIGQUIT, atExit);
