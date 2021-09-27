@@ -5,6 +5,7 @@
 <title>Fez</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="user-scalable = no">
+<script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
 function blockMove() {
@@ -12,7 +13,7 @@ function blockMove() {
 }
 
 window.onresize = setPos;
-window.onload = onLoad;
+$(onLoad);
 
 function onLoad()
 {

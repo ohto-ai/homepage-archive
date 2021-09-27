@@ -29,7 +29,7 @@ function MoveIt() {
         img;
     document.getElementById("art").style.left = `${50-l/h*50*(options.misc.artwork_scroll/100)}%`
 }
-window.onload = function () {
+$(function () {
     console.log("Loaded!"), window.wallpaperPropertyListener = {
         applyUserProperties: function (properties) {
             properties.background && (options.theme.background = ParseColor(properties.background.value)), properties.color_1 && (options.theme.color_1 = ParseColor(properties.color_1.value)), properties.color_2 && (options.theme.color_2 = ParseColor(properties.color_2.value)), properties.color_mix_1 && (options.theme.color_mix_1 = ParseColor(properties.color_mix_1.value)), properties.color_mix_2 && (options.theme.color_mix_2 = ParseColor(properties.color_mix_2.value)), properties.artwork_scroll && (options.misc.artwork_scroll = properties.artwork_scroll.value)
@@ -41,7 +41,7 @@ window.onload = function () {
         }
     };
     window.wallpaperRegisterAudioListener(wallpaperAudioListener);
-};
+});
 
 //#region Helpers
 var pinkNoise = [1.1760367470305,0.85207379418243,0.68842437227852,0.63767902570829,0.5452348949654,0.50723325864167,0.4677726234682,0.44204182748767,0.41956517802157,							0.41517375040002,0.41312118577934,0.40618363960446,0.39913707474975,0.38207008614508,							0.38329789106488,0.37472136606245,0.36586428412968,0.37603017335105,0.39762590761573,							0.39391828858591,0.37930603769622,0.39433365764563,0.38511504613859,0.39082579241834,							0.3811852720504,0.40231453727161,0.40244151133175,0.39965366884521,0.39761103827545,							0.51136400422212,0.66151212038954,0.66312205226679,0.7416276690995,0.74614971301133,							0.84797007577483,0.8573583910469,0.96382997811663,0.99819377577185,1.0628692615814,							1.1059083969751,1.1819808497335,1.257092297208,1.3226521464753,1.3735992532905,							1.4953223705889,1.5310064942373,1.6193923584808,1.7094805527135,1.7706604552218,							1.8491987941428,1.9238418849406,2.0141596921333,2.0786429508827,2.1575522518646,							2.2196355526005,2.2660112509705,2.320762171749,2.3574848254513,2.3986127976537,2.4043566176474,2.4280476777842,2.3917477397336,2.4032522546622,2.3614180150678];

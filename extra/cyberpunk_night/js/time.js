@@ -2,7 +2,7 @@
 	     var y = window.innerHeight;
 	     var c = document.getElementById("myCanvas");
 	    c.width = window.innerWidth ,c.height = window.innerHeight;
-	    window.onload  = function(){
+	    $(function(){
 		document.getElementById("imgif").src="img/background.png";
 		Rm = document.querySelector("#imgif");
 		Rm.width = window.innerWidth , Rm.height = window.innerHeight;
@@ -48,5 +48,5 @@
 			   })
 		 
 		},1000)
-	}
+	});
 	

@@ -229,7 +229,7 @@ function addFiles(files) {
     }
 }
 
-window.onload = function () {
+$(function () {
     
     // change wallpaper
     if (self.location.host.substr(0, 9) == '127.0.0.1'
@@ -259,5 +259,4 @@ window.onload = function () {
     $(".upload-image-wrapper").bind('DOMNodeRemoved', updateListInfo);
     $(".upload-image-wrapper").bind('DOMNodeRemovedFromDocument', updateListInfo);
     $(".upload-image-wrapper").bind('DOMAttrmodified', updateListInfo);
-
-}
+});
