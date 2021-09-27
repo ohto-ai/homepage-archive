@@ -22,7 +22,7 @@ namespace ohtoai
 		constexpr static auto SettingConfigPath{ "image_proxy.config" };
 		inline const static log::Log Logger{ "image_proxy.log" };
 
-#if defined WIN32 || defined _WIN32
+#ifdef OHTOAI_WINDOWS_PLATFORM
 		std::string fileStorageBase{ R"(storage/)" };
 		std::string fileUrlBase{ R"(//localhost/img/)" };
 #else
@@ -46,7 +46,7 @@ namespace ohtoai
 		ImageProxy()
 		{
 			::srand(static_cast<unsigned int>(::time(nullptr)));
-			LOG_INFO("[[Image Proxy start.]]");
+			LOG_INFO("[[Image Proxy started.]]");
 			loadConfig();
 		}
 
@@ -68,9 +68,9 @@ namespace ohtoai
 		std::string viewImageHtmlPage(std::string fileUrl)const;
 
 		void loadConfig();
-		void saveConfig();
+		void saveConfig(bool sync = false);
 		void loadData();
-		void saveData();
+		void saveData(bool sync = false);
 		void syncWithFile();
 
 		std::string viewImageHtmlPage(const ImageFileInfo& info)const;
@@ -170,7 +170,7 @@ namespace ohtoai
 		if (!ifs)
 		{
 			LOG_INFO("Config missing.");
-			saveConfig();
+			saveConfig(true);
 		}
 		else
 		{
@@ -190,9 +190,9 @@ namespace ohtoai
 		loadData();
 	}
 
-	inline void ImageProxy::saveConfig()
+	inline void ImageProxy::saveConfig(bool sync)
 	{
-		std::thread{
+		std::thread th{
 			[=] {
 					nlohmann::json j = *this;
 					auto storageData{ j.dump(4) };
@@ -201,7 +201,11 @@ namespace ohtoai
 					ofs.close();
 					LOG_INFO("Config saved.");
 				}
-		}.detach();
+		};
+		if(sync)
+			th.join();
+		else
+			th.detach();
 	}
 
 	inline void ImageProxy::loadData()
@@ -210,7 +214,7 @@ namespace ohtoai
 		if (!ifs)
 		{
 			LOG_INFO("Assembly missing.");
-			saveData();
+			saveData(true);
 		}
 		else
 		{
@@ -220,9 +224,9 @@ namespace ohtoai
 		}
 	}
 
-	inline void ImageProxy::saveData()
+	inline void ImageProxy::saveData(bool sync)
 	{
-		std::thread{
+		std::thread th{
 			[=] {
 					nlohmann::json j = imageFileInfoList;
 					auto storageData{ j.dump() };
@@ -231,7 +235,11 @@ namespace ohtoai
 					ofs.close();
 					LOG_INFO("Assembly saved.");
 				}
-		}.detach();
+		};
+		if(sync)
+			th.join();
+		else
+			th.detach();
 	}
 
 	inline void ImageProxy::syncWithFile()
@@ -277,8 +285,8 @@ namespace ohtoai
 				LOG_INFO(storage, "Saved[", content.size(), "Bytes].");
 			}, info.getStorage(), std::forward<std::string>(content) }.detach();
 
-			LOG_INFO(info.getUID(), "["+info.getName()+"]uploaded.", info.getWidth(), "x", info.getHeight(), "author:", info.getAuthor(), "tags:", nlohmann::json(info.getTags()).dump());
-			imageFileInfoList.push_back(std::forward<ImageFileInfo>(info));
+		LOG_INFO(info.getUID(), "["+info.getName()+"] uploaded.", std::to_string(info.getWidth()) + "x" + std::to_string(info.getHeight()), "author:", info.getAuthor(), "tags:", nlohmann::json(info.getTags()).dump());
+		imageFileInfoList.push_back(std::forward<ImageFileInfo>(info));
 
 		// save data
 		saveData();
@@ -313,8 +321,8 @@ namespace ohtoai
 
 	inline ImageProxy::~ImageProxy()
 	{
-		saveConfig();
-		saveData();
+		saveConfig(true);
+		saveData(true);
 		
 		LOG_INFO("[[Image Proxy stopped.]]");
 	}

@@ -27,6 +27,7 @@
 #endif
 
 #if defined WIN32 || defined _WIN32
+#define OHTOAI_WINDOWS_PLATFORM
 #include <io.h>
 #include <direct.h>
 #else
@@ -144,11 +145,13 @@ namespace ohtoai::string
 namespace ohtoai::log
 {
 #define LOG_MACRO(TYPE, ...) ohtoai::log::Log::instance().log(ohtoai::time::getFormatedServerTime(0, false), #TYPE, ##__VA_ARGS__)
+#define LOG_MACRO_NS(TYPE, ...) ohtoai::log::Log::instance().log_ns(ohtoai::time::getFormatedServerTime(0, false), " ", #TYPE, " ", ##__VA_ARGS__)
+#define LOG_MACRO_APPEND(...) ohtoai::log::Log::instance().log(__VA_ARGS__)
 #define LOG_INFO(...) LOG_MACRO(INFO, ##__VA_ARGS__)
-#define LOG_DEBUG(...) LOG_MACRO(DEBUG, __FILE__, ":", __LINE__, "@", __FUNCTION__, ##__VA_ARGS__)
-#define LOG_WARNING(...) LOG_MACRO(WARNING, __FILE__, ":", __LINE__, "@", __FUNCTION__, ##__VA_ARGS__)
-#define LOG_ERROR(...) LOG_MACRO(ERROR, __FILE__, ":", __LINE__, "@", __FUNCTION__, ##__VA_ARGS__)
-#define LOG_FATAL(...) LOG_MACRO(FATAL, __FILE__, ":", __LINE__, "@", __FUNCTION__, ##__VA_ARGS__)
+#define LOG_DEBUG(...) LOG_MACRO_NS(DEBUG, __FILE__, ":", __LINE__, "@", __FUNCTION__, " ");LOG_MACRO_APPEND(__VA_ARGS__)
+#define LOG_WARNING(...) LOG_MACRO_NS(WARNING, __FILE__, ":", __LINE__, "@", __FUNCTION__, " ");LOG_MACRO_APPEND(__VA_ARGS__)
+#define LOG_ERROR(...) LOG_MACRO_NS(ERROR, __FILE__, ":", __LINE__, "@", __FUNCTION__, " ");LOG_MACRO_APPEND(__VA_ARGS__)
+#define LOG_FATAL(...) LOG_MACRO_NS(FATAL, __FILE__, ":", __LINE__, "@", __FUNCTION__, " ");LOG_MACRO_APPEND(__VA_ARGS__)
 	class Log
 	{
 	public:
@@ -195,6 +198,17 @@ namespace ohtoai::log
 			ofs << t << ' ';
 			log(args...);
 		}
+
+		template <typename T>
+		void log_ns(const T& t) {
+			ofs << t;
+			ofs.flush();
+		}
+		template <typename T, typename ... Args>
+		void log_ns(const T& t, Args ... args) {
+			ofs << t;
+			log_ns(args...);
+		}
 	};
 }
 
@@ -209,7 +223,7 @@ namespace ohtoai::file
 		FILE_READABLE = 0x04,
 		FILE_WRITABLE_READABLE = FILE_WRITABLE | FILE_READABLE
 	};
-#ifdef WIN32
+#ifdef OHTOAI_WINDOWS_PLATFORM
 	inline bool access(std::string filename, AccessMod accessMode = FILE_EXISTS)
 	{
 		return ::_access(filename.c_str(), accessMode) == 0;
@@ -232,7 +246,7 @@ namespace ohtoai::file
 	std::vector<std::pair<std::string, int>> listFiles(std::string dir)
 	{
 		std::vector<std::pair<std::string, int>> fileList;
-#ifdef _WIN32
+#ifdef OHTOAI_WINDOWS_PLATFORM
 		intptr_t handle;
 		_finddata_t findData;
 		dir += "*";

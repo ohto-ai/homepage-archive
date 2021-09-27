@@ -1,8 +1,24 @@
 ﻿#include "ImageProxy.hpp"
 
+#ifdef OHTOAI_WINDOWS_PLATFORM
+#include <signal.h>
+#endif
+
+httplib::Server s;
+
+void atExit(int sig = 0)
+{
+	LOG_DEBUG("Capture signal", sig);
+	s.stop();
+}
+
 int main()
 {
-	httplib::Server s;
+#ifdef OHTOAI_WINDOWS_PLATFORM
+	signal(SIGINT, atExit);
+	signal(SIGTERM, atExit);
+	signal(SIGQUIT, atExit);
+#endif
 
 	auto splitToSet = [](std::string list)
 	{
@@ -175,11 +191,11 @@ int main()
 			{
 				if(req.get_param_value("key") == "thatboy0609")
 				{
-					s.stop();
 					nlohmann::json j;
 					j["error"] = "ok";
 					j["status"] = 200;
 					res.set_content(j.dump(4), "application/json");
+					atExit();
 				}
 				else
 				{
@@ -199,7 +215,7 @@ int main()
 		{
 			LOG_INFO(req.method, ":", req.path, nlohmann::json(req.params).dump());
 			nlohmann::json j;
-			if (req.has_param("op") && req.get_param_value("op") == "upload")
+			if (req.get_param_value("op") == "upload")
 			{
 				auto authorIncome = req.get_file_value("author").content;
 				auto author = authorIncome.empty() ? "undefined" : authorIncome;
@@ -218,13 +234,16 @@ int main()
 				info.setName(fileFormData.filename);
 				info.setSize(fileFormData.content.size());
 					
-				j["img"] = *proxy.storageImage(std::move(info), std::move(*const_cast<std::string*>(&fileFormData.content)));
+				j["img"] = *proxy.storageImage(std::move(info), std::move(const_cast<std::string&>(fileFormData.content)));
+
+				LOG_DEBUG("File content size after moving :", fileFormData.content.size());
 								
 				j["error"] = "ok";
 				j["status"] = 200;
 			}
 			else
 			{
+				LOG_DEBUG("Unknow command", req.get_param_value("op"));
 				j["error"] = "unknow command";
 				j["status"] = 404;
 			}
@@ -232,7 +251,7 @@ int main()
 		});
 
 	s.set_mount_point("/", ".");
-#if defined WIN32 || defined _WIN32
+#if OHTOAI_WINDOWS_PLATFORM
 	s.set_mount_point("/img", ohtoai::ImageProxy::instance().getFileStorageBase().c_str());
 	s.set_mount_point("/", "../../../");
 	return s.listen("0.0.0.0", 80);
