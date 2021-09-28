@@ -225,13 +225,17 @@ int main()
 				info.setHeight(ohtoai::string::stringTo<int>(req.get_file_value("height").content));
 				info.setType(req.get_file_value("type").content);
 
-				const auto& fileFormData = req.get_file_value("file");
-				info.setName(fileFormData.filename);
-				info.setSize(fileFormData.content.size());
-					
-				j["img"] = *proxy.storageImage(std::move(info), std::move(const_cast<std::string&>(fileFormData.content)));
+				const auto& imageFormData = req.get_file_value("image");
+				info.setName(imageFormData.filename);
+				info.setSize(imageFormData.content.size());
 
-				LOG_DEBUG("File content size after moving :", fileFormData.content.size());
+				const auto& thumbFormData = req.get_file_value("thumb");
+					
+				j["img"] = *proxy.storageImage(std::move(info)
+				, std::move(const_cast<std::string&>(imageFormData.content))
+				, std::move(const_cast<std::string&>(thumbFormData.content)));
+
+				LOG_DEBUG("File content size after moving :", imageFormData.content.size());
 								
 				j["error"] = "ok";
 				j["status"] = 200;

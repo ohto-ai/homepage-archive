@@ -36,9 +36,6 @@ $(function () {
     );
 });
 
-function getDivByUid(uid) {
-    return $('.upload-image-preview-div[uid=' + uid + ']').first();
-}
 function getFirstReadyImageDiv() {
     return $('.upload-image-preview-div:not([upload-status])').first();
 }
@@ -105,6 +102,11 @@ function resizeImage(src, callback, w, h) {
     im.src = src;
 }
 
+function thumbImage(src, callback)
+{
+    return resizeImage(src, callback, 200, 200);
+}
+
 function uuid() {
     var temp_url = URL.createObjectURL(new Blob());
     var uuid = temp_url.toString();
@@ -143,18 +145,14 @@ function uploadFiles() {
         var onLoadDiv = getFirstReadyImageDiv();
         onLoadDiv.attr('upload-status', 'doing')
 
-        if (onLoadDiv.attr('uid') == undefined) {
-            onLoadDiv.attr('uid', uuid());
-            console.log('generate uid ' + onLoadDiv.attr('uid'));
-        }
-
-        let uid = onLoadDiv.attr('uid');
+        let uid = '#' + onLoadDiv.attr('id');
 
         // args
         var uploadPath = "/api/img?op=upload";
 
         var form = new FormData();
-        form.append("file", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), onLoadDiv.children('img').attr('file')));
+        form.append("image", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('ori-src')), onLoadDiv.children('img').attr('file')));
+        form.append("thumb", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), 'thumb_' + onLoadDiv.children('img').attr('file')));
         form.append("author", author);
         form.append("tags", tags);
         form.append("type", onLoadDiv.children('img').attr('ori-type'));
@@ -167,25 +165,29 @@ function uploadFiles() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status != 200) {
                 console.log(xhr.responseText);
-                getDivByUid(uid).attr('upload-status', 'failed')
+                $(uid).attr('upload-status', 'failed')
                 uploadOneFile();
             }
         }
         xhr.onload = function () {
             console.log(xhr.responseText);
-            var div = getDivByUid(uid);
-            div.attr('upload-status', 'success');
-            updateListInfo();
-            div.children('img').attr('src', JSON.parse(xhr.responseText).img.url);
+            console.log($(uid));
+            $(uid).attr('upload-status', 'success');
+            $(uid).children('img').attr('src', JSON.parse(xhr.responseText).img.thumb_url);
+            $(uid).children('img').removeAttr('file');
+            $(uid).children('img').removeAttr('ori-src');
+            $(uid).children('img').removeAttr('ori-width');
+            $(uid).children('img').removeAttr('ori-height');
+            $(uid).children('img').removeAttr('ori-type');
+            $(uid).children('img').removeAttr('ori-type');
             uploadOneFile();
         };
         xhr.upload.addEventListener("progress", function (evt) {
             if (evt.lengthComputable) {
-                var div = getDivByUid(uid);
                 var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-                div.attr('upload-percent', percentComplete);
-                $('.upload-image-background', div).css('height', percentComplete == 100 ? '' : (100 - percentComplete) + '%');
-                console.log(div.children('img').attr('file') + "上传中." + percentComplete + '%');
+                $(uid).attr('upload-percent', percentComplete);
+                $('.upload-image-background', $(uid)).css('height', percentComplete == 100 ? '' : (100 - percentComplete) + '%');
+                console.log($(uid).children('img').attr('file') + "上传中." + percentComplete + '%');
             }
         }, false);
         xhr.send(form);
@@ -217,6 +219,7 @@ function formatFileSize(value) {
 }
 
 function updateListInfo() {
+    return;
     $('#upload-list-info').html(
         `<p>Ready(` + $('.upload-image-preview-div:not([upload-status])').length + `)</p>`
         + `<p>Failed(` + $('.upload-image-preview-div[upload-status=failed]').length + `)</p>`
@@ -225,15 +228,17 @@ function updateListInfo() {
 }
 
 function onImageAdded(f, img) {
+    var uid = uuid();
     $("#fileListDiv").append(
-        `<div class="upload-image-preview-div" uid=` + uuid() + `>`
-        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` ori-type=` + f.type.substr(f.type.lastIndexOf('/') + 1) + ` src="` + img.src + `"/>`
+        `<div class="upload-image-preview-div" id=` + uid + `>`
+        + `<img file="` + f.name + `" ori-width=` + img.width + ` ori-height=` + img.height + ` ori-type=` + f.type.substr(f.type.lastIndexOf('/') + 1) + ` ori-src="` + img.src + `"/>`
         + `<i class="del"></i>`
         + `<p class ="upload-image-name">` + f.name + `</p>`
         + `<p class ="upload-image-size"> 大小: ` + formatFileSize(f.size) + `</p>`
         + `<div class="upload-image-loader-wrapper">`
         + `<div class="upload-image-background"></div>`
         + `<div class="upload-image-loader"></div></div></div>`);
+    thumbImage(img.src, (thumb)=>$('#'+uid).children('img').attr('src', thumb));
 }
 
 function addFiles(files) {

@@ -25,17 +25,23 @@ namespace ohtoai
 #ifdef OHTOAI_LOCAL_TEST
 		std::string fileStorageBase{ R"(storage/)" };
 		std::string fileUrlBase{ R"(//localhost/img/)" };
+		std::string thumbStorageBase{ R"(storage/thumb/)" };
+		std::string thumbUrlBase{ R"(//localhost/img/thumb/)" };
 #else
 		std::string fileStorageBase{ R"(/home/ohtoai/html/assets/img/storage/)" };
 		std::string fileUrlBase{ R"(//thatboy.info/img/)" };
+		std::string thumbStorageBase{ R"(/home/ohtoai/html/assets/img/storage/thumb/)" };
+		std::string thumbUrlBase{ R"(//thatboy.info/img/thumb/)" };
 #endif
 		std::string assemblyPath{ "assembly.dat" };
 
 
-		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageProxy, fileStorageBase, fileUrlBase, assemblyPath);
+		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageProxy, fileStorageBase, fileUrlBase, thumbStorageBase, thumbUrlBase, assemblyPath);
 	public:
 		OHTOAI_DEFINE_TYPE_GETTER_INTRUSIVE(fileUrlBase, FileUrlBase);
 		OHTOAI_DEFINE_TYPE_GETTER_INTRUSIVE(fileStorageBase, FileStorageBase);
+		OHTOAI_DEFINE_TYPE_GETTER_INTRUSIVE(thumbUrlBase, ThumbUrlBase);
+		OHTOAI_DEFINE_TYPE_GETTER_INTRUSIVE(thumbStorageBase, ThumbStorageBase);
 		OHTOAI_DEFINE_TYPE_GETTER_SETTER_INTRUSIVE(assemblyPath, AssemblyPath);
 
 		friend struct ImageFileInfo;
@@ -60,6 +66,16 @@ namespace ohtoai
 			return getFileUrlBase() + storage;
 		}
 
+		const std::string mergeThumbStorage(std::string storage)
+		{
+			return getThumbStorageBase() + storage;
+		}
+
+		const std::string mergeThumbUrl(std::string storage)
+		{
+			return getThumbUrlBase() + storage;
+		}
+
 	public:
 		static ImageProxy& instance();
 	public:
@@ -77,7 +93,7 @@ namespace ohtoai
 
 		ImageFileInfo createImageFile() const;
 
-		const ImageFileInfo* storageImage(ImageFileInfo&& info, std::string&& content);
+		const ImageFileInfo* storageImage(ImageFileInfo&& info, std::string&& content, std::string&&thumb);
 
 		void removeImage(std::vector<const ImageFileInfo*> infos);
 
@@ -96,13 +112,15 @@ namespace ohtoai
 		std::string time{ "null" };			// time
 		std::string author{ "null" };		// author
 		std::string type{ "png" };			// type
-		size_t size{};							// file size
-		int width{};							// image width
-		int height{};							// image height
-		std::set<std::string> tags;				// tags
+		size_t size{};						// file size
+		int width{};						// image width
+		int height{};						// image height
+		std::set<std::string> tags;			// tags
 
-		mutable std::string storage{};			// [generated not save] storage file name
-		mutable std::string url{};				// [generated] url
+		mutable std::string storage{};		// [generated not save] storage file name
+		mutable std::string thumb_storage{};// [generate not save] storage file name
+		mutable std::string url{};			// [generated] url
+		mutable std::string thumb_url{};	// [generated] thumb url
 	public:
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(uid, UID);
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(name, Name);
@@ -123,12 +141,15 @@ namespace ohtoai
 			return storage;
 		}
 
-		void completeInfo()
+		std::string getThumbStorage() const
 		{
-			setTime(time::getFormatedServerTime(0, false));
-			storage = uid + '.' + type;
-			url = ImageProxy::instance().mergeImageUrl(getStorage());			
+			if (thumb_storage.empty()&& !uid.empty())
+			{
+				thumb_storage = uid + ".png";
+			}
+			return thumb_storage;
 		}
+
 		std::string getUrl() const
 		{
 			if (url.empty()&& !getStorage().empty())
@@ -137,8 +158,25 @@ namespace ohtoai
 			}
 			return url;
 		}
-		
-		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageFileInfo, uid, name, time, author, width, height, type, size, tags, url);
+
+
+		std::string getThumbUrl() const
+		{
+			if (thumb_url.empty()&& !getThumbStorage().empty())
+			{
+				thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
+			}
+			return thumb_url;
+		}
+
+		void completeInfo()
+		{
+			setTime(time::getFormatedServerTime(0, false));
+			storage = uid + '.' + type;
+			url = ImageProxy::instance().mergeImageUrl(getStorage());		
+			thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
+		}
+		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageFileInfo, uid, name, time, author, width, height, type, size, tags, url, thumb_url);
 	};
 	
 	inline std::vector<const ImageFileInfo*> ImageProxy::fetchImageSet(std::set<std::string> authors, std::set<std::string> tags) const
@@ -180,13 +218,22 @@ namespace ohtoai
 		}
 
 		LOG_INFO("File storage at ", getFileStorageBase());
+		LOG_INFO("Thumb storage at ", getThumbStorageBase());
 		LOG_INFO("Assembly at ", getAssemblyPath());
 		LOG_INFO("File url at ", getFileUrlBase());
+		LOG_INFO("Thumb url at ", getThumbUrlBase());
 		if (!file::access(getFileStorageBase()))
 		{
 			file::createDirectoryRecursively(getFileStorageBase());
 			LOG_INFO("Create folder ", getFileStorageBase());
 		}
+
+		if (!file::access(getThumbStorageBase()))
+		{
+			file::createDirectoryRecursively(getThumbStorageBase());
+			LOG_INFO("Create folder ", getThumbStorageBase());
+		}
+
 		loadData();
 	}
 
@@ -271,7 +318,7 @@ namespace ohtoai
 		return info;
 	}
 
-	inline const ImageFileInfo* ImageProxy::storageImage(ImageFileInfo&& info, std::string&& content)
+	inline const ImageFileInfo* ImageProxy::storageImage(ImageFileInfo&& info, std::string&& content, std::string&& thumb)
 	{
 		// storage
 		info.completeInfo();
@@ -284,6 +331,14 @@ namespace ohtoai
 				ofs.close();
 				LOG_INFO(storage, "Saved[", content.size(), "Bytes].");
 			}, info.getStorage(), std::forward<std::string>(content) }.detach();
+
+		std::thread{ [=](std::string storage, std::string&& thumb)
+			{
+				std::ofstream ofs(mergeThumbStorage(storage), std::ios::binary);
+				ofs.write(thumb.data(), thumb.size());
+				ofs.close();
+				LOG_INFO("Thumb", storage, "Saved[", thumb.size(), "Bytes].");
+			}, info.getThumbStorage(), std::forward<std::string>(thumb) }.detach();
 
 		LOG_INFO(info.getUID(), "["+info.getName()+"] uploaded.", std::to_string(info.getWidth()) + "x" + std::to_string(info.getHeight()), "author:", info.getAuthor(), "tags:", nlohmann::json(info.getTags()).dump());
 		imageFileInfoList.push_back(std::forward<ImageFileInfo>(info));
@@ -303,6 +358,7 @@ namespace ohtoai
 			{
 				ifDelete = true;
 				::remove(mergeImageStorage(info->getStorage()).c_str());
+				::remove(mergeThumbStorage(info->getThumbStorage()).c_str());
 			}
 		}
 		if (ifDelete)
