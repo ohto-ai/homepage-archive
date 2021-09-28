@@ -309,4 +309,10 @@ $(function () {
     $(".upload-image-wrapper").bind('DOMNodeRemoved', updateListInfo);
     $(".upload-image-wrapper").bind('DOMNodeRemovedFromDocument', updateListInfo);
     $(".upload-image-wrapper").bind('DOMAttrmodified', updateListInfo);
+
+    
+$(window).bind('beforeunload',function(){
+    return '确认离开当前页面吗？未上传的文件将会丢失！';
+    }
+  );
 });
