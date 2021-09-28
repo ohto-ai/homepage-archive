@@ -22,7 +22,7 @@ namespace ohtoai
 		constexpr static auto SettingConfigPath{ "image_proxy.config" };
 		inline const static log::Log Logger{ "image_proxy.log" };
 
-#ifdef OHTOAI_WINDOWS_PLATFORM
+#ifdef OHTOAI_LOCAL_TEST
 		std::string fileStorageBase{ R"(storage/)" };
 		std::string fileUrlBase{ R"(//localhost/img/)" };
 #else

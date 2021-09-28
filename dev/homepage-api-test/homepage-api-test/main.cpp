@@ -1,4 +1,5 @@
-﻿#include "ImageProxy.hpp"
+﻿#define OHTOAI_LOCAL_TEST
+#include "ImageProxy.hpp"
 #include <signal.h>
 
 httplib::Server s;
@@ -245,7 +246,7 @@ int main()
 		});
 
 	s.set_mount_point("/", ".");
-#ifdef OHTOAI_WINDOWS_PLATFORM
+#ifdef OHTOAI_LOCAL_TEST
 	s.set_mount_point("/img", ohtoai::ImageProxy::instance().getFileStorageBase().c_str());
 	s.set_mount_point("/", "../../../");
 	return s.listen("0.0.0.0", 80);
