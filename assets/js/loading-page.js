@@ -1,6 +1,6 @@
 // loading
 // 监听加载状态改变
-$(function () {
+document.onreadystatechang = function () {
     $("#loading")
         .animate(
             {
@@ -9,4 +9,4 @@ $(function () {
             2000
         )
         .hide(1);
-})
+};
