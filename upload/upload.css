@@ -5,6 +5,7 @@
 }
 body {
   margin: 0;
+  overflow: hidden;
 }
 
 .app {
@@ -35,7 +36,13 @@ body {
   font-style: italic;
   border-color: aliceblue;
   box-shadow: 0px 2px 2px #bebaba;
-  height: 7vh;
+  /* height: 7vh; */
+
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  top:0;
+
 }
 
 .dj-head h1 {
@@ -54,7 +61,7 @@ body {
 
 /* 任务盒 */
 .dj-box {
-  /* background-color: rgba(131, 211, 180, 0.329); */
+  margin-left: 10px;
   display: flex;
   position: relative;
   width: 400px;
@@ -63,6 +70,7 @@ body {
 
   align-items: flex-start;
   flex-direction: column;
+  top: 60px;
 }
 
 /* 选择框 */
@@ -94,8 +102,9 @@ body {
 
 /* 拖拽框 */
 .dj-dropbox {
+  margin-top: 10px;
   width: 400px;
-  /* height: 100%; */
+  height: calc(100vh - 320px);
   font-size: 30px;
   color: #333333;
   background-color: rgba(230, 230, 230, 0.5);
@@ -149,10 +158,11 @@ body {
 .upload-image-wrapper {
   position: relative;
   background-color: #9e9e9e65;
-  width: calc(calc(98%) - calc(400px));
-  height: 99%;
+  margin-right: 40px;
+  width: calc(100% - 400px);
+  height: calc(100vh - 80px);
 
-  top: 1%;
+  top: 60px;
   left: 1%;
   border-radius: 25px;
   box-shadow: 5px 5px 2px #bebaba;
