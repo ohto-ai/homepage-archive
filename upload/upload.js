@@ -58,6 +58,53 @@ function dataURLtoBlob(dataurl) {
     return new Blob([u8arr], { type: mime });
 }
 
+function resizeImage(src, callback, w, h) {
+    var canvas = document.createElement("canvas"),
+        ctx = canvas.getContext("2d"),
+        im = new Image();
+    w = w || 0,
+        h = h || 0;
+    im.onload = function () {
+        //为传入缩放尺寸用原尺寸
+        !w && (w = this.width);
+        !h && (h = this.height);
+        //以长宽最大值作为最终生成图片的依据
+        if (w !== this.width || h !== this.height) {
+            var ratio;
+            if (w > h) {
+                ratio = this.width / w;
+                h = this.height / ratio;
+            } else if (w === h) {
+                if (this.width > this.height) {
+                    ratio = this.width / w;
+                    h = this.height / ratio;
+                } else {
+                    ratio = this.height / h;
+                    w = this.width / ratio;
+                }
+            } else {
+                ratio = this.height / h;
+                w = this.width / ratio;
+            }
+        }
+        //以传入的长宽作为最终生成图片的尺寸
+        if (w > h) {
+            var offset = (w - h) / 2;
+            canvas.width = canvas.height = w;
+            ctx.drawImage(im, 0, offset, w, h);
+        } else if (w < h) {
+            var offset = (h - w) / 2;
+            canvas.width = canvas.height = h;
+            ctx.drawImage(im, offset, 0, w, h);
+        } else {
+            canvas.width = canvas.height = h;
+            ctx.drawImage(im, 0, 0, w, h);
+        }
+        callback(canvas.toDataURL("image/png"));
+    }
+    im.src = src;
+}
+
 function uuid() {
     var temp_url = URL.createObjectURL(new Blob());
     var uuid = temp_url.toString();
@@ -230,11 +277,10 @@ function addFiles(files) {
 }
 
 $(function () {
-    
+
     // change wallpaper
     if (self.location.host.substr(0, 9) == '127.0.0.1'
-        || self.location.host.substr(0, 9) == 'localhost')
-    {
+        || self.location.host.substr(0, 9) == 'localhost') {
         console.log('local server test.')
         return;
     }
@@ -242,7 +288,7 @@ $(function () {
         console.log('use top-age wallpaper as background.')
         $('.app').attr('top-page', true);
     }
-    
+
     //删除图片
     $(".upload-image-wrapper").on("click", ".del", function () {
         $(this).parent().remove();
