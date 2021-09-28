@@ -142,7 +142,7 @@ body {
   -o-animation: blink 1s linear infinite;
 }
 
-.upload_image {
+.choose_image_input {
   display: none;
 }
 

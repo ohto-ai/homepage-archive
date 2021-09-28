@@ -194,7 +194,7 @@ function uploadFiles() {
 }
 
 function onFileUploadButtonChange() {
-    var files = document.getElementById("file").files;
+    var files = document.getElementById("choose_image_input").files;
 
     if (files.length < 0) {
         console.log('empty files');
@@ -241,7 +241,7 @@ function addFiles(files) {
 
     function addToList(index = 0) {
         if (index >= files.length) {
-            $('#file').val('');
+            $('#choose_image_input').val('');
             return;
         }
         var f = files[index];
@@ -282,9 +282,8 @@ $(function () {
     if (self.location.host.substr(0, 9) == '127.0.0.1'
         || self.location.host.substr(0, 9) == 'localhost') {
         console.log('local server test.')
-        return;
     }
-    if (self == top) {
+    else if (self == top) {
         console.log('use top-age wallpaper as background.')
         $('.app').attr('top-page', true);
     }
@@ -298,7 +297,7 @@ $(function () {
     $('.upload_button').click(uploadFiles);
 
     // 选择文件
-    $('#dropbox').click(() => $('#upload_image').click());
+    $('#dropbox').click(() => $('#choose_image_input').click());
 
     // change
     $(".upload-image-wrapper").bind('DOMNodeInserted', updateListInfo);
