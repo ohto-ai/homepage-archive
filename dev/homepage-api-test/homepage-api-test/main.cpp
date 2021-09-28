@@ -1,4 +1,4 @@
-﻿#define OHTOAI_LOCAL_TEST
+﻿// #define OHTOAI_LOCAL_TEST
 #include "ImageProxy.hpp"
 #include <signal.h>
 
