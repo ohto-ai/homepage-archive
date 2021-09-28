@@ -298,7 +298,7 @@ $(function () {
     $('.upload_button').click(uploadFiles);
 
     // 选择文件
-    $('#dropbox').click(() => file.click());
+    $('#dropbox').click(() => $('#upload_image').click());
 
     // change
     $(".upload-image-wrapper").bind('DOMNodeInserted', updateListInfo);

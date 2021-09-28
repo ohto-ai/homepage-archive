@@ -142,7 +142,7 @@ body {
   -o-animation: blink 1s linear infinite;
 }
 
-.fileUploadInput {
+.upload_image {
   display: none;
 }
 
