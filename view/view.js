@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 00:39:55
+ * @LastEditTime: 2021-09-30 00:41:50
  * @Description: file content
  */
 
@@ -68,9 +68,9 @@ $(function () {
 
         for (var i = 0; i < list.length; ++i) {
             if (list[i].thumb_url == '') {
+                list[i].thumb_url = "//ohtoai.top/favicon.ico";
                 thumbImage(list[i].url, (thumb) => $('#' + list[i].uid).children('img').attr('src', thumb));
             }
-            list[i].thumb_url = list[i].url;
             $('.content').append(`<div class="photo" id=`+list[i].uid+`>
         <img src="`+ list[i].thumb_url + `" width="` + list[i].width + `"
             height="`+ list[i].height + `" alt="Photo thumbnail" draggable="false">
