@@ -2,12 +2,12 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 00:16:12
+ * @LastEditTime: 2021-09-30 00:23:26
  * @Description: file content
  */
 $(function () {
 
-
+    var form = new FormData();
     var xhr = new XMLHttpRequest();
     xhr.open("get", '/api/img?type=list', true);
     xhr.onload = function () {
