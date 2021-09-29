@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 00:45:21
+ * @LastEditTime: 2021-09-30 00:49:58
  * @Description: file content
  */
 
@@ -61,7 +61,7 @@ $(function () {
 
     var form = new FormData();
     var xhr = new XMLHttpRequest();
-    xhr.open("get", '/api/img?type=list', true);
+    xhr.open("get", '/api/img?type=list&author=ohtoai', true);
     xhr.onload = function () {
 
         var list = JSON.parse(xhr.responseText).list;
