@@ -113,8 +113,8 @@ $(function () {
         var list = JSON.parse(xhr.responseText).list;
 
         for (var i = 0; i < list.length; ++i) {
-            console.log(list[i]);
             if (list[i].thumb_url == '') {
+                console.log(list[i]);
                 continue;
             }
             $('.content').append(`<div class="photo" id=` + list[i].uid + `>
