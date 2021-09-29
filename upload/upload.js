@@ -102,8 +102,7 @@ function resizeImage(src, callback, w, h) {
     im.src = src;
 }
 
-function thumbImage(src, callback)
-{
+function thumbImage(src, callback) {
     return resizeImage(src, callback, 200, 200);
 }
 
@@ -119,16 +118,18 @@ function blobToFile(theBlob, fileName) {
     return new File([theBlob], fileName)
 }
 
-function uploadFiles() {
+function uploadFiles(beforeUpload, afterUpload) {
 
     if ($("#author").val() == "") {
         alert("需要填写Author字段");
         return;
     }
 
-    $('.upload_button').attr('disabled', true);
-    $('#upload-list-info').attr('on-upload', true);
     $('.upload-image-preview-div[upload-status=failed]').removeAttr('upload-status');
+    
+    if (beforeUpload != null && beforeUpload != undefined)
+        beforeUpload();
+    
 
     var author = $("#author").val();
     var tags = $("input[name='age']:checked").val();
@@ -137,8 +138,8 @@ function uploadFiles() {
     function uploadOneFile() {
 
         if (!hasAnyImagToUpload()) {
-            $('.upload_button').removeAttr('disabled');
-            $('#upload-list-info').removeAttr('on-upload');
+            if (beforeUpload != null && afterUpload != undefined)
+                afterUpload();;
             return;
         }
 
@@ -238,7 +239,7 @@ function onImageAdded(f, img) {
         + `<div class="upload-image-loader-wrapper">`
         + `<div class="upload-image-background"></div>`
         + `<div class="upload-image-loader"></div></div></div>`);
-    thumbImage(img.src, (thumb)=>$('#'+uid).children('img').attr('src', thumb));
+    thumbImage(img.src, (thumb) => $('#' + uid).children('img').attr('src', thumb));
 }
 
 function addFiles(files) {
@@ -299,7 +300,20 @@ $(function () {
     });
 
     // 上传文件
-    $('.upload_button').click(uploadFiles);
+    $('.upload_button').click(function () {
+        uploadFiles(function () {
+            $('.upload_button').attr('disabled', true);
+            $(window).bind('beforeunload', function () {
+                return '确认离开当前页面吗？未上传的文件将会丢失！';
+            });
+            $('#upload-list-info').attr('on-upload', true);
+        }, function()
+        {
+            $('.upload_button').removeAttr('disabled');
+            $(window).unbind('beforeunload');
+            $('#upload-list-info').removeAttr('on-upload')
+        });
+    });
 
     // 选择文件
     $('#dropbox').click(() => $('#choose_image_input').click());
@@ -309,10 +323,4 @@ $(function () {
     $(".upload-image-wrapper").bind('DOMNodeRemoved', updateListInfo);
     $(".upload-image-wrapper").bind('DOMNodeRemovedFromDocument', updateListInfo);
     $(".upload-image-wrapper").bind('DOMAttrmodified', updateListInfo);
-
-    
-$(window).bind('beforeunload',function(){
-    return '确认离开当前页面吗？未上传的文件将会丢失！';
-    }
-  );
 });

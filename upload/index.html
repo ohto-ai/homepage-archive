@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-21 01:06:12
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-28 14:06:45
+ * @LastEditTime: 2021-09-29 16:51:33
  * @Description: file content
 -->
 <!DOCTYPE html>
@@ -17,10 +17,24 @@
 </head>
 
 <body>
-    <div class="app">
-        <div class="dj-head">
-            <h1>Upload wallpaper</h1>
+    
+    <header class=header>
+        <div class="header_toolbar">
+            <a class="button" title="Home" src = "//ohtoai.top/">
+                <img src='//ohtoai.top/favicon.ico'>
+			</a>
+            <a class="header_title">Upload wallpaper<svg class="iconic"></a>
+            <a class="header_hostedwith">Hosted with Lychee</a>
         </div>
+    </header>
+
+
+    <div class="app" style="display: none;">
+        <header class=header>
+            <div class="header_toolbar">
+                <h1>Upload wallpaper</h1>
+            </div>
+        </header>
         <div class="dj-main-content">
             <div class="dj-box">
                 <div class="dj-choosebox">
@@ -38,15 +52,15 @@
                 <div class="dj-dropbox" id="dropbox">
                     <p>拖拽文件上传</p>
                 </div>
-                
-                <input id="choose_image_input" class="choose_image_input" type="file" name="origin-image" multiple="multiple"
-                onchange="onFileUploadButtonChange();" accept="image/*" />
+
+                <input id="choose_image_input" class="choose_image_input" type="file" name="origin-image"
+                    multiple="multiple" onchange="onFileUploadButtonChange();" accept="image/*" />
             </div>
 
             <div id="fileListDiv" class="upload-image-wrapper">
                 <!-- <div class="upload-image-preview-div" uid="7bc43540-3920-e3e1-6fef-2be46fcfc606">
                     <img file="wallhaven-xloqgv.png" ori-width="3840" ori-height="2160"
-                        src="//thatboy.info/img/3bd7499f-06e3-463b-af71-094cb148d448.png">
+                        src="//ohtoai.top/img/3bd7499f-06e3-463b-af71-094cb148d448.png">
                     <i class="del"></i>
                     <p class="upload-image-name">wallhaven-xloqgv.png</p>
                     <p class="upload-image-size"> 大小: 14.07MB</p>
@@ -58,7 +72,7 @@
                 <div class="upload-image-preview-div" uid="d61b1b9e-337a-b220-1e80-81f2fc5a0986"
                     upload-status="success">
                     <img file="wallhaven-lmo7mq.png" ori-width="3840" ori-height="2160"
-                        src="//thatboy.info/img/a202da88-7208-4722-9ad3-10938c26ae14.png">
+                        src="//ohtoai.top/img/a202da88-7208-4722-9ad3-10938c26ae14.png">
                     <i class="del"></i>
                     <p class="upload-image-name">wallhaven-lmo7mq.png</p>
                     <p class="upload-image-size"> 大小: 7.59MB</p>
@@ -69,7 +83,7 @@
                 </div>
                 <div class="upload-image-preview-div" uid="2dab6b3b-ecdf-32f5-3f53-28bdfad6cfa7" upload-status="failed">
                     <img file="mercy-overwatch-christmas-ld.jpg" ori-width="2908" ori-height="1636"
-                        src="//thatboy.info/img/3826a8dc-3cb5-422b-ab22-8842ec7d51ca.jpg">
+                        src="//ohtoai.top/img/3826a8dc-3cb5-422b-ab22-8842ec7d51ca.jpg">
                     <i class="del"></i>
                     <p class="upload-image-name">mercy-overwatch-christmas-ld.jpg</p>
                     <p class="upload-image-size"> 大小: 2.43MB</p>
@@ -80,7 +94,7 @@
                 </div>
                 <div class="upload-image-preview-div" uid="949d89e1-1d66-2928-1388-89367425659e" upload-status="doing">
                     <img file="77885440_p0.jpg" ori-width="2894" ori-height="4093"
-                        src="//thatboy.info/img/8003081a-0ab5-4393-b069-fd3d61e341c6.jpg">
+                        src="//ohtoai.top/img/8003081a-0ab5-4393-b069-fd3d61e341c6.jpg">
                     <i class="del"></i>
                     <p class="upload-image-name">77885440_p0.jpg</p>
                     <p class="upload-image-size"> 大小: 12.18MB</p>
