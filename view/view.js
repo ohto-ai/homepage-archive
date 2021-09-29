@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 00:28:27
+ * @LastEditTime: 2021-09-30 00:37:38
  * @Description: file content
  */
 
@@ -56,6 +56,18 @@ function resizeImage(src, callback, w, h) {
 function thumbImage(src, callback) {
     return resizeImage(src, callback, 200, 200);
 }
+function getBase64Image(url) {
+    var img = new Image;
+    img.src = url;
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    var ext = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
+    var dataURL = canvas.toDataURL("image/"+ext);
+    return dataURL;
+}
 
 $(function () {
 
@@ -68,7 +80,7 @@ $(function () {
 
         for (var i = 0; i < list.length; ++i) {
             if (list[i].thumb_url == '') {
-                thumbImage(img.src, (thumb) => $('#' + list[i].uid).attr('src', thumb));
+                thumbImage(getBase64Image(list[i].url), (thumb) => $('#' + list[i].uid).children('img').attr('src', thumb));
             }
             list[i].thumb_url = list[i].url;
             $('.content').append(`<div class="photo" id=`+list[i].uid+`>
