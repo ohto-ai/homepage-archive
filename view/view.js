@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 00:49:58
+ * @LastEditTime: 2021-09-30 01:01:33
  * @Description: file content
  */
 
@@ -58,7 +58,6 @@ function thumbImage(src, callback) {
 }
 
 $(function () {
-
     var form = new FormData();
     var xhr = new XMLHttpRequest();
     xhr.open("get", '/api/img?type=list&author=ohtoai', true);
@@ -71,8 +70,8 @@ $(function () {
             if (list[i].thumb_url == '') {
                 continue;
             }
-            $('.content').append(`<div class="photo" id=`+list[i].uid+`>
-        <img src="`+ list[i].thumb_url + `" width="` + list[i].width + `"
+            $('.content').append(`<div class="photo" id=` + list[i].uid + `>
+        <img src="`+ list[i].thumb_url + `" data-src="` + list[i].url + `" width="` + list[i].width + `"
             height="`+ list[i].height + `" alt="Photo thumbnail" draggable="false">
         <div class="overlay">
             <h1 title="`+ list[i].name + `">` + list[i].name + `</h1>
@@ -82,4 +81,14 @@ $(function () {
         }
     };
     xhr.send(form);
+
+    $(".content").on("click", ".photo", function () {
+        $(".content").css('display', 'none');
+        $("#imageview").children('img').attr('src', $(this).children('img').attr('data-src'));
+        $("#imageview").css('display', 'block');
+    });
+    $("#imageview").on("click", "img", function () {
+        $(".content").css('display', 'flex');
+        $("#imageview").css('display', 'none');
+    });
 });
