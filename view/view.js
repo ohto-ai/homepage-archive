@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 01:25:41
+ * @LastEditTime: 2021-09-30 01:35:26
  * @Description: file content
  */
 
@@ -130,10 +130,12 @@ $(function () {
     xhr.send(form);
 
     $(".content").on("click", ".photo", function () {
+        $('.header_title').html($(this).children('.overlay').children('h1').attr('title'));
         $("#imageview").children('img').attr('src', $(this).children('img').attr('data-src'));
         $("#imageview").css('display', 'block');
     });
-    $("#imageview").on("click", "img", function () {
+    $("#imageview").click(function () {
         $("#imageview").css('display', 'none');
+        $('.header_title').html("Wallpaper View");
     });
 });
