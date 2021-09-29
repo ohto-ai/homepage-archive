@@ -1,5 +1,6 @@
 logs/*
 plugin/bin/image_proxy
+plugin/bin/image_proxy.config
 plugin/bin/image_proxy.log
 plugin/bin/*.dat
 assets/img/storage/*
@@ -14,4 +15,3 @@ dev/**/*.log
 **/.vs
 dev/**/image_proxy.config
 dev/homepage-api-test/homepage-api-test/image_proxy
-plugin/bin/storage/thumb/*
