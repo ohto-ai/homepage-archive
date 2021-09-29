@@ -67,6 +67,7 @@ $(function () {
         var list = JSON.parse(xhr.responseText).list;
 
         for (var i = 0; i < list.length; ++i) {
+            console.log(list[i]);
             if (list[i].thumb_url == '') {
                 list[i].thumb_url = "//ohtoai.top/favicon.ico";
                 thumbImage(list[i].url, (thumb) => $('#' + list[i].uid).children('img').attr('src', thumb));
