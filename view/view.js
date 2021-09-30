@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 09:37:39
+ * @LastEditTime: 2021-09-30 13:58:00
  * @Description: file content
  */
 
@@ -104,10 +104,24 @@ function thumbImage(src, callback) {
     return resizeImage(src, callback, 200, 200);
 }
 
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);
+
+
 $(function () {
     var form = new FormData();
     var xhr = new XMLHttpRequest();
-    xhr.open("get", '/api/img?type=list&author=ohtoai', true);
+    var author = $.getUrlParam('author');
+
+    if (author == '')
+        author = "undefined";
+
+    xhr.open("get", '/api/img?type=list&author=' + author, true);
     xhr.onload = function () {
 
         var list = JSON.parse(xhr.responseText).list;
