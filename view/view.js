@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 14:22:54
+ * @LastEditTime: 2021-09-30 14:30:12
  * @Description: file content
  */
 
@@ -130,8 +130,8 @@ $(function () {
 
         for (var i = 0; i < list.length; ++i) {
             if (list[i].thumb_url == '') {
-                console.log(list[i]);
-                continue;
+                let id = '#' + list[i].uid;
+                thumbImage(list[i].url, thumb => $(id).children('img').attr('src', thumb));
             }
             $('.content').append(`<div class="photo" id=` + list[i].uid + `>
         <img src="`+ list[i].thumb_url + `" data-src="` + list[i].url + `" width="` + list[i].width + `"
