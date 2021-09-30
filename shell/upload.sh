@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ $# -eq 0 ];then
-  echo "Usage: $0 <image_path_1> [img_path_2...]"
+  echo "Usage: $0 <author> <image_path_1> [img_path_2...]"
   exit 0
 fi
 for ((i=2; i<=$#;i++))
