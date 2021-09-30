@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 17:03:47
+ * @LastEditTime: 2021-09-30 17:05:01
  * @Description: file content
  */
 
@@ -136,6 +136,7 @@ $(function () {
             if(list[i].tags.indexOf('porn')!=-1)
             {
                 console.log(list[i]);
+                continue;
             }
             $('.content').append(`<div class="photo" id=` + list[i].uid + `>
         <img src="`+ list[i].thumb_url + `" data-src="` + list[i].url + `" width="` + list[i].width + `"
