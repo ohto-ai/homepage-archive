@@ -132,47 +132,22 @@ namespace ohtoai
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(size, Size);
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(tags, Tags);
 
-		std::string getStorage() const
+		OHTOAI_DEFINE_TYPE_REFER_GETTER_INTRUSIVE(storage, Storage);
+		OHTOAI_DEFINE_TYPE_REFER_GETTER_INTRUSIVE(url, Url);
+		OHTOAI_DEFINE_TYPE_REFER_GETTER_INTRUSIVE(thumb_storage, ThumbStorage);
+		OHTOAI_DEFINE_TYPE_REFER_GETTER_INTRUSIVE(thumb_url, ThumbUrl);
+		
+		void removeThumb()
 		{
-			if (storage.empty()&& !uid.empty())
-			{
-				storage = uid + '.' + (getType().empty() ? "png" : getType());
-			}
-			return storage;
-		}
-
-		std::string getThumbStorage() const
-		{
-			if (thumb_storage.empty()&& !uid.empty())
-			{
-				thumb_storage = uid + ".png";
-			}
-			return thumb_storage;
-		}
-
-		std::string getUrl() const
-		{
-			if (url.empty()&& !getStorage().empty())
-			{
-				url = ImageProxy::instance().mergeImageUrl(getStorage());
-			}
-			return url;
-		}
-
-
-		std::string getThumbUrl() const
-		{
-			if (thumb_url.empty()&& !getThumbStorage().empty())
-			{
-				thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
-			}
-			return thumb_url;
+			thumb_url.clear();
+			thumb_storage.clear();
 		}
 
 		void completeInfo()
 		{
 			setTime(time::getFormatedServerTime(0, false));
 			storage = getUID() + '.' + (getType().empty() ? "png" : getType());
+			thumb_storage = getUID() + '.' + "png";
 			url = ImageProxy::instance().mergeImageUrl(getStorage());		
 			thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
 		}
@@ -341,6 +316,10 @@ namespace ohtoai
 						ofs.close();
 						LOG_INFO("Thumb", storage, "Saved[", thumb.size(), "Bytes].");
 					}, info.getThumbStorage(), std::forward<std::string>(thumb) }.detach();
+			}
+			else
+			{
+				info.removeThumb();
 			}
 
 		LOG_INFO(info.getUID(), "["+info.getName()+"] uploaded.", std::to_string(info.getWidth()) + "x" + std::to_string(info.getHeight()), "author:", info.getAuthor(), "tags:", nlohmann::json(info.getTags()).dump());
