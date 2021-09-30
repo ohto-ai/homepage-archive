@@ -2,7 +2,7 @@
  * @Author: OhtoAi
  * @Date: 2021-09-30 00:07:38
  * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 14:02:10
+ * @LastEditTime: 2021-09-30 14:22:54
  * @Description: file content
  */
 
@@ -124,10 +124,9 @@ $(function () {
     xhr.open("get", '/api/img?type=list&author=' + author, true);
     xhr.onload = function () {
 
-        var res = JSON.parse(xhr.responseText);
-        if(res == null)
+        var list = JSON.parse(xhr.responseText).list;
+        if(list == null || list == undefined)
             return;
-        var list = res.list;
 
         for (var i = 0; i < list.length; ++i) {
             if (list[i].thumb_url == '') {
