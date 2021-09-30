@@ -212,7 +212,8 @@ int main()
 			nlohmann::json j;
 			if (req.get_param_value("op") == "upload")
 			{
-				auto author = req.has_file("author") ? req.get_file_value("author").content : "undefined";
+				auto author = req.has_file("author") ? req.get_file_value("author").content
+				: req.has_param("author") ? req.get_param_value("author") : "undefined";
 
 				auto tags = splitToSet(req.get_file_value("tags").content);
 
