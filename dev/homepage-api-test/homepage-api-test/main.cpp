@@ -139,8 +139,14 @@ int main()
 					auto tags = splitToSet(req.get_param_value("tags"));
 					if(!authors.empty()||!tags.empty())
 					{
-						proxy.removeImage(proxy.fetchImageSet(authors, tags));
-						j["error"] = "ok";
+						auto list = proxy.fetchImageSet(authors, tags);
+						j["count"] = list.size();
+						proxy.removeImage(list);
+						list = proxy.fetchImageSet(authors, tags);
+						if(list.size() == 0)
+							j["error"] = "ok";
+						else
+							j["error"] = "delete failed";
 					}
 					else
 					{
@@ -275,9 +281,13 @@ int main()
 #ifdef OHTOAI_LOCAL_TEST
 	s.set_mount_point("/img", ohtoai::ImageProxy::instance().getFileStorageBase().c_str());
 	s.set_mount_point("/", "../../../");
-	return s.listen("0.0.0.0", 80);
+	LOG_INFO("List to port 80");
+	if(!s.listen("0.0.0.0", 80))
+		LOG_ERROR("Listen port 80 error");
 #else 
-	return s.listen("0.0.0.0", 8002);
+	LOG_INFO("List to port 8002");
+	if(!s.listen("0.0.0.0", 8002))
+		LOG_ERROR("Listen port 8002 error");
 #endif
 
 }
