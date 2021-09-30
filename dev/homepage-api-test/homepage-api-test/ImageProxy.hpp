@@ -134,9 +134,9 @@ namespace ohtoai
 
 		std::string getStorage() const
 		{
-			if (storage.empty()&& !uid.empty() && !type.empty())
+			if (storage.empty()&& !uid.empty())
 			{
-				storage = uid + '.' + type;
+				storage = uid + '.' + (getType().empty() ? "png" : getType());
 			}
 			return storage;
 		}
@@ -172,7 +172,7 @@ namespace ohtoai
 		void completeInfo()
 		{
 			setTime(time::getFormatedServerTime(0, false));
-			storage = uid + '.' + type;
+			storage = getUID() + '.' + (getType().empty() ? "png" : getType());
 			url = ImageProxy::instance().mergeImageUrl(getStorage());		
 			thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
 		}
@@ -332,13 +332,16 @@ namespace ohtoai
 				LOG_INFO(storage, "Saved[", content.size(), "Bytes].");
 			}, info.getStorage(), std::forward<std::string>(content) }.detach();
 
-		std::thread{ [=](std::string storage, std::string&& thumb)
+			if (!thumb.empty())
 			{
-				std::ofstream ofs(mergeThumbStorage(storage), std::ios::binary);
-				ofs.write(thumb.data(), thumb.size());
-				ofs.close();
-				LOG_INFO("Thumb", storage, "Saved[", thumb.size(), "Bytes].");
-			}, info.getThumbStorage(), std::forward<std::string>(thumb) }.detach();
+				std::thread{ [=](std::string storage, std::string&& thumb)
+					{
+						std::ofstream ofs(mergeThumbStorage(storage), std::ios::binary);
+						ofs.write(thumb.data(), thumb.size());
+						ofs.close();
+						LOG_INFO("Thumb", storage, "Saved[", thumb.size(), "Bytes].");
+					}, info.getThumbStorage(), std::forward<std::string>(thumb) }.detach();
+			}
 
 		LOG_INFO(info.getUID(), "["+info.getName()+"] uploaded.", std::to_string(info.getWidth()) + "x" + std::to_string(info.getHeight()), "author:", info.getAuthor(), "tags:", nlohmann::json(info.getTags()).dump());
 		imageFileInfoList.push_back(std::forward<ImageFileInfo>(info));

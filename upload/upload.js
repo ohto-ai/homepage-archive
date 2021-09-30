@@ -174,10 +174,10 @@ function uploadFiles(beforeUpload, afterUpload) {
     }
 
     $('.upload-image-preview-div[upload-status=failed]').removeAttr('upload-status');
-    
+
     if (beforeUpload != null && beforeUpload != undefined)
         beforeUpload();
-    
+
 
     var author = $("#author").val();
     var tags = $("input[name='age']:checked").val();
@@ -201,12 +201,17 @@ function uploadFiles(beforeUpload, afterUpload) {
 
         var form = new FormData();
         form.append("image", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('ori-src')), onLoadDiv.children('img').attr('file')));
-        form.append("thumb", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), 'thumb_' + onLoadDiv.children('img').attr('file')));
+
+        if (onLoadDiv.children('img').attr('src') != undefined && onLoadDiv.children('img').attr('src') != '')
+            form.append("thumb", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('src')), 'thumb_' + onLoadDiv.children('img').attr('file')));
         form.append("author", author);
         form.append("tags", tags);
-        form.append("type", onLoadDiv.children('img').attr('ori-type'));
-        form.append("width", onLoadDiv.children('img').attr('ori-width'));
-        form.append("height", onLoadDiv.children('img').attr('ori-height'));
+        if (onLoadDiv.children('img').attr('ori-type') != undefined && onLoadDiv.children('img').attr('ori-type') != '')
+            form.append("type", onLoadDiv.children('img').attr('ori-type'));
+        if (onLoadDiv.children('img').attr('ori-width') != undefined && onLoadDiv.children('img').attr('ori-width') != '')
+            form.append("width", onLoadDiv.children('img').attr('ori-width'));
+        if (onLoadDiv.children('img').attr('ori-height') != undefined && onLoadDiv.children('img').attr('ori-height') != '')
+            form.append("height", onLoadDiv.children('img').attr('ori-height'));
 
 
         var xhr = new XMLHttpRequest();
@@ -355,8 +360,7 @@ $(function () {
                 return '确认离开当前页面吗？未上传的文件将会丢失！';
             });
             $('#upload-list-info').attr('on-upload', true);
-        }, function()
-        {
+        }, function () {
             $('.upload_button').removeAttr('disabled');
             $(window).unbind('beforeunload');
             $('#upload-list-info').removeAttr('on-upload')

@@ -135,11 +135,10 @@ namespace ohtoai::string
 	T stringTo(std::string s)
 	{
 		std::istringstream ss(s);
-		T t;
+		T t{};
 		ss >> t;
 		return t;
 	}
-
 }
 
 namespace ohtoai::log

@@ -212,31 +212,39 @@ int main()
 			nlohmann::json j;
 			if (req.get_param_value("op") == "upload")
 			{
-				auto authorIncome = req.get_file_value("author").content;
-				auto author = authorIncome.empty() ? "undefined" : authorIncome;
+				auto author = req.has_file("author") ? req.get_file_value("author").content : "undefined";
 
 				auto tags = splitToSet(req.get_file_value("tags").content);
-				
+
 				auto info{ std::move(proxy.createImageFile()) };
 				info.setAuthor(author);
 				info.setTags(tags);
-				
+
 				info.setWidth(ohtoai::string::stringTo<int>(req.get_file_value("width").content));
 				info.setHeight(ohtoai::string::stringTo<int>(req.get_file_value("height").content));
-				info.setType(req.get_file_value("type").content);
+				info.setType(req.has_file("type") ? req.get_file_value("type").content : "png");
 
 				const auto& imageFormData = req.get_file_value("image");
 				info.setName(imageFormData.filename);
 				info.setSize(imageFormData.content.size());
 
-				const auto& thumbFormData = req.get_file_value("thumb");
-					
-				j["img"] = *proxy.storageImage(std::move(info)
-				, std::move(const_cast<std::string&>(imageFormData.content))
-				, std::move(const_cast<std::string&>(thumbFormData.content)));
+				if (req.has_file("thumb"))
+				{
+					const auto& thumbFormData = req.get_file_value("thumb");
+
+					j["img"] = *proxy.storageImage(std::move(info)
+						, std::move(const_cast<std::string&>(imageFormData.content))
+						, std::move(const_cast<std::string&>(thumbFormData.content)));
+				}
+				else
+				{
+					j["img"] = *proxy.storageImage(std::move(info)
+						, std::move(const_cast<std::string&>(imageFormData.content))
+						, "");
+				}
 
 				LOG_DEBUG("File content size after moving :", imageFormData.content.size());
-								
+
 				j["error"] = "ok";
 				j["status"] = 200;
 			}
@@ -246,7 +254,20 @@ int main()
 				j["error"] = "unknown command";
 				j["status"] = 404;
 			}
-			res.set_content(j.dump(4), "application/json");
+
+			auto ret = req.get_param_value("ret");
+			if (ret == "text")
+			{
+				res.set_content(j["img"]["url"].get<std::string>(), "text/plain");
+			}
+			else if (ret == "direct" || ret == "redirect")
+			{
+				res.set_redirect(j["img"]["url"].get<std::string>());
+			}	
+			else
+			{
+				res.set_content(j.dump(4), "application/json");
+			}
 		});
 
 	s.set_mount_point("/", ".");
