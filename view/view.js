@@ -1,11 +1,3 @@
-/*
- * @Author: OhtoAi
- * @Date: 2021-09-30 00:07:38
- * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 17:05:01
- * @Description: file content
- */
-
 function resizeImage(src, callback, w, h) {
     var canvas = document.createElement("canvas"),
         ctx = canvas.getContext("2d"),
@@ -112,20 +104,43 @@ function thumbImage(src, callback) {
     }
 })(jQuery);
 
+(function ($) {
+    $.hasUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "(=([^&]*))?(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return true; return false;
+    }
+})(jQuery);
+
+(function ($) {
+    $.getUrlPathLast = function () {
+        return window.location.pathname.substr(window.location.pathname.lastIndexOf('/') + 1);
+    }
+})(jQuery);
+
 
 $(function () {
     var form = new FormData();
     var xhr = new XMLHttpRequest();
     var author = $.getUrlParam('author');
+    var tags = $.getUrlParam('tags');
+    var r18 = $.hasUrlParam('r18');
 
+    console.log(r18 ? "r18 off" : "r18 on");
+
+    if (author == '' || author == null)
+        author = $.getUrlPathLast();
     if (author == '' || author == null)
         author = "undefined";
 
-    xhr.open("get", '/api/img?type=list&author=' + author, true);
+    let path = '/api/img?type=list&author=' + author;
+    if (tags != '' && tags != null)
+        path += '&tags=' + tags;
+    xhr.open("get", path, true);
     xhr.onload = function () {
 
         var list = JSON.parse(xhr.responseText).list;
-        if(list == null || list == undefined)
+        if (list == null || list == undefined)
             return;
 
         for (var i = 0; i < list.length; ++i) {
@@ -133,8 +148,7 @@ $(function () {
                 let id = '#' + list[i].uid;
                 thumbImage(list[i].url, thumb => $(id).children('img').attr('src', thumb));
             }
-            if(list[i].tags.indexOf('porn')!=-1)
-            {
+            if (list[i].tags.indexOf('porn') != -1 && !r18) {
                 console.log(list[i]);
                 continue;
             }
