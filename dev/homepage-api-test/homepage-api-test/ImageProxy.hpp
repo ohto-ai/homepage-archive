@@ -339,8 +339,11 @@ namespace ohtoai
 			if (info != nullptr)
 			{
 				ifDelete = true;
-				::remove(mergeImageStorage(info->getStorage()).c_str());
-				::remove(mergeThumbStorage(info->getThumbStorage()).c_str());
+				int error = 0;
+				error = ::remove(mergeImageStorage(info->getStorage()).c_str());
+				LOG_INFO("Delete image", info->getStorage(), "return", error);
+				error = ::remove(mergeThumbStorage(info->getThumbStorage()).c_str());
+				LOG_INFO("Delete thumb", info->getThumbStorage(), "return", error);
 			}
 		}
 		if (ifDelete)
