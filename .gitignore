@@ -15,3 +15,4 @@ dev/**/*.log
 **/.vs
 dev/**/image_proxy.config
 dev/homepage-api-test/homepage-api-test/image_proxy
+.vscode/**

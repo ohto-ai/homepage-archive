@@ -122,15 +122,15 @@ int main()
 			}
 			else if(op == "delete")
 			{
-				bool ifUseFileName = req.has_param("storage");
+				bool isUseId = req.has_param("uid");
 
 				nlohmann::json j;
 
-				if(ifUseFileName)
+				if(isUseId)
 				{
-					auto storage = req.get_param_value("storage");
-					proxy.removeImage({proxy.fetchImage(storage)});	
-					j["storage"] = storage;
+					auto uid = req.get_param_value("uid");
+					proxy.removeImage({proxy.fetchImage(uid)});	
+					j["uid"] = uid;
 					j["error"] = "ok";
 				}
 				else

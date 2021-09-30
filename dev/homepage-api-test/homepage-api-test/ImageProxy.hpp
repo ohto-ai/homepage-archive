@@ -368,11 +368,11 @@ namespace ohtoai
 			syncWithFile();
 	}
 
-	inline const ImageFileInfo* ImageProxy::fetchImage(std::string fileName)
+	inline const ImageFileInfo* ImageProxy::fetchImage(std::string uid)
 	{
 		for (auto& info : imageFileInfoList)
 		{
-			if (info.getStorage() == fileName)
+			if (info.getUID() == uid)
 				return &info;
 		}
 		return nullptr;
