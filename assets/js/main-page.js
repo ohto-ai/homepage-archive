@@ -26,6 +26,7 @@ $(function () {
         }
 
         if ($(this).attr('external-link') != undefined) {
+            $('a', $(this)).attr('target', '_blank');
             $('a', $(this)).attr('href', $(this).attr('external-link'));
             $('a', $(this)).append(`<i class="fa fa-external-link" aria-hidden="true"></i>`);
             return;
