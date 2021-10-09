@@ -29,9 +29,9 @@ namespace ohtoai
 		std::string thumbUrlBase{ R"(//localhost/img/thumb/)" };
 #else
 		std::string fileStorageBase{ R"(/home/ohtoai/html/assets/img/storage/)" };
-		std::string fileUrlBase{ R"(//thatboy.info/img/)" };
+		std::string fileUrlBase{ R"(//ohtoai.top/img/)" };
 		std::string thumbStorageBase{ R"(/home/ohtoai/html/assets/img/storage/thumb/)" };
-		std::string thumbUrlBase{ R"(//thatboy.info/img/thumb/)" };
+		std::string thumbUrlBase{ R"(//ohtoai.top/img/thumb/)" };
 #endif
 		std::string assemblyPath{ "assembly.dat" };
 

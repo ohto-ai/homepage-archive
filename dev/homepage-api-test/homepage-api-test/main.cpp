@@ -35,12 +35,12 @@ int main()
 
 			const auto invalidProcess = [&]
 			{
-				res.set_redirect("//thatboy.info/api/");
+				res.set_redirect("//api.ohtoai.top/");
 			};
 
 			const auto emptyProcess = [&]
 			{
-				res.set_content(proxy.viewImageHtmlPage("//thatboy.info/404.html"), "text/html");
+				res.set_content(proxy.viewImageHtmlPage("//ohtoai.top/404.html"), "text/html");
 				res.status = 404;
 			};
 
@@ -186,7 +186,7 @@ int main()
 			}
 			else if(op == "upload")
 			{
-				res.set_redirect("//thatboy.info/upload/");
+				res.set_redirect("//ohtoai.top/upload/");
 			}
 			else if(op ==  "shutdown")
 			{

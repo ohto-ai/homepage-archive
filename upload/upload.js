@@ -197,7 +197,7 @@ function uploadFiles(beforeUpload, afterUpload) {
         let uid = '#' + onLoadDiv.attr('id');
 
         // args
-        var uploadPath = "/api/img?op=upload";
+        var uploadPath = "//api.ohtoai.top/img?op=upload";
 
         var form = new FormData();
         form.append("image", blobToFile(dataURLtoBlob(onLoadDiv.children('img').attr('ori-src')), onLoadDiv.children('img').attr('file')));

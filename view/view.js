@@ -126,14 +126,14 @@ $(function () {
     var tags = $.getUrlParam('tags');
     var r18 = $.hasUrlParam('r18');
 
-    console.log(r18 ? "r18 off" : "r18 on");
+    console.log(r18 ? "r18 on" : "r18 off");
 
     if (author == '' || author == null)
         author = $.getUrlPathLast();
     if (author == '' || author == null)
         author = "undefined";
 
-    let path = '/api/img?type=list&author=' + author;
+    let path = '//api.ohtoai.top/img?type=list&author=' + author;
     if (tags != '' && tags != null)
         path += '&tags=' + tags;
     xhr.open("get", path, true);
