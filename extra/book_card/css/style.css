@@ -125,7 +125,7 @@ body {
   opacity: 1;
 }
 .book--expanded .header-image {
-  background-image: url(//thatboy.info/api/img?type=direct&tags=wallpaper,pc);
+  background-image: url(//api.ohtoai.top/img?type=direct&tags=wallpaper,pc);
   height: 100%;
 }
 span{
