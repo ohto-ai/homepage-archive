@@ -206,6 +206,14 @@ int main()
 					res.set_content(j.dump(4), "application/json");
 				}
 			}
+			else if (op == "fix")
+			{
+				nlohmann::json j;
+				j["error"] = "ok";
+				j["status"] = 200;
+				j["fix"] = proxy.fixError();
+				res.set_content(j.dump(4), "application/json");
+			}
 			else
 			{
 				invalidProcess();
