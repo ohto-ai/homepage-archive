@@ -16,6 +16,12 @@ const songs = ["LOSER_8-bit",
     "YOASOBI-8-bit-Ye",
     "YoRHa-Weight_of_the_World_the_End_of_YoRHa",
     "ow-kings-row",
+    "Kizuna AI,中田ヤスタカ - AIAIAI",
+    "GENERATIONS from EXILE TRIBE - Brand New Story",
+    "[BOFXVI] linear ring - enchanted love",
+    "ピノキオピー,鏡音リン,初音ミク - ねぇねぇねぇ。",
+    "糖风 - Brand New Story 口琴版（翻自 GENERATIONS from EXILE TRIBE）",
+    "ななひら - お願い！コンコンお稲荷さま",
     "ow-lijiang-tower"]
 const songTitles = [
     "米津玄師-LOSER【8-bit】",
@@ -24,6 +30,12 @@ const songTitles = [
     "夜に駆ける",
     "Weight of the World/the End of YoRHa",
     "Overwatch - 国王大道",
+    "Kizuna AI,中田ヤスタカ - AIAIAI",
+    "GENERATIONS from EXILE TRIBE - Brand New Story",
+    "[BOFXVI] linear ring - enchanted love",
+    "ピノキオピー,鏡音リン,初音ミク - ねぇねぇねぇ。",
+    "糖风 - Brand New Story 口琴版（翻自 GENERATIONS from EXILE TRIBE）",
+    "ななひら - お願い！コンコンお稲荷さま",
     "Overwatch - 漓江塔"];
 
 // 默认从第一首开始

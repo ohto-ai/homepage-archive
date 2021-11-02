@@ -133,10 +133,31 @@ namespace ohtoai
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(size, Size);
 		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(tags, Tags);
 
-		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(storage, Storage);
-		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(thumb_storage, ThumbStorage);
-		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(url, Url);
-		OHTOAI_DEFINE_TYPE_REFER_GETTER_SETTER_INTRUSIVE(thumb_url, ThumbUrl);
+		const std::string& getStorage() const
+		{
+			if (storage.empty())
+				storage = getUID() + '.' + (getType().empty() ? "png" : getType());
+			return storage;
+		}
+		const std::string& getThumbStorage() const
+		{
+			if (thumb_storage.empty())
+				thumb_storage = getUID() + ".png";
+			return thumb_storage;
+		}
+
+		const std::string& getUrl() const
+		{
+			if (url.empty())
+				url = ImageProxy::instance().mergeImageUrl(getStorage());		
+			return url;
+		}
+		const std::string& getThumbUrl() const
+		{
+			if (thumb_url.empty())
+				thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
+			return thumb_url;
+		}
 		
 		void removeThumb()
 		{
@@ -152,7 +173,7 @@ namespace ohtoai
 			url = ImageProxy::instance().mergeImageUrl(getStorage());		
 			thumb_url = ImageProxy::instance().mergeThumbUrl(getThumbStorage());
 		}
-		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageFileInfo, uid, name, time, author, width, height, type, size, tags, url, thumb_url);
+		OHTOAI_DEFINE_TYPE_INTRUSIVE(ImageFileInfo, uid, name, time, author, width, height, type, size, tags);
 	};
 	
 	inline std::vector<const ImageFileInfo*> ImageProxy::fetchImageSet(std::set<std::string> authors, std::set<std::string> tags) const

@@ -1,9 +1,10 @@
 logs/*
+bed/
+assets/music/
 plugin/bin/image_proxy
 plugin/bin/image_proxy.config
 plugin/bin/image_proxy.log
 plugin/bin/*.dat
-assets/img/storage/*
 dev/**/Debug/
 dev/**/Release/
 dev/**/*.exe
