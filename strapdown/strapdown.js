@@ -370,19 +370,19 @@ var PR=win['PR']={'createSimpleLexer':createSimpleLexer,'registerLangHandler':re
   var theme = markdownEl.getAttribute('theme') || 'bootstrap';
   theme = theme.toLowerCase();
 
-  // Stylesheets
+  // Stylesheetss
   var linkEl = document.createElement('link');
-  linkEl.href = /*originBase + '/themes/'+*/'/strapdown/'+ theme + '.min.css';
+  linkEl.href = originBase + '/themes/' + theme + '.min.css';
   linkEl.rel = 'stylesheet';
   document.head.appendChild(linkEl);
 
   var linkEl = document.createElement('link');
-  linkEl.href = /*originBase + '/' + */'/strapdown/strapdown.css';
+  linkEl.href = originBase + '/strapdown.css';
   linkEl.rel = 'stylesheet';
   document.head.appendChild(linkEl);
 
   var linkEl = document.createElement('link');
-  linkEl.href =/*originBase + '/themes/'+*/'/strapdown/bootstrap-responsive.min.css';
+  linkEl.href = originBase + '/bootstrap-responsive.min.css';
   linkEl.rel = 'stylesheet';
   document.head.appendChild(linkEl);
 

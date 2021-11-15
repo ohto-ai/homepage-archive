@@ -1,0 +1,73 @@
+#!/bin/bash
+
+function info()
+{
+    echo -ne "[info] $*\n"
+}
+
+function generate()
+{
+    markdown=$1
+    title=$2
+    strapdownjs=$3
+    theme=$4
+    html=${markdown%.*}".html"
+    
+    if [ -z $title ]; then
+        title=`basename $markdown`
+        title=${title%.*}
+        title=`echo $title | sed -e "s/\b\(.\)/\u\1/g"`
+        title="OhtoAi - $title"
+        info "use default title \"$title\""
+    else
+        title="OhtoAi - $title"
+        info "use title $title"
+    fi
+
+    if [ -z $strapdownjs ]; then
+        strapdownjs="/strapdown/strapdown.js"
+        info "use default strapdown js \"$strapdownjs\""
+    else
+        info "use strapdown js $strapdownjs"
+    fi
+
+    if [ -z $theme ]; then
+        theme="sketchy"
+        info "use default theme \"$theme\""
+    else
+        info "use theme \"$theme\""
+    fi    
+
+    info "generate $html from $markdown"
+
+    echo "<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>$title</title>
+</head>
+<xmp theme=\"$theme\" style=\"display:none;\">
+"> $html 
+    cat $markdown >> $html
+    echo "
+    </xmp>
+<script src=\"$strapdownjs\"></script>
+</html>" >> $html
+}
+
+
+function main()
+{
+    if [ $# == 0 ]; then
+        for markdown in ./markdown/*.md; do
+            if test -f $markdown; then
+                info process $markdown
+                generate $markdown
+            fi
+        done
+    else
+        generate $@
+    fi
+}
+
+main $@
