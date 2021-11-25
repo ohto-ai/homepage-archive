@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+/* 控制台边框层 */
+.console_box {
+  background: #ddd url(console-title.png) no-repeat;
+  width: 660px; /* windows 控制台默认宽度 */
+  margin: 0px;
+  padding: 24px 0 0 0;
+  border: 4px outset #ffffff;
+}
+
+/* 控制台内容层 */
+.console_box .console {
+  background-color: #000000;
+  font-family: monospace, "Courier New", Courier, "宋体";
+  font-size: 16px;
+  color: #cccccc;
+  width: 100% - 4px;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: 2px inset #666666;
+  overflow: auto; /* 自动加入滚动条 */
+}
+
+.console_box .console p {
+  line-height: 120%;
+  margin: 0px;
+  padding-bottom: 1em; /* 段落下面留一空行的高度 */
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.console_box .console p:before{
+    content: 'ohtoai@VM-4-16-ubuntu:~$ ';
+    color: aqua;
+}
+  
