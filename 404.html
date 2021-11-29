@@ -1,513 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>404 Not Found</title>
-		<style>
-			body, html {
-				margin: 0;
-			}
-			p {
-				white-space: pre;
-				font-weight: bold;
-			}
-			canvas{
-				margin: auto;
-				position: absolute;
-				top:0;
-				bottom: 0;
-				left: 0;
-				right: 0;
-			}
-		</style>
-	</head>
-	<body>
-		<script>
-			var j_properties = JSON.parse(`{
-			"background_image" : 
-			{
-				"fileType" : "image",
-				"order" : 104,
-				"text" : "Background Image",
-				"type" : "file",
-				"value" : ""
-			},
-			"logo_color" : 
-			{
-				"order" : 100,
-				"text" : "Logo Color",
-				"type" : "color",
-				"value" : "1 1 1"
-			},
-			"quality" : 
-			{
-				"options" : 
-				[
-					{
-						"label" : "Best",
-						"value" : "0"
-					},
-					{
-						"label" : "Good",
-						"value" : "5"
-					},
-					{
-						"label" : "Medium",
-						"value" : "10"
-					},
-					{
-						"label" : "Low",
-						"value" : "20"
-					},
-					{
-						"label" : "Extra Low",
-						"value" : "30"
-					}
-				],
-				"order" : 103,
-				"text" : "Quality",
-				"type" : "combo",
-				"value" : "5"
-			},
-			"rainbow" : 
-			{
-				"order" : 101,
-				"text" : "Rainbow",
-				"type" : "bool",
-				"value" : false
-			},
-			"resetcounters" : 
-			{
-				"order" : 106,
-				"text" : "Reset Counters",
-				"type" : "bool",
-				"value" : false
-			},
-			"schemecolor" : 
-			{
-				"order" : 0,
-				"text" : "ui_browse_properties_scheme_color",
-				"type" : "color",
-				"value" : "0 0 0"
-			},
-			"show_number_of_hits" : 
-			{
-				"order" : 105,
-				"text" : "Show Number Of Hits",
-				"type" : "bool",
-				"value" : true
-			},
-			"switch_colour_on_hit" : 
-			{
-				"order" : 102,
-				"text" : "Switch Colour On Hit",
-				"type" : "bool",
-				"value" : false
-			}
-		}`);
-
-		document.getElementsByTagName("html")[0].style.background = "#000000";
-		
-		localStorage.setItem("properties", j_properties)
-		
-
-
-
-		let wallsHit = localStorage.getItem('wallsHit')?localStorage.getItem('wallsHit'):0;
-		let cornersHit = localStorage.getItem('cornersHit')?localStorage.getItem('cornersHit'):0;
-		let propertiesWPE = localStorage.getItem('properties')?localStorage.getItem('properties'):null;
-		let doubleHitLast = false;
-		
-		let redMultiplier = 1;
-		let greenMultiplier = 1;
-		let blueMultiplier = 1;
-		
-		let rainbow = localStorage.getItem('rainbow')?localStorage.getItem('rainbow') === 'true':false;
-		let switchOnHit = localStorage.getItem('switchOnHit')?localStorage.getItem('switchOnHit') === 'true':false;
-		let showNumberOfHits = localStorage.getItem('showNumberOfHits')?localStorage.getItem('showNumberOfHits') === 'true':false;
-		let logocolor = localStorage.getItem('logocolor')?localStorage.getItem('logocolor'):null;
-		let quality = localStorage.getItem('quality')?localStorage.getItem('quality'):10;
-		let backgroundImage = localStorage.getItem('backgroundImage')?localStorage.getItem('backgroundImage'):null;	
-
-		window.wallpaperPropertyListener = { 
-			applyUserProperties: function(properties) { 
-				propertiesWPE = properties;
-				if (properties.logo_color) {
-					localStorage.setItem('logocolor', properties.logo_color.value);
-					logocolor = properties.logo_color.value.split(' '); 
-					
-					logocolor = logocolor.map(function(c) { 
-						return Math.ceil(c * 255); 
-					}); 
-					if(!rainbow){
-						redMultiplier = logocolor[0] / 255;
-						greenMultiplier = logocolor[1] / 255;
-						blueMultiplier = logocolor[2] / 255;
-					}
-				}
-				if (properties.rainbow) {
-					rainbow = properties.rainbow.value;
-					localStorage.setItem('rainbow', rainbow);
-					if(rainbow){
-						redMultiplier = 1;
-						greenMultiplier = 1;
-						blueMultiplier = 1;
-					} else {
-						redMultiplier = logocolor[0] / 255;
-						greenMultiplier = logocolor[1] / 255;
-						blueMultiplier = logocolor[2] / 255;
-					}
-				}
-				if (properties.show_number_of_hits) {
-					showNumberOfHits = properties.show_number_of_hits.value;
-					localStorage.setItem('showNumberOfHits', showNumberOfHits);
-					let visibility = properties.show_number_of_hits.value;
-					if(visibility){
-						document.getElementById("hitDiv").style.visibility = "visible";
-					} else {
-						document.getElementById("hitDiv").style.visibility = "hidden";
-					}
-				}
-				if (properties.switch_colour_on_hit) {
-					switchOnHit = properties.switch_colour_on_hit.value;
-					localStorage.setItem('switchOnHit', switchOnHit);
-				}
-				if(properties.quality){
-					quality = properties.quality.value;
-					localStorage.setItem('quality', quality);
-				}
-				if(properties.background_image){
-					backgroundImage = properties.background_image.value;
-					document.getElementsByTagName("html")[0].style.background = "#000000 url('" + unescape(properties.background_image.value) + "') no-repeat center center fixed";
-					
-					let img = new Image();
-					img.onload = function() {
-						let difX = canvas.height / canvas.width;
-						let difY = this.height / this.width;
-						if((difX > difY)){
-							let multiplier = canvas.height / this.height;
-							let percentageX = (this.width * multiplier) / canvas.width * 100;
-							let percentageY = (this.height * multiplier) / canvas.height * 100;
-						} else {
-							let multiplier = canvas.width / this.width;
-							let percentageX = (this.width * multiplier) / canvas.width * 100;
-							let percentageY = (this.height * multiplier) / canvas.height * 100;
-						}
-						document.getElementsByTagName("html")[0].style.backgroundSize = percentageX + "% " + percentageY + "%";
-					}
-					img.src = unescape(properties.background_image.value);
-				}
-				if (properties.resetcounters) {
-					if(properties.resetcounters.value){
-						resetCounters();
-					}
-				}
-			}
-		}
-		
-		let dvdWidth=210;
-		let dvdHeight=107;
-
-		let dvdX;
-		let dvdY;
-
-		let incrementX = 0.1;
-		let incrementY = 0.1;
-		
-		let canvas = document.createElement('canvas');
-		let context = canvas.getContext("2d");
-
-		let textDiv = document.createElement('div');
-		let pContext = document.createElement('p');
-		pContext.id = "hitDiv";
-		
-		let curFrame = performance.now();
-		
-		document.body.appendChild(canvas);
-		document.body.appendChild(textDiv);
-		textDiv.appendChild(pContext);
-		
-		pContext.style = "color:#CDCDCD;padding-left:20px;";
-		updateText(); 
-		
-		canvas.width  = window.innerWidth;
-		canvas.height = window.innerHeight;
-
-		window.onresize = function(){
-			canvas.width  = window.innerWidth;
-			canvas.height = window.innerHeight;
-			dvdX = canvas.width/2;
-			dvdY = canvas.height/2;
-		}
-		
-					
-		let img = new Image();
-
-		img.onload = function() {
-			dvdX = canvas.width/2;
-			dvdY = canvas.height/2;
-			
-			setTimeout(function timeout() {
-				move();
-				setTimeout(timeout, quality);
-			}, quality);
-			
-		}
-		img.src = "/assets/img/DVD_logo.svg";
-		
-		let red = 100;
-		let green = 100;
-		let blue = 100;	
-		let multiplier = 1;
-		
-		if(rainbow){
-			redMultiplier = 0;
-			greenMultiplier = 0;
-			blueMultiplier = 0;
-		}
-		
-		function updateText(){
-			return;
-			if(pContext.childNodes.length > 0){
-				pContext.removeChild(pContext.childNodes[0]);
-			}
-			pContext.appendChild(document.createTextNode("Walls hit: " + wallsHit + "\u000a" + "Corners hit: " + cornersHit));
-		}
-		function resetCounters(){
-			localStorage.setItem('wallsHit', 0);
-			localStorage.setItem('cornersHit', 0);
-			wallsHit = 0;
-			cornersHit = 0;
-			updateText();
-		}
-		function move(){
-			let deltaTime = performance.now() - curFrame;
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			
-			let hits = 0;
-			let hit = false;
-			let doubleHit = false;
-			
-			if(dvdX + incrementX * deltaTime > canvas.width - dvdWidth){
-				incrementX = -incrementX;
-				hit = true;
-			}
-			if(dvdY + incrementY * deltaTime > canvas.height - dvdHeight){
-				incrementY = -incrementY;
-				hit = true;
-			}
-			if(dvdX + incrementX * deltaTime < 0){
-				incrementX = -incrementX;
-				hit = true;
-			}
-			if(dvdY + incrementY * deltaTime < 0){
-				incrementY = -incrementY;
-				hit = true;
-			}
-			
-			let reset = false;
-			
-			if(dvdY > canvas.height + dvdHeight / 2){
-				dvdY = canvas.height - dvdHeight;
-				reset = true;
-			}
-			if(dvdX > canvas.width + dvdWidth / 2){
-				dvdX = canvas.width - dvdWidth;
-				reset = true;
-			}
-			if(dvdY < -(dvdHeight / 2)){
-				dvdY = dvdHeight;
-				reset = true;
-			}
-			if(dvdX < -(dvdWidth / 2)){
-				dvdX = dvdWidth;
-				reset = true;
-			}
-			//RESET
-			if(reset){
-				cornersHit = cornersHit -1;
-				updateText();
-				hit = false;
-				localStorage.setItem('wallsHit', wallsHit);
-				localStorage.setItem('cornersHit', cornersHit);
-				localStorage.setItem('properties', propertiesWPE);
-				localStorage.setItem('backgroundImage', backgroundImage);
-				
-				localStorage.setItem('quality', quality);
-				localStorage.setItem('showNumberOfHits', showNumberOfHits);
-				localStorage.setItem('switchOnHit', switchOnHit);
-				localStorage.setItem('rainbow', rainbow);
-				localStorage.setItem('logocolor', logocolor);
-				window.location.href = window.location.href;
-			}
-			
-			if(hit){
-				hits = 0;
-				if(dvdX + deltaTime > canvas.width - dvdWidth){
-					hits++;
-				}
-				if(dvdY + deltaTime > canvas.height - dvdHeight){
-					hits++;
-				}
-				if(dvdX - deltaTime < 0){
-					hits++;
-				}
-				if(dvdY - deltaTime < 0){
-					hits++;
-				}
-				if(hits > 1){
-					doubleHit = true;
-				}
-				if(doubleHit && doubleHitLast == false){
-					cornersHit++;
-					doubleHitLast = true;
-				} else {
-					doubleHitLast = false;
-				}
-			}
-			
-			if(hit){	
-				wallsHit++;
-				updateText(); 
-				if(switchOnHit){
-					if(redMultiplier <= 0 && greenMultiplier >= 1 && blueMultiplier < 1){
-						blueMultiplier = 1;
-					} else
-					if(redMultiplier > 0 && greenMultiplier >= 1 && blueMultiplier <= 0){
-						redMultiplier = 0;
-					} else
-					if(redMultiplier >= 1 && greenMultiplier < 1 && blueMultiplier <= 0){
-						greenMultiplier = 1;
-					} else
-					if(redMultiplier >= 1 && greenMultiplier <= 0 && blueMultiplier > 0){
-						blueMultiplier = 0;
-					} else
-					if(redMultiplier < 1 && greenMultiplier <= 0 && blueMultiplier >= 1){
-						redMultiplier = 1;
-					} else
-					if(redMultiplier <= 0 && greenMultiplier > 0 && blueMultiplier >= 1){
-						greenMultiplier = 0;
-					} else
-					if(redMultiplier > 0 && greenMultiplier >= 1 && blueMultiplier >= 1){
-						redMultiplier = 0;
-					}
-				}
-				/*if(propertiesWPE != null){
-					restartSettings();
-				}*/
-				//saveSettings();
-			}
-			
-			dvdX += incrementX * deltaTime;
-			dvdY += incrementY * deltaTime;
-			
-			curFrame = performance.now();
-			context.drawImage(img, dvdX, dvdY);
-			
-			let imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-			let data = imageData.data;
-			
-			let colors = (red + blue + green) / 3;
-			
-			if(colors + (deltaTime * 0.02 * multiplier) > 254 || colors + (deltaTime * 0.02 * multiplier) < 80){
-				multiplier = -multiplier;
-			}
-
-			red += deltaTime * 0.02 * multiplier;
-			green += deltaTime * 0.02 * multiplier;
-			blue += deltaTime * 0.02 * multiplier;
-			
-			if(rainbow){
-				if(redMultiplier <= 0 && greenMultiplier >= 1 && blueMultiplier < 1){
-					blueMultiplier += deltaTime / 4000;
-				} else
-				if(redMultiplier > 0 && greenMultiplier >= 1 && blueMultiplier <= 0){
-					redMultiplier -= deltaTime / 4000;
-				} else
-				if(redMultiplier >= 1 && greenMultiplier < 1 && blueMultiplier <= 0){
-					greenMultiplier += deltaTime / 4000;
-				} else
-				if(redMultiplier >= 1 && greenMultiplier <= 0 && blueMultiplier > 0){
-					blueMultiplier -= deltaTime / 4000;
-				} else
-				if(redMultiplier < 1 && greenMultiplier <= 0 && blueMultiplier >= 1){
-					redMultiplier += deltaTime / 4000;
-				} else
-				if(redMultiplier <= 0 && greenMultiplier > 0 && blueMultiplier >= 1){
-					greenMultiplier -= deltaTime / 4000;
-				} else
-				if(redMultiplier > 0 && greenMultiplier >= 1 && blueMultiplier >= 1){
-					redMultiplier -= deltaTime / 4000;
-				}
-			}
-			
-			for (let i = 0; i < data.length; i += 4) {
-				data[i]     = red * redMultiplier;
-				data[i + 1] = green * greenMultiplier;
-				data[i + 2] = blue * blueMultiplier;
-			}
-			context.putImageData(imageData, 0, 0);
-		}
-		
-		// function saveSettings(){
-		// 	localStorage.setItem('wallsHit', wallsHit);
-		// 	localStorage.setItem('cornersHit', cornersHit);
-		// 	localStorage.setItem('properties', propertiesWPE);
-		// 	localStorage.setItem('backgroundImage', backgroundImage);
-			
-		// 	localStorage.setItem('quality', quality);
-		// 	localStorage.setItem('showNumberOfHits', showNumberOfHits);
-		// 	localStorage.setItem('switchOnHit', switchOnHit);
-		// 	localStorage.setItem('rainbow', rainbow);
-		// 	localStorage.setItem('logocolor', logocolor);	
-		// }
-		
-		// function restartSettings(){
-		// 	properties = propertiesWPE;
-		// 	let splitColor = logocolor.split(','); 
-
-		// 	if(!rainbow){
-		// 		redMultiplier = splitColor[0] / 255;
-		// 		greenMultiplier = splitColor[1] / 255;
-		// 		blueMultiplier = splitColor[2] / 255;
-		// 	}
-		// 	if(rainbow){
-		// 		redMultiplier = 1;
-		// 		greenMultiplier = 1;
-		// 		blueMultiplier = 1;
-		// 	} else {
-		// 		redMultiplier = splitColor[0] / 255;
-		// 		greenMultiplier = splitColor[1] / 255;
-		// 		blueMultiplier = splitColor[2] / 255;
-		// 	}
-		// 	let visibility = showNumberOfHits;
-		// 	if(visibility){
-		// 		document.getElementById("hitDiv").style.visibility = "visible";
-		// 	} else {
-		// 		document.getElementById("hitDiv").style.visibility = "hidden";
-		// 	}
-		// 	if(backgroundImage != null){
-		// 		document.getElementsByTagName("html")[0].style.background = "#000000 url('" + unescape(backgroundImage) + "') no-repeat center center fixed";
-				
-		// 		let img = new Image();
-		// 		img.onload = function() {
-		// 			let difX = canvas.height / canvas.width;
-		// 			let difY = this.height / this.width;
-		// 			if((difX > difY)){
-		// 				let multiplier = canvas.height / this.height;
-		// 				let percentageX = (this.width * multiplier) / canvas.width * 100;
-		// 				let percentageY = (this.height * multiplier) / canvas.height * 100;
-		// 			} else {
-		// 				let multiplier = canvas.width / this.width;
-		// 				let percentageX = (this.width * multiplier) / canvas.width * 100;
-		// 				let percentageY = (this.height * multiplier) / canvas.height * 100;
-		// 			}
-		// 			document.getElementsByTagName("html")[0].style.backgroundSize = percentageX + "% " + percentageY + "%";
-		// 		}
-		// 		img.src = unescape(backgroundImage);
-		// 	}
-		// }
-		// restartSettings();
-		</script>
-	</body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>网页不存在</title>
+         <style type="text/css">
+            body {
+                background-color: #0099CC;
+                color: #FFFFFF;
+                font-family: Microsoft Yahei, "Helvetica Neue", Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+                margin-left: 100px;
+            }
+            .face {
+                font-size: 100px;
+            }
+            p{
+                font-size: 24px;
+                padding: 8px;
+                line-height: 40px;
+            }
+            .tips {
+                font-size: 16px
+            }
+            
+            /*针对小屏幕的优化*/
+            @media screen and (max-width: 600px) { 
+                body{
+                    margin: 0 10px;
+                }
+                p{
+                    font-size: 18px;
+                    line-height: 30px;
+                }
+                .tips {
+                    display: inline-block;
+                    padding-top: 10px;
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+         </style>
+    </head>
+    <body>
+        <script> 
+            var i = 10; 
+            var intervalid; 
+            intervalid = setInterval("cutdown()", 1000); 
+            function cutdown() { 
+                if (i == 0) { 
+                    window.location.href = "/";
+                    clearInterval(intervalid); 
+                } 
+                document.getElementById("mes").innerHTML = i; 
+                i--; 
+            }
+        window.onload = cutdown;
+        </script>
+        <span class="face">:(</span>
+        <p>您访问的此网页不存在<br>
+            <span id="mes">1</span> 秒后自动跳转至平台首页，您可以在这里试着找找您所需要的信息<br>
+            <span class="tips">如果您想了解更多信息，则可以稍后在线搜索此错误。 <small>算了你还是别搜了…</small></span>
+        </p>
+    </body>
 </html>
