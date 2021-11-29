@@ -11,12 +11,74 @@
 <head>
     <meta charset="UTF-8" />
     <title>OhtoAi - Home</title>
-    <link rel="stylesheet" href="console-style.css" type="text/css"/> 
+    <script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="console-box.css" type="text/css" />
+    <link rel="stylesheet" href="console-style.css" type="text/css" />
+
+    <script>
+        function html2Escape(sHtml) {
+            return sHtml.replace(/[<>&"]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]; });
+        }
+
+
+        function enter_command(doned) {
+            if (doned) {
+                $("#input-shell")[0].blur();
+                $("#input-shell")[0].focus();
+                $(".input-box").removeAttr("busy");
+            }
+            else {
+                $(".input-box").attr("busy", " true");
+                $("#input-shell").val("");                               //清空输入框
+                $("ul").append("<li class=\"input-line\">" + html2Escape(command) + "</li>");  //将输入的输出到界面
+            }
+        }
+        function append_message(msg) {
+            $("ul").append("<li>" + msg + "</li>");             //获取返回值并输出
+            $("#console-content").scrollTop($("#input-shell").scrollTop() + 32);//滚动条拉到最下面，显示出输入框
+            enter_command(true);
+        }
+        $(document).ready(function () {
+            $("#input-shell").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    command = String($("#input-shell").val());
+                    enter_command(false);
+                    if (command == "introduce") {
+                        append_message(`&nbsp;OhtoAi<br>
+                    🇨🇳 Chinese<br>
+                    🧑🏻‍💻&nbsp;Programmer<br>
+                    ⚡ C/C++<br>
+                    Follow me on <i><b><a href="https://github.com/Ohto-Ai/" target="_blank">Github</a></b></i>.`);
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "/shell",
+                        data: { "command": command },
+                        dataType: "text/plain",
+                        success: function (msg) {
+                            append_message(msg.responseText);
+                        },
+                        error: function (msg) {
+                            console.log(msg);
+                            append_message(msg.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#input-shell").blur(function () {
+                this.focus();
+            });
+            $("#input-shell")[0].focus();
+        });
+    </script>
+
 </head>
 
 <body>
 
-    <div class="console_box">
+    <div class="console_box" style="display: none;">
         <div class="console" style="height:500px;">
             <p>echo Hello World<br>
                 Hello World
@@ -24,11 +86,35 @@
             <p>introduce<br>
                 &nbsp;OhtoAi<br>
                 🇨🇳 Chinese<br>
-                🧑🏻‍💻  Programmer<br>
+                🧑🏻‍💻&nbsp;Programmer<br>
                 ⚡ C/C++<br>
                 Follow me in <i><b><a href="https://github.com/Ohto-Ai/" target="_blank">Github</a></b></i>.</p>
             <p></p>
         </div>
     </div>
+
+
+    <div class="console-window">
+        <div class="console-title">
+            <img src="console-title.svg">
+        </div>
+        <div class="console-content" id="console-content">
+            <ul>
+                <li class="input-line">echo Hello World</li>
+                <li>Hello World</li>
+                <li class="input-line">introduce</li>
+                <li>&nbsp;OhtoAi<br>
+                    🇨🇳 Chinese<br>
+                    🧑🏻‍💻&nbsp;Programmer<br>
+                    ⚡ C/C++<br>
+                    Follow me in <i><b><a href="https://github.com/Ohto-Ai/" target="_blank">Github</a></b></i>.</li>
+            </ul>
+            <div class="input-box">
+                <input type="text" name="" class="input-line" id='input-shell'>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>
