@@ -1,27 +1,22 @@
-<!--
- * @Author: OhtoAi
- * @Date: 2021-09-14 14:08:33
- * @LastEditors: OhtoAi
- * @LastEditTime: 2021-09-30 09:41:03
- * @Description: file content
--->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="UTF-8" />
     <title>OhtoAi - Home</title>
-    <link rel="stylesheet" href="/assets/css/style.main.css" />
-    <link rel="stylesheet" href="/assets/css/style.peronal.css" />
-    <link rel="stylesheet" href="/assets/css/style.svg_button.css" />
-    <link rel="stylesheet" href="/assets/css/style.beian.css" />
-    <link rel="stylesheet" href="/assets/css/style.loading-page.css" />
+    <link rel="stylesheet" href="assets/css/style.main.css" />
+    <link rel="stylesheet" href="assets/css/style.peronal.css" />
+    <link rel="stylesheet" href="assets/css/style.svg_button.css" />
+    <link rel="stylesheet" href="assets/css/style.beian.css" />
+    <link rel="stylesheet" href="assets/css/style.loading-page.css" />
+    <link rel="stylesheet" href="assets/css/font3d.css" />
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="//cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <script src="//use.fontawesome.com/d1341f9b7a.js"></script>
-    <script src='/assets/js/loading-page.js'>    </script>
-    <script src="/assets/js/main-page.js"></script>
-    <script src="/assets/js/log-website.js"></script>
+    <script src='assets/js/loading-page.js'>    </script>
+    <script src="assets/js/main-page.js"></script>
+    <script src="assets/js/log-website.js"></script>
+    <script src="assets/js/font3d.js"></script>
 </head>
 
 <body>
@@ -47,7 +42,9 @@
                         <img src="//sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=320" alt="Ohto-Ai" />
                     </span>
                 </a>
-                <h1>Ohto-Ai</h1>
+
+                <div class="font3d-box" text="Ohto-Ai">
+                </div>
                 <h5><b>C++ Developer</b></h5>
                 <h5>Write Everywhere, <br />Read Nowhere.</h5>
                 <ul>
@@ -82,7 +79,8 @@
                     <div class="svg-wrapper" content='Upload' id="upload_button" data-src="/upload/">
                     </div>
                     <!-- Wallpaper button -->
-                    <div class="svg-wrapper" content='Wallpaper' id="wp_button" data-src="/view/ohtoai?tags=wallpaper,G">
+                    <div class="svg-wrapper" content='Wallpaper' id="wp_button"
+                        data-src="/view/ohtoai?tags=wallpaper,G">
                     </div>
                     <!-- Console button -->
                     <div class="svg-wrapper" content='Console' id="console_button" data-src="/plugin/console-page/">
