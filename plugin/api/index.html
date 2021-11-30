@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <title>OhtoAi - API Documents</title>
 </head>
-<xmp theme="sketchy" style="display:none;">
+<xmp theme="cerulean" style="display:none;">
 # Documents on building...
 # 文档建设中...
 
-- /api/img
+## List
+| 接口 | 类型 | 简介 |参数|返回类型|
+|:---  | :---: | --- |----|---|
+|/img| GET&POST | 图床服务 |见Detail|见Detail|
+|/dog| GET | 舔狗日记|null|application/json
+|/sweet|GET|每日情话|null|text/plain|
+|/soup|GET|毒鸡汤|null|application/json|
+|/history|GET|历史上的今天|null|application/json|
+|/onesaid|GET|一言|null|text/html|
+|/anime_wallpaper|GET|二次元壁纸|type[ pc/pe ]|image/jpeg|
 
-GET  
+
+## Detail
+- /img
+
 ```plain
+GET
+
 Params:
     op      <get|sync|delete|reload|upload>
         描述操作，默认为get
@@ -34,6 +48,8 @@ Params:
         描述图片标签，每个标签使用英文逗号分隔，一般图像均带有G|PG-12|R-15|R-18之一的标签
     storage [image-file-name]
         用于指定文件，一般用于delete操作
+
+
 POST
 
 Params:
