@@ -213,13 +213,13 @@
         var screenMask = new Image();
         screenMask.src = "Screenmask.png";
 
-        var screen = new Image();
-        screen.src = "screen.png";
+        // var screen = new Image();
+        // screen.src = "screen.png";
 
         var iv = setInterval(() => {
-            if (screen.complete && screenMask.complete) {
-                screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
-                screenImageCtx.globalCompositeOperation = "destination-atop";
+            if (/*screen.complete && */screenMask.complete) {
+                // screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
+                // screenImageCtx.globalCompositeOperation = "destination-atop";
                 screenImageCtx.drawImage(screenMask, 0, 0);
                 screenImageCtx.globalCompositeOperation = "source-over";
                 clearInterval(iv);
@@ -271,12 +271,12 @@
         function applyProperties(properties) {
             if (properties.screenFile) {
                 if (properties.screenFile.value) {
-                    screen.src = 'file:///' + properties.screenFile.value;
+                    // screen.src = 'file:///' + properties.screenFile.value;
                     var iv1 = setInterval(() => {
-                        if (screen.complete && screenMask.complete) {
+                        if (/*screen.complete && */screenMask.complete) {
                             screenImageCtx.clearRect(0, 0, 1000, 1000);
-                            screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
-                            screenImageCtx.globalCompositeOperation = "destination-atop";
+                            // screenImageCtx.drawImage(screen, -1041, -210, 1280, 720);
+                            // screenImageCtx.globalCompositeOperation = "destination-atop";
                             screenImageCtx.drawImage(screenMask, 0, 0);
                             screenImageCtx.globalCompositeOperation = "source-over";
                             clearInterval(iv1);
