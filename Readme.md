@@ -1,1 +1,2 @@
-<!DOCTYPE html><html lang="en"><style>*{border:0;margin:0;width:100%;height:100%}*::-webkit-scrollbar{display:none}</style><iframe src="//ohtoai.top/"></iframe></html>"
+# Homepage
+[![web](https://assets.ohtoai.top/img/ohtoai/202112311617009.gif)](https://ohtoai.top/)
