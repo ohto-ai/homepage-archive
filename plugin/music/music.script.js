@@ -47,7 +47,7 @@ loadSong(songs[songIndex], songTitles[songIndex])
 function loadSong(songPath, songTitle) {
     title.innerHTML = songTitle
     audio.src = `/assets/music/${songPath}.mp3`;      // 路径为 music/打上花火.mp3
-    musicCover.src = "https://sdn.geekzu.org/avatar/abe3aff418f55987552d933a287425af?d=mm&s=200";
+    musicCover.src = "https://cdn.sep.cc/avatar/abe3aff418f55987552d933a287425af?d=mm&s=200";
 
 }
 
