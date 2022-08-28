@@ -17,3 +17,4 @@ dev/**/*.log
 dev/**/image_proxy.config
 dev/homepage-api-test/homepage-api-test/image_proxy
 .vscode/**
+tools/pull-hook
