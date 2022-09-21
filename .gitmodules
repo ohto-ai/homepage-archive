@@ -1,6 +1,0 @@
-[submodule "blog"]
-	path = blog
-	url = git@github.com:Ohto-Ai/blog.git
-[submodule "tools/webhook"]
-	path = tools/webhook
-	url = git@github.com:Ohto-Ai/webhook.git
