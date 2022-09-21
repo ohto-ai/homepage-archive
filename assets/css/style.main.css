@@ -34,7 +34,7 @@ body{
 {
     background-size: cover;
     position: absolute;
-    background-image: url(https://thatboy.info/api/img?op=get&type=direct&tags=pc,wallpaper);
+    background-image: url(/assets/img/ohtoai-background.jpg);
     filter: blur(3px);
 }
 .blur-div iframe{
