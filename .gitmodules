@@ -4,6 +4,3 @@
 [submodule "tools/webhook"]
 	path = tools/webhook
 	url = git@github.com:Ohto-Ai/webhook.git
-[submodule "gitalk"]
-	path = gitalk
-	url = git@github.com:Ohto-Ai/gitalk-single-page.git
