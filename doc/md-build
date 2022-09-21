@@ -25,7 +25,7 @@ function generate()
     fi
 
     if [ -z $strapdownjs ]; then
-        strapdownjs="/strapdown/strapdown.js"
+        strapdownjs="/assets/lib/strapdown/strapdown.js"
         info "use default strapdown js \"$strapdownjs\""
     else
         info "use strapdown js $strapdownjs"
@@ -36,7 +36,7 @@ function generate()
         info "use default theme \"$theme\""
     else
         info "use theme \"$theme\""
-    fi    
+    fi
 
     info "generate $html from $markdown"
 
