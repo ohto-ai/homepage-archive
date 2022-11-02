@@ -31,7 +31,7 @@ jobs:
       - name: deploy
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         env:
-          TARGET: ${{ secrets.DEPLOY_DEST_PATH }}
+          TARGET: "/var/deploy/homepage/"
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           user: ${{ secrets.DEPLOY_USERNAME }}
