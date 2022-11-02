@@ -41,3 +41,24 @@ jobs:
           SOURCE: '.'
           TARGET: ${{ secrets.DEPLOY_DEST_PATH }}
 #           AFTER_COMMAND: 'npm run stop && npm install --production && npm run start'
+
+      - name: deploy
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          TARGET: ${{ secrets.DEPLOY_DEST_PATH }}
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          user: ${{ secrets.DEPLOY_USERNAME }}
+          pass: ${{ secrets.DEPLOY_PASSWORD }}
+          connect_timeout: 10s
+          first_ssh: |
+            mkdir -p $TARGET
+            cd $TARGET
+            git init
+            if [ -z "`git remote show`" ]
+            then
+              git remote set-url origin https://github.com/${{github.repository}}
+            else
+              git remote add origin https://github.com/${{github.repository}}
+            fi
+            git pull --force --prune
