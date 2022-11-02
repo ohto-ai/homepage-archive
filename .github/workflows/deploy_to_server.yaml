@@ -32,6 +32,7 @@ jobs:
         uses: cross-the-world/ssh-pipeline@master
         env:
           TARGET: "/var/deploy/homepage/"
+          BRANCH: "master"
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           user: ${{ secrets.DEPLOY_USERNAME }}
@@ -42,4 +43,4 @@ jobs:
             cd $TARGET
             git init
             if [ -z "`git remote show`" ]; then git remote add origin https://github.com/${{github.repository}}; else git remote set-url origin https://github.com/${{github.repository}}; fi
-            git pull --force --prune
+            git pull origin $BRANCH --force --prune
