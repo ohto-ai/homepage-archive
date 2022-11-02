@@ -41,10 +41,5 @@ jobs:
             mkdir -p $TARGET
             cd $TARGET
             git init
-            if [ -z "`git remote show`" ]
-            then
-              git remote set-url origin https://github.com/${{github.repository}}
-            else
-              git remote add origin https://github.com/${{github.repository}}
-            fi
+            if [ -z "`git remote show`" ]; then git remote set-url origin https://github.com/${{github.repository}}; else git remote add origin https://github.com/${{github.repository}}; fi
             git pull --force --prune
