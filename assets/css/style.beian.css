@@ -1,0 +1,42 @@
+.beian
+{
+    border: 0px;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+}
+
+.beian-img
+{
+    position: relative;
+    left: 80px;
+    height: 48px;
+    width: auto;
+    transition: 1s;
+}
+
+
+.beian-text{    
+    line-height: 48px;
+    height: 48px;
+    opacity: 0;
+    font-size: 1px;
+    transition: 1s;
+}
+
+.beian:hover .beian-text
+{
+    line-height: 32px;
+    height: 32px;
+    opacity: 1;
+    font-size: 23px;
+    /* display: inline; */
+}
+
+.beian:hover .beian-img
+{
+    left: -10px;
+    height: 32px;
+    width: auto;
+}

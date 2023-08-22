@@ -1,0 +1,815 @@
+<!DOCTYPE html><html><head>
+    <title>learn-regex</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <style>
+    /**
+* prism.js Github theme based on GitHub's theme.
+* @author Sam Clarke
+*/
+code[class*="language-"],
+pre[class*="language-"] {
+color: #333;
+background: none;
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+text-align: left;
+white-space: pre;
+word-spacing: normal;
+word-break: normal;
+word-wrap: normal;
+line-height: 1.4;
+
+-moz-tab-size: 8;
+-o-tab-size: 8;
+tab-size: 8;
+
+-webkit-hyphens: none;
+-moz-hyphens: none;
+-ms-hyphens: none;
+hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+padding: .8em;
+overflow: auto;
+/* border: 1px solid #ddd; */
+border-radius: 3px;
+/* background: #fff; */
+background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+padding: .1em;
+border-radius: .3em;
+white-space: normal;
+background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+color: #969896;
+}
+
+.token.cdata {
+color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+color: #795da3;
+}
+
+.token.entity {
+cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+font-weight: bold;
+color: #1d3e81;
+}
+
+.token.list {
+color: #ed6a43;
+}
+
+.token.inserted {
+background-color: #eaffea;
+color: #55a532;
+}
+
+.token.deleted {
+background-color: #ffecec;
+color: #bd2c00;
+}
+
+.token.bold {
+font-weight: bold;
+}
+
+.token.italic {
+font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+color: #63a35c;
+}
+
+code.language-yaml {
+color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+color: #795da3;
+}
+
+.language-makefile .token.variable {
+color: #183691;
+}
+
+.language-makefile .token.builtin {
+color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+position: relative;
+padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+position: absolute;
+top: 0;
+left: 0;
+background-color: transparent;
+display: block;
+width: 100%;
+}
+
+pre[data-line] .line-highlight {
+position: absolute;
+left: 0;
+right: 0;
+padding: inherit 0;
+margin-top: 1em;
+background: hsla(24, 20%, 50%,.08);
+background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+pointer-events: none;
+line-height: inherit;
+white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+content: attr(data-start);
+position: absolute;
+top: .4em;
+left: .6em;
+min-width: 1em;
+padding: 0 .5em;
+background-color: hsla(24, 20%, 50%,.4);
+color: hsl(24, 20%, 95%);
+font: bold 65%/1.5 sans-serif;
+text-align: center;
+vertical-align: .3em;
+border-radius: 999px;
+text-shadow: none;
+box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+content: attr(data-end);
+top: auto;
+bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+    </style>
+  </head>
+  <body for="html-export">
+    <div class="mume markdown-preview  ">
+    <p align="center">
+  <br>
+  <a href="https://github.com/ziishaned/learn-regex">
+      <img src="https://assets.ohtoai.top/img/ohtoai/learn-regex.png" alt="Learn Regex">
+  </a>
+  <br><br>
+  </p><p>
+      <a href="https://twitter.com/home?status=Learn%20regex%20the%20easy%20way%20by%20%40ziishaned%20http%3A//github.com/ziishaned/learn-regex">
+          <img src="https://img.shields.io/badge/twitter-tweet-blue.svg?style=flat-square">
+      </a>
+      <a href="https://twitter.com/ziishaned">
+          <img src="https://img.shields.io/badge/feedback-@ziishaned-blue.svg?style=flat-square">
+      </a>
+  </p>
+<p></p>
+<h2 class="mume-header" id="%E7%BF%BB%E8%AF%91">&#x7FFB;&#x8BD1;&#xFF1A;</h2>
+
+<ul>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/README.md">English</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-es.md">Espa&#xF1;ol</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-fr.md">Fran&#xE7;ais</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-pt_BR.md">Portugu&#xEA;s do Brasil</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md">&#x4E2D;&#x6587;&#x7248;</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-ja.md">&#x65E5;&#x672C;&#x8A9E;</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-ko.md">&#xD55C;&#xAD6D;&#xC5B4;</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-tr.md">Turkish</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-gr.md">Greek</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-hu.md">Magyar</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-pl.md">Polish</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-ru.md">&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439;</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-vn.md">Ti&#x1EBF;ng Vi&#x1EC7;t</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-fa.md">&#x641;&#x627;&#x631;&#x633;&#x6CC;</a></li>
+<li><a href="https://github.com/ziishaned/learn-regex/blob/master/translations/README-he.md">&#x5E2;&#x5D1;&#x5E8;&#x5D9;&#x5EA;</a></li>
+</ul>
+<h2 class="mume-header" id="%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">&#x4EC0;&#x4E48;&#x662F;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#xFF1F;</h2>
+
+<p><a href="https://gum.co/learn-regex"><img src="https://img.shields.io/badge/-Download%20PDF%20-0a0a0a.svg?style=flat&amp;colorA=0a0a0a" alt></a></p>
+<blockquote>
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x662F;&#x4E00;&#x7EC4;&#x7531;&#x5B57;&#x6BCD;&#x548C;&#x7B26;&#x53F7;&#x7EC4;&#x6210;&#x7684;&#x7279;&#x6B8A;&#x6587;&#x672C;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x7528;&#x6765;&#x4ECE;&#x6587;&#x672C;&#x4E2D;&#x627E;&#x51FA;&#x6EE1;&#x8DB3;&#x4F60;&#x60F3;&#x8981;&#x7684;&#x683C;&#x5F0F;&#x7684;&#x53E5;&#x5B50;&#x3002;</p>
+</blockquote>
+<p>&#x4E00;&#x4E2A;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x662F;&#x4E00;&#x79CD;&#x4ECE;&#x5DE6;&#x5230;&#x53F3;&#x5339;&#x914D;&#x4E3B;&#x4F53;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x6A21;&#x5F0F;&#x3002;<br>
+&#x201C;Regular expression&#x201D;&#x8FD9;&#x4E2A;&#x8BCD;&#x6BD4;&#x8F83;&#x62D7;&#x53E3;&#xFF0C;&#x6211;&#x4EEC;&#x5E38;&#x4F7F;&#x7528;&#x7F29;&#x5199;&#x7684;&#x672F;&#x8BED;&#x201C;regex&#x201D;&#x6216;&#x201C;regexp&#x201D;&#x3002;<br>
+&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x53EF;&#x4EE5;&#x4ECE;&#x4E00;&#x4E2A;&#x57FA;&#x7840;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x6839;&#x636E;&#x4E00;&#x5B9A;&#x7684;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#x66FF;&#x6362;&#x6587;&#x672C;&#x4E2D;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3001;&#x9A8C;&#x8BC1;&#x8868;&#x5355;&#x3001;&#x63D0;&#x53D6;&#x5B57;&#x7B26;&#x4E32;&#x7B49;&#x7B49;&#x3002;</p>
+<p>&#x60F3;&#x8C61;&#x4F60;&#x6B63;&#x5728;&#x5199;&#x4E00;&#x4E2A;&#x5E94;&#x7528;&#xFF0C;&#x7136;&#x540E;&#x4F60;&#x60F3;&#x8BBE;&#x5B9A;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x547D;&#x540D;&#x7684;&#x89C4;&#x5219;&#xFF0C;&#x8BA9;&#x7528;&#x6237;&#x540D;&#x5305;&#x542B;&#x5B57;&#x7B26;&#x3001;&#x6570;&#x5B57;&#x3001;&#x4E0B;&#x5212;&#x7EBF;&#x548C;&#x8FDE;&#x5B57;&#x7B26;&#xFF0C;&#x4EE5;&#x53CA;&#x9650;&#x5236;&#x5B57;&#x7B26;&#x7684;&#x4E2A;&#x6570;&#xFF0C;&#x597D;&#x8BA9;&#x540D;&#x5B57;&#x770B;&#x8D77;&#x6765;&#x6CA1;&#x90A3;&#x4E48;&#x4E11;&#x3002;<br>
+&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x6765;&#x9A8C;&#x8BC1;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x540D;&#xFF1A;</p>
+<p><br><br></p>
+<p align="center">
+<img src="https://assets.ohtoai.top/img/ohtoai/regexp-cn.png" alt="Regular expression">
+</p>
+<p>&#x4EE5;&#x4E0A;&#x7684;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x53EF;&#x4EE5;&#x63A5;&#x53D7; <code>john_doe</code>&#x3001;<code>jo-hn_doe</code>&#x3001;<code>john12_as</code>&#x3002;<br>
+&#x4F46;&#x4E0D;&#x5339;&#x914D;<code>Jo</code>&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x5305;&#x542B;&#x4E86;&#x5927;&#x5199;&#x7684;&#x5B57;&#x6BCD;&#x800C;&#x4E14;&#x592A;&#x77ED;&#x4E86;&#x3002;</p>
+<h1>&#x76EE;&#x5F55;</h1>
+<ul>
+<li><a href="#1-%E5%9F%BA%E6%9C%AC%E5%8C%B9%E9%85%8D">1. &#x57FA;&#x672C;&#x5339;&#x914D;</a></li>
+<li><a href="#2-%E5%85%83%E5%AD%97%E7%AC%A6">2. &#x5143;&#x5B57;&#x7B26;</a>
+<ul>
+<li><a href="#21-%E7%82%B9%E8%BF%90%E7%AE%97%E7%AC%A6-">2.1 &#x70B9;&#x8FD0;&#x7B97;&#x7B26; .</a></li>
+<li><a href="#22-%E5%AD%97%E7%AC%A6%E9%9B%86">2.2 &#x5B57;&#x7B26;&#x96C6;</a>
+<ul>
+<li><a href="#221-%E5%90%A6%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86">2.2.1 &#x5426;&#x5B9A;&#x5B57;&#x7B26;&#x96C6;</a></li>
+</ul>
+</li>
+<li><a href="#23-%E9%87%8D%E5%A4%8D%E6%AC%A1%E6%95%B0">2.3 &#x91CD;&#x590D;&#x6B21;&#x6570;</a>
+<ul>
+<li><a href="#231--%E5%8F%B7">2.3.1 * &#x53F7;</a></li>
+<li><a href="#232--%E5%8F%B7">2.3.2 + &#x53F7;</a></li>
+<li><a href="#233--%E5%8F%B7">2.3.3 ? &#x53F7;</a></li>
+</ul>
+</li>
+<li><a href="#24--%E5%8F%B7">2.4 {} &#x53F7;</a></li>
+<li><a href="#25--%E7%89%B9%E5%BE%81%E6%A0%87%E7%BE%A4">2.5 (...) &#x7279;&#x5F81;&#x6807;&#x7FA4;</a></li>
+<li><a href="#26--%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6">2.6 | &#x6216;&#x8FD0;&#x7B97;&#x7B26;</a></li>
+<li><a href="#27-%E8%BD%AC%E7%A0%81%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">2.7 &#x8F6C;&#x7801;&#x7279;&#x6B8A;&#x5B57;&#x7B26;</a></li>
+<li><a href="#28-%E9%94%9A%E7%82%B9">2.8 &#x951A;&#x70B9;</a>
+<ul>
+<li><a href="#281--%E5%8F%B7">2.8.1 ^ &#x53F7;</a></li>
+<li><a href="#282--%E5%8F%B7">2.8.2 $ &#x53F7;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">&#x76EE;&#x5F55;</a>
+<ul>
+<li><a href="#1-%E5%9F%BA%E6%9C%AC%E5%8C%B9%E9%85%8D">1. &#x57FA;&#x672C;&#x5339;&#x914D;</a></li>
+<li><a href="#2-%E5%85%83%E5%AD%97%E7%AC%A6">2. &#x5143;&#x5B57;&#x7B26;</a></li>
+<li><a href="#21-%E7%82%B9%E8%BF%90%E7%AE%97%E7%AC%A6-">2.1 &#x70B9;&#x8FD0;&#x7B97;&#x7B26; <code>.</code></a></li>
+<li><a href="#22-%E5%AD%97%E7%AC%A6%E9%9B%86">2.2 &#x5B57;&#x7B26;&#x96C6;</a>
+<ul>
+<li><a href="#221-%E5%90%A6%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86">2.2.1 &#x5426;&#x5B9A;&#x5B57;&#x7B26;&#x96C6;</a></li>
+</ul>
+</li>
+<li><a href="#23-%E9%87%8D%E5%A4%8D%E6%AC%A1%E6%95%B0">2.3 &#x91CD;&#x590D;&#x6B21;&#x6570;</a>
+<ul>
+<li><a href="#231--%E5%8F%B7">2.3.1 <code>*</code> &#x53F7;</a></li>
+<li><a href="#232--%E5%8F%B7">2.3.2 <code>+</code> &#x53F7;</a></li>
+<li><a href="#233--%E5%8F%B7">2.3.3 <code>?</code> &#x53F7;</a></li>
+</ul>
+</li>
+<li><a href="#24--%E5%8F%B7">2.4 <code>{}</code> &#x53F7;</a></li>
+<li><a href="#25--%E7%89%B9%E5%BE%81%E6%A0%87%E7%BE%A4">2.5 <code>(...)</code> &#x7279;&#x5F81;&#x6807;&#x7FA4;</a></li>
+<li><a href="#26--%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6">2.6 <code>|</code> &#x6216;&#x8FD0;&#x7B97;&#x7B26;</a></li>
+<li><a href="#27-%E8%BD%AC%E7%A0%81%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">2.7 &#x8F6C;&#x7801;&#x7279;&#x6B8A;&#x5B57;&#x7B26;</a></li>
+<li><a href="#28-%E9%94%9A%E7%82%B9">2.8 &#x951A;&#x70B9;</a>
+<ul>
+<li><a href="#281--%E5%8F%B7">2.8.1 <code>^</code> &#x53F7;</a></li>
+<li><a href="#282--%E5%8F%B7">2.8.2 <code>$</code> &#x53F7;</a></li>
+</ul>
+</li>
+<li><a href="#3-%E7%AE%80%E5%86%99%E5%AD%97%E7%AC%A6%E9%9B%86">3. &#x7B80;&#x5199;&#x5B57;&#x7B26;&#x96C6;</a></li>
+<li><a href="#4-%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80%E5%89%8D%E5%90%8E%E9%A2%84%E6%9F%A5">4. &#x96F6;&#x5BBD;&#x5EA6;&#x65AD;&#x8A00;&#xFF08;&#x524D;&#x540E;&#x9884;&#x67E5;&#xFF09;</a>
+<ul>
+<li><a href="#41--%E6%AD%A3%E5%85%88%E8%A1%8C%E6%96%AD%E8%A8%80">4.1 <code>?=...</code> &#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;</a></li>
+<li><a href="#42--%E8%B4%9F%E5%85%88%E8%A1%8C%E6%96%AD%E8%A8%80">4.2 <code>?!...</code> &#x8D1F;&#x5148;&#x884C;&#x65AD;&#x8A00;</a></li>
+<li><a href="#43---%E6%AD%A3%E5%90%8E%E5%8F%91%E6%96%AD%E8%A8%80">4.3 <code>?&lt;= ...</code> &#x6B63;&#x540E;&#x53D1;&#x65AD;&#x8A00;</a></li>
+<li><a href="#44--%E8%B4%9F%E5%90%8E%E5%8F%91%E6%96%AD%E8%A8%80">4.4 <code>?&lt;!...</code> &#x8D1F;&#x540E;&#x53D1;&#x65AD;&#x8A00;</a></li>
+</ul>
+</li>
+<li><a href="#5-%E6%A0%87%E5%BF%97">5. &#x6807;&#x5FD7;</a>
+<ul>
+<li><a href="#51-%E5%BF%BD%E7%95%A5%E5%A4%A7%E5%B0%8F%E5%86%99-case-insensitive">5.1 &#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199; (Case Insensitive)</a></li>
+<li><a href="#52-%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2-global-search">5.2 &#x5168;&#x5C40;&#x641C;&#x7D22; (Global search)</a></li>
+<li><a href="#53-%E5%A4%9A%E8%A1%8C%E4%BF%AE%E9%A5%B0%E7%AC%A6-multiline">5.3 &#x591A;&#x884C;&#x4FEE;&#x9970;&#x7B26; (Multiline)</a></li>
+<li><a href="#6-%E8%B4%AA%E5%A9%AA%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%83%B0%E6%80%A7%E5%8C%B9%E9%85%8D-greedy-vs-lazy-matching">6. &#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x4E0E;&#x60F0;&#x6027;&#x5339;&#x914D; (Greedy vs lazy matching)</a></li>
+</ul>
+</li>
+<li><a href="#%E8%B4%A1%E7%8C%AE">&#x8D21;&#x732E;</a></li>
+<li><a href="#%E8%AE%B8%E5%8F%AF%E8%AF%81">&#x8BB8;&#x53EF;&#x8BC1;</a></li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="1-%E5%9F%BA%E6%9C%AC%E5%8C%B9%E9%85%8D">1. &#x57FA;&#x672C;&#x5339;&#x914D;</h2>
+
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x5728;&#x6267;&#x884C;&#x641C;&#x7D22;&#x65F6;&#x7684;&#x683C;&#x5F0F;&#xFF0C;&#x5B83;&#x7531;&#x4E00;&#x4E9B;&#x5B57;&#x6BCD;&#x548C;&#x6570;&#x5B57;&#x7EC4;&#x5408;&#x800C;&#x6210;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF1A;&#x4E00;&#x4E2A;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F; <code>the</code>&#xFF0C;&#x5B83;&#x8868;&#x793A;&#x4E00;&#x4E2A;&#x89C4;&#x5219;&#xFF1A;&#x7531;&#x5B57;&#x6BCD;<code>t</code>&#x5F00;&#x59CB;&#xFF0C;&#x63A5;&#x7740;&#x662F;<code>h</code>&#xFF0C;&#x518D;&#x63A5;&#x7740;&#x662F;<code>e</code>&#x3002;</p>
+<pre>&quot;the&quot; =&gt; The fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+<p><a href="https://regex101.com/r/dmRygT/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;<code>123</code>&#x5339;&#x914D;&#x5B57;&#x7B26;&#x4E32;<code>123</code>&#x3002;&#x5B83;&#x9010;&#x4E2A;&#x5B57;&#x7B26;&#x7684;&#x4E0E;&#x8F93;&#x5165;&#x7684;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x505A;&#x6BD4;&#x8F83;&#x3002;</p>
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x662F;&#x5927;&#x5C0F;&#x5199;&#x654F;&#x611F;&#x7684;&#xFF0C;&#x6240;&#x4EE5;<code>The</code>&#x4E0D;&#x4F1A;&#x5339;&#x914D;<code>the</code>&#x3002;</p>
+<pre>&quot;The&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+<p><a href="https://regex101.com/r/1paXsy/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="2-%E5%85%83%E5%AD%97%E7%AC%A6">2. &#x5143;&#x5B57;&#x7B26;</h2>
+
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4E3B;&#x8981;&#x4F9D;&#x8D56;&#x4E8E;&#x5143;&#x5B57;&#x7B26;&#x3002;<br>
+&#x5143;&#x5B57;&#x7B26;&#x4E0D;&#x4EE3;&#x8868;&#x4ED6;&#x4EEC;&#x672C;&#x8EAB;&#x7684;&#x5B57;&#x9762;&#x610F;&#x601D;&#xFF0C;&#x4ED6;&#x4EEC;&#x90FD;&#x6709;&#x7279;&#x6B8A;&#x7684;&#x542B;&#x4E49;&#x3002;&#x4E00;&#x4E9B;&#x5143;&#x5B57;&#x7B26;&#x5199;&#x5728;&#x65B9;&#x62EC;&#x53F7;&#x4E2D;&#x7684;&#x65F6;&#x5019;&#x6709;&#x4E00;&#x4E9B;&#x7279;&#x6B8A;&#x7684;&#x610F;&#x601D;&#x3002;&#x4EE5;&#x4E0B;&#x662F;&#x4E00;&#x4E9B;&#x5143;&#x5B57;&#x7B26;&#x7684;&#x4ECB;&#x7ECD;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x5143;&#x5B57;&#x7B26;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">.</td>
+<td>&#x53E5;&#x53F7;&#x5339;&#x914D;&#x4EFB;&#x610F;&#x5355;&#x4E2A;&#x5B57;&#x7B26;&#x9664;&#x4E86;&#x6362;&#x884C;&#x7B26;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">[ ]</td>
+<td>&#x5B57;&#x7B26;&#x79CD;&#x7C7B;&#x3002;&#x5339;&#x914D;&#x65B9;&#x62EC;&#x53F7;&#x5185;&#x7684;&#x4EFB;&#x610F;&#x5B57;&#x7B26;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">[^ ]</td>
+<td>&#x5426;&#x5B9A;&#x7684;&#x5B57;&#x7B26;&#x79CD;&#x7C7B;&#x3002;&#x5339;&#x914D;&#x9664;&#x4E86;&#x65B9;&#x62EC;&#x53F7;&#x91CC;&#x7684;&#x4EFB;&#x610F;&#x5B57;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td>&#x5339;&#x914D;&gt;=0&#x4E2A;&#x91CD;&#x590D;&#x7684;&#x5728;*&#x53F7;&#x4E4B;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">+</td>
+<td>&#x5339;&#x914D;&gt;=1&#x4E2A;&#x91CD;&#x590D;&#x7684;+&#x53F7;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">?</td>
+<td>&#x6807;&#x8BB0;?&#x4E4B;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x4E3A;&#x53EF;&#x9009;.</td>
+</tr>
+<tr>
+<td style="text-align:center">{n,m}</td>
+<td>&#x5339;&#x914D;num&#x4E2A;&#x5927;&#x62EC;&#x53F7;&#x4E4B;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x6216;&#x5B57;&#x7B26;&#x96C6; (n &lt;= num &lt;= m).</td>
+</tr>
+<tr>
+<td style="text-align:center">(xyz)</td>
+<td>&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x5339;&#x914D;&#x4E0E; xyz &#x5B8C;&#x5168;&#x76F8;&#x7B49;&#x7684;&#x5B57;&#x7B26;&#x4E32;.</td>
+</tr>
+<tr>
+<td style="text-align:center">|</td>
+<td>&#x6216;&#x8FD0;&#x7B97;&#x7B26;&#xFF0C;&#x5339;&#x914D;&#x7B26;&#x53F7;&#x524D;&#x6216;&#x540E;&#x7684;&#x5B57;&#x7B26;.</td>
+</tr>
+<tr>
+<td style="text-align:center">\</td>
+<td>&#x8F6C;&#x4E49;&#x5B57;&#x7B26;,&#x7528;&#x4E8E;&#x5339;&#x914D;&#x4E00;&#x4E9B;&#x4FDD;&#x7559;&#x7684;&#x5B57;&#x7B26; <code>[ ] ( ) { } . * + ? ^ $ \ |</code></td>
+</tr>
+<tr>
+<td style="text-align:center">^</td>
+<td>&#x4ECE;&#x5F00;&#x59CB;&#x884C;&#x5F00;&#x59CB;&#x5339;&#x914D;.</td>
+</tr>
+<tr>
+<td style="text-align:center">$</td>
+<td>&#x4ECE;&#x672B;&#x7AEF;&#x5F00;&#x59CB;&#x5339;&#x914D;.</td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="21-%E7%82%B9%E8%BF%90%E7%AE%97%E7%AC%A6">2.1 &#x70B9;&#x8FD0;&#x7B97;&#x7B26; <code>.</code></h2>
+
+<p><code>.</code>&#x662F;&#x5143;&#x5B57;&#x7B26;&#x4E2D;&#x6700;&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;&#x3002;<br>
+<code>.</code>&#x5339;&#x914D;&#x4EFB;&#x610F;&#x5355;&#x4E2A;&#x5B57;&#x7B26;&#xFF0C;&#x4F46;&#x4E0D;&#x5339;&#x914D;&#x6362;&#x884C;&#x7B26;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F;<code>.ar</code>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x4EFB;&#x610F;&#x5B57;&#x7B26;&#x540E;&#x9762;&#x8DDF;&#x7740;&#x662F;<code>a</code>&#x548C;<code>r</code>&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;.ar&quot; =&gt; The <a href="#learn-regex"><strong>car</strong></a> <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+<p><a href="https://regex101.com/r/xc9GkU/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="22-%E5%AD%97%E7%AC%A6%E9%9B%86">2.2 &#x5B57;&#x7B26;&#x96C6;</h2>
+
+<p>&#x5B57;&#x7B26;&#x96C6;&#x4E5F;&#x53EB;&#x505A;&#x5B57;&#x7B26;&#x7C7B;&#x3002;<br>
+&#x65B9;&#x62EC;&#x53F7;&#x7528;&#x6765;&#x6307;&#x5B9A;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x96C6;&#x3002;<br>
+&#x5728;&#x65B9;&#x62EC;&#x53F7;&#x4E2D;&#x4F7F;&#x7528;&#x8FDE;&#x5B57;&#x7B26;&#x6765;&#x6307;&#x5B9A;&#x5B57;&#x7B26;&#x96C6;&#x7684;&#x8303;&#x56F4;&#x3002;<br>
+&#x5728;&#x65B9;&#x62EC;&#x53F7;&#x4E2D;&#x7684;&#x5B57;&#x7B26;&#x96C6;&#x4E0D;&#x5173;&#x5FC3;&#x987A;&#x5E8F;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F;<code>[Tt]he</code> &#x5339;&#x914D; <code>the</code> &#x548C; <code>The</code>&#x3002;</p>
+<pre>&quot;[Tt]he&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> car parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+<p><a href="https://regex101.com/r/2ITLQ4/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<p>&#x65B9;&#x62EC;&#x53F7;&#x7684;&#x53E5;&#x53F7;&#x5C31;&#x8868;&#x793A;&#x53E5;&#x53F7;&#x3002;<br>
+&#x8868;&#x8FBE;&#x5F0F; <code>ar[.]</code> &#x5339;&#x914D; <code>ar.</code>&#x5B57;&#x7B26;&#x4E32;</p>
+<pre>&quot;ar[.]&quot; =&gt; A garage is a good place to park a c<a href="#learn-regex"><strong>ar.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/wL3xtE/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="221-%E5%90%A6%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86">2.2.1 &#x5426;&#x5B9A;&#x5B57;&#x7B26;&#x96C6;</h3>
+
+<p>&#x4E00;&#x822C;&#x6765;&#x8BF4; <code>^</code> &#x8868;&#x793A;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5F00;&#x5934;&#xFF0C;&#x4F46;&#x5B83;&#x7528;&#x5728;&#x4E00;&#x4E2A;&#x65B9;&#x62EC;&#x53F7;&#x7684;&#x5F00;&#x5934;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5B83;&#x8868;&#x793A;&#x8FD9;&#x4E2A;&#x5B57;&#x7B26;&#x96C6;&#x662F;&#x5426;&#x5B9A;&#x7684;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F;<code>[^c]ar</code> &#x5339;&#x914D;&#x4E00;&#x4E2A;&#x540E;&#x9762;&#x8DDF;&#x7740;<code>ar</code>&#x7684;&#x9664;&#x4E86;<code>c</code>&#x7684;&#x4EFB;&#x610F;&#x5B57;&#x7B26;&#x3002;</p>
+<pre>&quot;[^c]ar&quot; =&gt; The car <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+<p><a href="https://regex101.com/r/nNNlq3/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="23-%E9%87%8D%E5%A4%8D%E6%AC%A1%E6%95%B0">2.3 &#x91CD;&#x590D;&#x6B21;&#x6570;</h2>
+
+<p>&#x540E;&#x9762;&#x8DDF;&#x7740;&#x5143;&#x5B57;&#x7B26; <code>+</code>&#xFF0C;<code>*</code> or <code>?</code> &#x7684;&#xFF0C;&#x7528;&#x6765;&#x6307;&#x5B9A;&#x5339;&#x914D;&#x5B50;&#x6A21;&#x5F0F;&#x7684;&#x6B21;&#x6570;&#x3002;<br>
+&#x8FD9;&#x4E9B;&#x5143;&#x5B57;&#x7B26;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x6709;&#x7740;&#x4E0D;&#x540C;&#x7684;&#x610F;&#x601D;&#x3002;</p>
+<h3 class="mume-header" id="231-%E5%8F%B7">2.3.1 <code>*</code> &#x53F7;</h3>
+
+<p><code>*</code>&#x53F7;&#x5339;&#x914D; &#x5728;<code>*</code>&#x4E4B;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x51FA;&#x73B0;<code>&#x5927;&#x4E8E;&#x7B49;&#x4E8E;0</code>&#x6B21;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>a*</code> &#x5339;&#x914D;0&#x6216;&#x66F4;&#x591A;&#x4E2A;&#x4EE5;a&#x5F00;&#x5934;&#x7684;&#x5B57;&#x7B26;&#x3002;&#x8868;&#x8FBE;&#x5F0F;<code>[a-z]*</code> &#x5339;&#x914D;&#x4E00;&#x4E2A;&#x884C;&#x4E2D;&#x6240;&#x6709;&#x4EE5;&#x5C0F;&#x5199;&#x5B57;&#x6BCD;&#x5F00;&#x5934;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;[a-z]*&quot; =&gt; T<a href="#learn-regex"><strong>he</strong></a> <a href="#learn-regex"><strong>car</strong></a> <a href="#learn-regex"><strong>parked</strong></a> <a href="#learn-regex"><strong>in</strong></a> <a href="#learn-regex"><strong>the</strong></a> <a href="#learn-regex"><strong>garage</strong></a> #21.
+</pre>
+<p><a href="https://regex101.com/r/7m8me5/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<p><code>*</code>&#x5B57;&#x7B26;&#x548C;<code>.</code>&#x5B57;&#x7B26;&#x642D;&#x914D;&#x53EF;&#x4EE5;&#x5339;&#x914D;&#x6240;&#x6709;&#x7684;&#x5B57;&#x7B26;<code>.*</code>&#x3002;<br>
+<code>*</code>&#x548C;&#x8868;&#x793A;&#x5339;&#x914D;&#x7A7A;&#x683C;&#x7684;&#x7B26;&#x53F7;<code>\s</code>&#x8FDE;&#x8D77;&#x6765;&#x7528;&#xFF0C;&#x5982;&#x8868;&#x8FBE;&#x5F0F;<code>\s*cat\s*</code>&#x5339;&#x914D;0&#x6216;&#x66F4;&#x591A;&#x4E2A;&#x7A7A;&#x683C;&#x5F00;&#x5934;&#x548C;0&#x6216;&#x66F4;&#x591A;&#x4E2A;&#x7A7A;&#x683C;&#x7ED3;&#x5C3E;&#x7684;cat&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;\s*cat\s*&quot; =&gt; The fat<a href="#learn-regex"><strong> cat </strong></a>sat on the con<a href="#learn-regex"><strong>cat</strong></a>enation.
+</pre>
+<p><a href="https://regex101.com/r/gGrwuz/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="232-%E5%8F%B7">2.3.2 <code>+</code> &#x53F7;</h3>
+
+<p><code>+</code>&#x53F7;&#x5339;&#x914D;<code>+</code>&#x53F7;&#x4E4B;&#x524D;&#x7684;&#x5B57;&#x7B26;&#x51FA;&#x73B0; &gt;=1 &#x6B21;&#x3002;<br>
+&#x4F8B;&#x5982;&#x8868;&#x8FBE;&#x5F0F;<code>c.+t</code> &#x5339;&#x914D;&#x4EE5;&#x9996;&#x5B57;&#x6BCD;<code>c</code>&#x5F00;&#x5934;&#x4EE5;<code>t</code>&#x7ED3;&#x5C3E;&#xFF0C;&#x4E2D;&#x95F4;&#x8DDF;&#x7740;&#x81F3;&#x5C11;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;c.+t&quot; =&gt; The fat <a href="#learn-regex"><strong>cat sat on the mat</strong></a>.
+</pre>
+<p><a href="https://regex101.com/r/Dzf9Aa/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="233-%E5%8F%B7">2.3.3 <code>?</code> &#x53F7;</h3>
+
+<p>&#x5728;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4E2D;&#x5143;&#x5B57;&#x7B26; <code>?</code> &#x6807;&#x8BB0;&#x5728;&#x7B26;&#x53F7;&#x524D;&#x9762;&#x7684;&#x5B57;&#x7B26;&#x4E3A;&#x53EF;&#x9009;&#xFF0C;&#x5373;&#x51FA;&#x73B0; 0 &#x6216; 1 &#x6B21;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>[T]?he</code> &#x5339;&#x914D;&#x5B57;&#x7B26;&#x4E32; <code>he</code> &#x548C; <code>The</code>&#x3002;</p>
+<pre>&quot;[T]he&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> car is parked in the garage.
+</pre>
+<p><a href="https://regex101.com/r/cIg9zm/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;[T]?he&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> car is parked in t<a href="#learn-regex"><strong>he</strong></a> garage.
+</pre>
+<p><a href="https://regex101.com/r/kPpO2x/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="24-%E5%8F%B7">2.4 <code>{}</code> &#x53F7;</h2>
+
+<p>&#x5728;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4E2D; <code>{}</code> &#x662F;&#x4E00;&#x4E2A;&#x91CF;&#x8BCD;&#xFF0C;&#x5E38;&#x7528;&#x6765;&#x9650;&#x5B9A;&#x4E00;&#x4E2A;&#x6216;&#x4E00;&#x7EC4;&#x5B57;&#x7B26;&#x53EF;&#x4EE5;&#x91CD;&#x590D;&#x51FA;&#x73B0;&#x7684;&#x6B21;&#x6570;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C; &#x8868;&#x8FBE;&#x5F0F; <code>[0-9]{2,3}</code> &#x5339;&#x914D;&#x6700;&#x5C11; 2 &#x4F4D;&#x6700;&#x591A; 3 &#x4F4D; 0~9 &#x7684;&#x6570;&#x5B57;&#x3002;</p>
+<pre>&quot;[0-9]{2,3}&quot; =&gt; The number was 9.<a href="#learn-regex"><strong>999</strong></a>7 but we rounded it off to <a href="#learn-regex"><strong>10</strong></a>.0.
+</pre>
+<p><a href="https://regex101.com/r/juM86s/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7701;&#x7565;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;<code>[0-9]{2,}</code> &#x5339;&#x914D;&#x81F3;&#x5C11;&#x4E24;&#x4F4D; 0~9 &#x7684;&#x6570;&#x5B57;&#x3002;</p>
+<pre>&quot;[0-9]{2,}&quot; =&gt; The number was 9.<a href="#learn-regex"><strong>9997</strong></a> but we rounded it off to <a href="#learn-regex"><strong>10</strong></a>.0.
+</pre>
+<p><a href="https://regex101.com/r/Gdy4w5/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<p>&#x5982;&#x679C;&#x9017;&#x53F7;&#x4E5F;&#x7701;&#x7565;&#x6389;&#x5219;&#x8868;&#x793A;&#x91CD;&#x590D;&#x56FA;&#x5B9A;&#x7684;&#x6B21;&#x6570;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;<code>[0-9]{3}</code> &#x5339;&#x914D;3&#x4F4D;&#x6570;&#x5B57;</p>
+<pre>&quot;[0-9]{3}&quot; =&gt; The number was 9.<a href="#learn-regex"><strong>999</strong></a>7 but we rounded it off to 10.0.
+</pre>
+<p><a href="https://regex101.com/r/Sivu30/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="25-%E7%89%B9%E5%BE%81%E6%A0%87%E7%BE%A4">2.5 <code>(...)</code> &#x7279;&#x5F81;&#x6807;&#x7FA4;</h2>
+
+<p>&#x7279;&#x5F81;&#x6807;&#x7FA4;&#x662F;&#x4E00;&#x7EC4;&#x5199;&#x5728; <code>(...)</code> &#x4E2D;&#x7684;&#x5B50;&#x6A21;&#x5F0F;&#x3002;<code>(...)</code> &#x4E2D;&#x5305;&#x542B;&#x7684;&#x5185;&#x5BB9;&#x5C06;&#x4F1A;&#x88AB;&#x770B;&#x6210;&#x4E00;&#x4E2A;&#x6574;&#x4F53;&#xFF0C;&#x548C;&#x6570;&#x5B66;&#x4E2D;&#x5C0F;&#x62EC;&#x53F7;&#xFF08; &#xFF09;&#x7684;&#x4F5C;&#x7528;&#x76F8;&#x540C;&#x3002;&#x4F8B;&#x5982;, &#x8868;&#x8FBE;&#x5F0F; <code>(ab)*</code> &#x5339;&#x914D;&#x8FDE;&#x7EED;&#x51FA;&#x73B0; 0 &#x6216;&#x66F4;&#x591A;&#x4E2A; <code>ab</code>&#x3002;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x4F7F;&#x7528; <code>(...)</code> &#xFF0C;&#x90A3;&#x4E48;&#x8868;&#x8FBE;&#x5F0F; <code>ab*</code> &#x5C06;&#x5339;&#x914D;&#x8FDE;&#x7EED;&#x51FA;&#x73B0; 0 &#x6216;&#x66F4;&#x591A;&#x4E2A; <code>b</code> &#x3002;&#x518D;&#x6BD4;&#x5982;&#x4E4B;&#x524D;&#x8BF4;&#x7684; <code>{}</code> &#x662F;&#x7528;&#x6765;&#x8868;&#x793A;&#x524D;&#x9762;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x51FA;&#x73B0;&#x6307;&#x5B9A;&#x6B21;&#x6570;&#x3002;&#x4F46;&#x5982;&#x679C;&#x5728; <code>{}</code> &#x524D;&#x52A0;&#x4E0A;&#x7279;&#x5F81;&#x6807;&#x7FA4; <code>(...)</code> &#x5219;&#x8868;&#x793A;&#x6574;&#x4E2A;&#x6807;&#x7FA4;&#x5185;&#x7684;&#x5B57;&#x7B26;&#x91CD;&#x590D; N &#x6B21;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x8FD8;&#x53EF;&#x4EE5;&#x5728; <code>()</code> &#x4E2D;&#x7528;&#x6216;&#x5B57;&#x7B26; <code>|</code> &#x8868;&#x793A;&#x6216;&#x3002;&#x4F8B;&#x5982;&#xFF0C;<code>(c|g|p)ar</code> &#x5339;&#x914D; <code>car</code> &#x6216; <code>gar</code> &#x6216; <code>par</code>.</p>
+<pre>&quot;(c|g|p)ar&quot; =&gt; The <a href="#learn-regex"><strong>car</strong></a> is <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+<p><a href="https://regex101.com/r/tUxrBG/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="26-%E6%88%96%E8%BF%90%E7%AE%97%E7%AC%A6">2.6 <code>|</code> &#x6216;&#x8FD0;&#x7B97;&#x7B26;</h2>
+
+<p>&#x6216;&#x8FD0;&#x7B97;&#x7B26;&#x5C31;&#x8868;&#x793A;&#x6216;&#xFF0C;&#x7528;&#x4F5C;&#x5224;&#x65AD;&#x6761;&#x4EF6;&#x3002;</p>
+<p>&#x4F8B;&#x5982; <code>(T|t)he|car</code> &#x5339;&#x914D; <code>(T|t)he</code> &#x6216; <code>car</code>&#x3002;</p>
+<pre>&quot;(T|t)he|car&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> <a href="#learn-regex"><strong>car</strong></a> is parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+<p><a href="https://regex101.com/r/fBXyX0/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="27-%E8%BD%AC%E7%A0%81%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6">2.7 &#x8F6C;&#x7801;&#x7279;&#x6B8A;&#x5B57;&#x7B26;</h2>
+
+<p>&#x53CD;&#x659C;&#x7EBF; <code>\</code> &#x5728;&#x8868;&#x8FBE;&#x5F0F;&#x4E2D;&#x7528;&#x4E8E;&#x8F6C;&#x7801;&#x7D27;&#x8DDF;&#x5176;&#x540E;&#x7684;&#x5B57;&#x7B26;&#x3002;&#x7528;&#x4E8E;&#x6307;&#x5B9A; <code>{ } [ ] / \ + * . $ ^ | ?</code> &#x8FD9;&#x4E9B;&#x7279;&#x6B8A;&#x5B57;&#x7B26;&#x3002;&#x5982;&#x679C;&#x60F3;&#x8981;&#x5339;&#x914D;&#x8FD9;&#x4E9B;&#x7279;&#x6B8A;&#x5B57;&#x7B26;&#x5219;&#x8981;&#x5728;&#x5176;&#x524D;&#x9762;&#x52A0;&#x4E0A;&#x53CD;&#x659C;&#x7EBF; <code>\</code>&#x3002;</p>
+<p>&#x4F8B;&#x5982; <code>.</code> &#x662F;&#x7528;&#x6765;&#x5339;&#x914D;&#x9664;&#x6362;&#x884C;&#x7B26;&#x5916;&#x7684;&#x6240;&#x6709;&#x5B57;&#x7B26;&#x7684;&#x3002;&#x5982;&#x679C;&#x60F3;&#x8981;&#x5339;&#x914D;&#x53E5;&#x5B50;&#x4E2D;&#x7684; <code>.</code> &#x5219;&#x8981;&#x5199;&#x6210; <code>\.</code> &#x4EE5;&#x4E0B;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50; <code>\.?</code>&#x662F;&#x9009;&#x62E9;&#x6027;&#x5339;&#x914D;<code>.</code></p>
+<pre>&quot;(f|c|m)at\.?&quot; =&gt; The <a href="#learn-regex"><strong>fat</strong></a> <a href="#learn-regex"><strong>cat</strong></a> sat on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/DOc5Nu/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="28-%E9%94%9A%E7%82%B9">2.8 &#x951A;&#x70B9;</h2>
+
+<p>&#x5728;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4E2D;&#xFF0C;&#x60F3;&#x8981;&#x5339;&#x914D;&#x6307;&#x5B9A;&#x5F00;&#x5934;&#x6216;&#x7ED3;&#x5C3E;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x5C31;&#x8981;&#x4F7F;&#x7528;&#x5230;&#x951A;&#x70B9;&#x3002;<code>^</code> &#x6307;&#x5B9A;&#x5F00;&#x5934;&#xFF0C;<code>$</code> &#x6307;&#x5B9A;&#x7ED3;&#x5C3E;&#x3002;</p>
+<h3 class="mume-header" id="281-%E5%8F%B7">2.8.1 <code>^</code> &#x53F7;</h3>
+
+<p><code>^</code> &#x7528;&#x6765;&#x68C0;&#x67E5;&#x5339;&#x914D;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x6240;&#x5339;&#x914D;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5F00;&#x5934;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;&#x5728; <code>abc</code> &#x4E2D;&#x4F7F;&#x7528;&#x8868;&#x8FBE;&#x5F0F; <code>^a</code> &#x4F1A;&#x5F97;&#x5230;&#x7ED3;&#x679C; <code>a</code>&#x3002;&#x4F46;&#x5982;&#x679C;&#x4F7F;&#x7528; <code>^b</code> &#x5C06;&#x5339;&#x914D;&#x4E0D;&#x5230;&#x4EFB;&#x4F55;&#x7ED3;&#x679C;&#x3002;&#x56E0;&#x4E3A;&#x5728;&#x5B57;&#x7B26;&#x4E32; <code>abc</code> &#x4E2D;&#x5E76;&#x4E0D;&#x662F;&#x4EE5; <code>b</code> &#x5F00;&#x5934;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;<code>^(T|t)he</code> &#x5339;&#x914D;&#x4EE5; <code>The</code> &#x6216; <code>the</code> &#x5F00;&#x5934;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;(T|t)he&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> car is parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+<p><a href="https://regex101.com/r/5ljjgB/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;^(T|t)he&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> car is parked in the garage.
+</pre>
+<p><a href="https://regex101.com/r/jXrKne/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="282-%E5%8F%B7">2.8.2 <code>$</code> &#x53F7;</h3>
+
+<p>&#x540C;&#x7406;&#x4E8E; <code>^</code> &#x53F7;&#xFF0C;<code>$</code> &#x53F7;&#x7528;&#x6765;&#x5339;&#x914D;&#x5B57;&#x7B26;&#x662F;&#x5426;&#x662F;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;<code>(at\.)$</code> &#x5339;&#x914D;&#x4EE5; <code>at.</code> &#x7ED3;&#x5C3E;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x3002;</p>
+<pre>&quot;(at\.)&quot; =&gt; The fat c<a href="#learn-regex"><strong>at.</strong></a> s<a href="#learn-regex"><strong>at.</strong></a> on the m<a href="#learn-regex"><strong>at.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/y4Au4D/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;(at\.)$&quot; =&gt; The fat cat. sat. on the m<a href="#learn-regex"><strong>at.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/t0AkOd/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="3-%E7%AE%80%E5%86%99%E5%AD%97%E7%AC%A6%E9%9B%86">3. &#x7B80;&#x5199;&#x5B57;&#x7B26;&#x96C6;</h2>
+
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x63D0;&#x4F9B;&#x4E00;&#x4E9B;&#x5E38;&#x7528;&#x7684;&#x5B57;&#x7B26;&#x96C6;&#x7B80;&#x5199;&#x3002;&#x5982;&#x4E0B;:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7B80;&#x5199;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">.</td>
+<td>&#x9664;&#x6362;&#x884C;&#x7B26;&#x5916;&#x7684;&#x6240;&#x6709;&#x5B57;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\w</td>
+<td>&#x5339;&#x914D;&#x6240;&#x6709;&#x5B57;&#x6BCD;&#x6570;&#x5B57;&#xFF0C;&#x7B49;&#x540C;&#x4E8E; <code>[a-zA-Z0-9_]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\W</td>
+<td>&#x5339;&#x914D;&#x6240;&#x6709;&#x975E;&#x5B57;&#x6BCD;&#x6570;&#x5B57;&#xFF0C;&#x5373;&#x7B26;&#x53F7;&#xFF0C;&#x7B49;&#x540C;&#x4E8E;&#xFF1A; <code>[^\w]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\d</td>
+<td>&#x5339;&#x914D;&#x6570;&#x5B57;&#xFF1A; <code>[0-9]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\D</td>
+<td>&#x5339;&#x914D;&#x975E;&#x6570;&#x5B57;&#xFF1A; <code>[^\d]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\s</td>
+<td>&#x5339;&#x914D;&#x6240;&#x6709;&#x7A7A;&#x683C;&#x5B57;&#x7B26;&#xFF0C;&#x7B49;&#x540C;&#x4E8E;&#xFF1A; <code>[\t\n\f\r\p{Z}]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\S</td>
+<td>&#x5339;&#x914D;&#x6240;&#x6709;&#x975E;&#x7A7A;&#x683C;&#x5B57;&#x7B26;&#xFF1A; <code>[^\s]</code></td>
+</tr>
+<tr>
+<td style="text-align:center">\f</td>
+<td>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x6362;&#x9875;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\n</td>
+<td>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x6362;&#x884C;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\r</td>
+<td>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x56DE;&#x8F66;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\t</td>
+<td>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x5236;&#x8868;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\v</td>
+<td>&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x5782;&#x76F4;&#x5236;&#x8868;&#x7B26;</td>
+</tr>
+<tr>
+<td style="text-align:center">\p</td>
+<td>&#x5339;&#x914D; CR/LF&#xFF08;&#x7B49;&#x540C;&#x4E8E; <code>\r\n</code>&#xFF09;&#xFF0C;&#x7528;&#x6765;&#x5339;&#x914D; DOS &#x884C;&#x7EC8;&#x6B62;&#x7B26;</td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="4-%E9%9B%B6%E5%AE%BD%E5%BA%A6%E6%96%AD%E8%A8%80%E5%89%8D%E5%90%8E%E9%A2%84%E6%9F%A5">4. &#x96F6;&#x5BBD;&#x5EA6;&#x65AD;&#x8A00;&#xFF08;&#x524D;&#x540E;&#x9884;&#x67E5;&#xFF09;</h2>
+
+<p>&#x5148;&#x884C;&#x65AD;&#x8A00;&#x548C;&#x540E;&#x53D1;&#x65AD;&#x8A00;&#xFF08;&#x5408;&#x79F0; lookaround&#xFF09;&#x90FD;&#x5C5E;&#x4E8E;<strong>&#x975E;&#x6355;&#x83B7;&#x7EC4;</strong>&#xFF08;&#x7528;&#x4E8E;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#xFF0C;&#x4F46;&#x4E0D;&#x5305;&#x62EC;&#x5728;&#x5339;&#x914D;&#x5217;&#x8868;&#x4E2D;&#xFF09;&#x3002;&#x5F53;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x6A21;&#x5F0F;&#x7684;&#x524D;&#x9762;&#x6216;&#x540E;&#x9762;&#x6709;&#x53E6;&#x4E00;&#x4E2A;&#x7279;&#x5B9A;&#x7684;&#x6A21;&#x5F0F;&#x65F6;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5B83;&#x4EEC;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x4ECE;&#x4E0B;&#x9762;&#x7684;&#x8F93;&#x5165;&#x5B57;&#x7B26;&#x4E32; <code>$4.44</code> &#x548C; <code>$10.88</code> &#x4E2D;&#x83B7;&#x5F97;&#x6240;&#x6709;&#x4EE5; <code>$</code> &#x5B57;&#x7B26;&#x5F00;&#x5934;&#x7684;&#x6570;&#x5B57;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x7684;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F; <code>(?&lt;=\$)[0-9\.]*</code>&#x3002;&#x610F;&#x601D;&#x662F;&#xFF1A;&#x83B7;&#x53D6;&#x6240;&#x6709;&#x5305;&#x542B; <code>.</code> &#x5E76;&#x4E14;&#x524D;&#x9762;&#x662F; <code>$</code> &#x7684;&#x6570;&#x5B57;&#x3002;</p>
+<p>&#x96F6;&#x5BBD;&#x5EA6;&#x65AD;&#x8A00;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x7B26;&#x53F7;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">?=</td>
+<td>&#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;-&#x5B58;&#x5728;</td>
+</tr>
+<tr>
+<td style="text-align:center">?!</td>
+<td>&#x8D1F;&#x5148;&#x884C;&#x65AD;&#x8A00;-&#x6392;&#x9664;</td>
+</tr>
+<tr>
+<td style="text-align:center">?&lt;=</td>
+<td>&#x6B63;&#x540E;&#x53D1;&#x65AD;&#x8A00;-&#x5B58;&#x5728;</td>
+</tr>
+<tr>
+<td style="text-align:center">?&lt;!</td>
+<td>&#x8D1F;&#x540E;&#x53D1;&#x65AD;&#x8A00;-&#x6392;&#x9664;</td>
+</tr>
+</tbody>
+</table>
+<h3 class="mume-header" id="41-%E6%AD%A3%E5%85%88%E8%A1%8C%E6%96%AD%E8%A8%80">4.1 <code>?=...</code> &#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;</h3>
+
+<p><code>?=...</code> &#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;&#xFF0C;&#x8868;&#x793A;&#x7B2C;&#x4E00;&#x90E8;&#x5206;&#x8868;&#x8FBE;&#x5F0F;&#x4E4B;&#x540E;&#x5FC5;&#x987B;&#x8DDF;&#x7740; <code>?=...</code>&#x5B9A;&#x4E49;&#x7684;&#x8868;&#x8FBE;&#x5F0F;&#x3002;</p>
+<p>&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x53EA;&#x5305;&#x542B;&#x6EE1;&#x8DB3;&#x5339;&#x914D;&#x6761;&#x4EF6;&#x7684;&#x7B2C;&#x4E00;&#x90E8;&#x5206;&#x8868;&#x8FBE;&#x5F0F;&#x3002;<br>
+&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;&#x8981;&#x4F7F;&#x7528; <code>()</code>&#x3002;&#x5728;&#x62EC;&#x53F7;&#x5185;&#x90E8;&#x4F7F;&#x7528;&#x4E00;&#x4E2A;&#x95EE;&#x53F7;&#x548C;&#x7B49;&#x53F7;&#xFF1A; <code>(?=...)</code>&#x3002;</p>
+<p>&#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;&#x7684;&#x5185;&#x5BB9;&#x5199;&#x5728;&#x62EC;&#x53F7;&#x4E2D;&#x7684;&#x7B49;&#x53F7;&#x540E;&#x9762;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>(T|t)he(?=\sfat)</code> &#x5339;&#x914D; <code>The</code> &#x548C; <code>the</code>&#xFF0C;&#x5728;&#x62EC;&#x53F7;&#x4E2D;&#x6211;&#x4EEC;&#x53C8;&#x5B9A;&#x4E49;&#x4E86;&#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00; <code>(?=\sfat)</code> &#xFF0C;&#x5373; <code>The</code> &#x548C; <code>the</code> &#x540E;&#x9762;&#x7D27;&#x8DDF;&#x7740; <code>(&#x7A7A;&#x683C;)fat</code>&#x3002;</p>
+<pre>&quot;(T|t)he(?=\sfat)&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+<p><a href="https://regex101.com/r/IDDARt/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="42-%E8%B4%9F%E5%85%88%E8%A1%8C%E6%96%AD%E8%A8%80">4.2 <code>?!...</code> &#x8D1F;&#x5148;&#x884C;&#x65AD;&#x8A00;</h3>
+
+<p>&#x8D1F;&#x5148;&#x884C;&#x65AD;&#x8A00; <code>?!</code> &#x7528;&#x4E8E;&#x7B5B;&#x9009;&#x6240;&#x6709;&#x5339;&#x914D;&#x7ED3;&#x679C;&#xFF0C;&#x7B5B;&#x9009;&#x6761;&#x4EF6;&#x4E3A; &#x5176;&#x540E;&#x4E0D;&#x8DDF;&#x968F;&#x7740;&#x65AD;&#x8A00;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x683C;&#x5F0F;&#x3002;<br>
+<code>&#x6B63;&#x5148;&#x884C;&#x65AD;&#x8A00;</code>  &#x5B9A;&#x4E49;&#x548C; <code>&#x8D1F;&#x5148;&#x884C;&#x65AD;&#x8A00;</code> &#x4E00;&#x6837;&#xFF0C;&#x533A;&#x522B;&#x5C31;&#x662F; <code>=</code> &#x66FF;&#x6362;&#x6210; <code>!</code> &#x4E5F;&#x5C31;&#x662F; <code>(?!...)</code>&#x3002;</p>
+<p>&#x8868;&#x8FBE;&#x5F0F; <code>(T|t)he(?!\sfat)</code> &#x5339;&#x914D; <code>The</code> &#x548C; <code>the</code>&#xFF0C;&#x4E14;&#x5176;&#x540E;&#x4E0D;&#x8DDF;&#x7740; <code>(&#x7A7A;&#x683C;)fat</code>&#x3002;</p>
+<pre>&quot;(T|t)he(?!\sfat)&quot; =&gt; The fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+<p><a href="https://regex101.com/r/V32Npg/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="43-%E6%AD%A3%E5%90%8E%E5%8F%91%E6%96%AD%E8%A8%80">4.3 <code>?&lt;= ...</code> &#x6B63;&#x540E;&#x53D1;&#x65AD;&#x8A00;</h3>
+
+<p>&#x6B63;&#x540E;&#x53D1;&#x65AD;&#x8A00; &#x8BB0;&#x4F5C;<code>(?&lt;=...)</code> &#x7528;&#x4E8E;&#x7B5B;&#x9009;&#x6240;&#x6709;&#x5339;&#x914D;&#x7ED3;&#x679C;&#xFF0C;&#x7B5B;&#x9009;&#x6761;&#x4EF6;&#x4E3A; &#x5176;&#x524D;&#x8DDF;&#x968F;&#x7740;&#x65AD;&#x8A00;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x683C;&#x5F0F;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>(?&lt;=(T|t)he\s)(fat|mat)</code> &#x5339;&#x914D; <code>fat</code> &#x548C; <code>mat</code>&#xFF0C;&#x4E14;&#x5176;&#x524D;&#x8DDF;&#x7740; <code>The</code> &#x6216; <code>the</code>&#x3002;</p>
+<pre>&quot;(?&lt;=(T|t)he\s)(fat|mat)&quot; =&gt; The <a href="#learn-regex"><strong>fat</strong></a> cat sat on the <a href="#learn-regex"><strong>mat</strong></a>.
+</pre>
+<p><a href="https://regex101.com/r/avH165/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="44-%E8%B4%9F%E5%90%8E%E5%8F%91%E6%96%AD%E8%A8%80">4.4 <code>?&lt;!...</code> &#x8D1F;&#x540E;&#x53D1;&#x65AD;&#x8A00;</h3>
+
+<p>&#x8D1F;&#x540E;&#x53D1;&#x65AD;&#x8A00; &#x8BB0;&#x4F5C; <code>(?&lt;!...)</code> &#x7528;&#x4E8E;&#x7B5B;&#x9009;&#x6240;&#x6709;&#x5339;&#x914D;&#x7ED3;&#x679C;&#xFF0C;&#x7B5B;&#x9009;&#x6761;&#x4EF6;&#x4E3A; &#x5176;&#x524D;&#x4E0D;&#x8DDF;&#x968F;&#x7740;&#x65AD;&#x8A00;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x683C;&#x5F0F;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>(?&lt;!(T|t)he\s)(cat)</code> &#x5339;&#x914D; <code>cat</code>&#xFF0C;&#x4E14;&#x5176;&#x524D;&#x4E0D;&#x8DDF;&#x7740; <code>The</code> &#x6216; <code>the</code>&#x3002;</p>
+<pre>&quot;(?&lt;!(T|t)he\s)(cat)&quot; =&gt; The cat sat on <a href="#learn-regex"><strong>cat</strong></a>.
+</pre>
+<p><a href="https://regex101.com/r/8Efx5G/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="5-%E6%A0%87%E5%BF%97">5. &#x6807;&#x5FD7;</h2>
+
+<p>&#x6807;&#x5FD7;&#x4E5F;&#x53EB;&#x6A21;&#x5F0F;&#x4FEE;&#x6B63;&#x7B26;&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x53EF;&#x4EE5;&#x7528;&#x6765;&#x4FEE;&#x6539;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x641C;&#x7D22;&#x7ED3;&#x679C;&#x3002;<br>
+&#x8FD9;&#x4E9B;&#x6807;&#x5FD7;&#x53EF;&#x4EE5;&#x4EFB;&#x610F;&#x7684;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#xFF0C;&#x5B83;&#x4E5F;&#x662F;&#x6574;&#x4E2A;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x4E00;&#x90E8;&#x5206;&#x3002;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">&#x6807;&#x5FD7;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">i</td>
+<td>&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">g</td>
+<td>&#x5168;&#x5C40;&#x641C;&#x7D22;&#x3002;</td>
+</tr>
+<tr>
+<td style="text-align:center">m</td>
+<td>&#x591A;&#x884C;&#x4FEE;&#x9970;&#x7B26;&#xFF1A;&#x951A;&#x70B9;&#x5143;&#x5B57;&#x7B26; <code>^</code> <code>$</code> &#x5DE5;&#x4F5C;&#x8303;&#x56F4;&#x5728;&#x6BCF;&#x884C;&#x7684;&#x8D77;&#x59CB;&#x3002;</td>
+</tr>
+</tbody>
+</table>
+<h3 class="mume-header" id="51-%E5%BF%BD%E7%95%A5%E5%A4%A7%E5%B0%8F%E5%86%99-case-insensitive">5.1 &#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199; (Case Insensitive)</h3>
+
+<p>&#x4FEE;&#x9970;&#x8BED; <code>i</code> &#x7528;&#x4E8E;&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>/The/gi</code> &#x8868;&#x793A;&#x5728;&#x5168;&#x5C40;&#x641C;&#x7D22; <code>The</code>&#xFF0C;&#x5728;&#x540E;&#x9762;&#x7684; <code>i</code> &#x5C06;&#x5176;&#x6761;&#x4EF6;&#x4FEE;&#x6539;&#x4E3A;&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199;&#xFF0C;&#x5219;&#x53D8;&#x6210;&#x641C;&#x7D22; <code>the</code> &#x548C; <code>The</code>&#xFF0C;<code>g</code> &#x8868;&#x793A;&#x5168;&#x5C40;&#x641C;&#x7D22;&#x3002;</p>
+<pre>&quot;The&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+<p><a href="https://regex101.com/r/dpQyf9/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;/The/gi&quot; =&gt; <a href="#learn-regex"><strong>The</strong></a> fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+<p><a href="https://regex101.com/r/ahfiuh/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="52-%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2-global-search">5.2 &#x5168;&#x5C40;&#x641C;&#x7D22; (Global search)</h3>
+
+<p>&#x4FEE;&#x9970;&#x7B26; <code>g</code> &#x5E38;&#x7528;&#x4E8E;&#x6267;&#x884C;&#x4E00;&#x4E2A;&#x5168;&#x5C40;&#x641C;&#x7D22;&#x5339;&#x914D;&#xFF0C;&#x5373;&#xFF08;&#x4E0D;&#x4EC5;&#x4EC5;&#x8FD4;&#x56DE;&#x7B2C;&#x4E00;&#x4E2A;&#x5339;&#x914D;&#x7684;&#xFF0C;&#x800C;&#x662F;&#x8FD4;&#x56DE;&#x5168;&#x90E8;&#xFF09;&#x3002;<br>
+&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>/.(at)/g</code> &#x8868;&#x793A;&#x641C;&#x7D22; &#x4EFB;&#x610F;&#x5B57;&#x7B26;&#xFF08;&#x9664;&#x4E86;&#x6362;&#x884C;&#xFF09;+ <code>at</code>&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x5168;&#x90E8;&#x7ED3;&#x679C;&#x3002;</p>
+<pre>&quot;/.(at)/&quot; =&gt; The <a href="#learn-regex"><strong>fat</strong></a> cat sat on the mat.
+</pre>
+<p><a href="https://regex101.com/r/jnk6gM/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;/.(at)/g&quot; =&gt; The <a href="#learn-regex"><strong>fat</strong></a> <a href="#learn-regex"><strong>cat</strong></a> <a href="#learn-regex"><strong>sat</strong></a> on the <a href="#learn-regex"><strong>mat</strong></a>.
+</pre>
+<p><a href="https://regex101.com/r/dO1nef/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="53-%E5%A4%9A%E8%A1%8C%E4%BF%AE%E9%A5%B0%E7%AC%A6-multiline">5.3 &#x591A;&#x884C;&#x4FEE;&#x9970;&#x7B26; (Multiline)</h3>
+
+<p>&#x591A;&#x884C;&#x4FEE;&#x9970;&#x7B26; <code>m</code> &#x5E38;&#x7528;&#x4E8E;&#x6267;&#x884C;&#x4E00;&#x4E2A;&#x591A;&#x884C;&#x5339;&#x914D;&#x3002;</p>
+<p>&#x50CF;&#x4E4B;&#x524D;&#x4ECB;&#x7ECD;&#x7684; <code>(^,$)</code> &#x7528;&#x4E8E;&#x68C0;&#x67E5;&#x683C;&#x5F0F;&#x662F;&#x5426;&#x662F;&#x5728;&#x5F85;&#x68C0;&#x6D4B;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5F00;&#x5934;&#x6216;&#x7ED3;&#x5C3E;&#x3002;&#x4F46;&#x6211;&#x4EEC;&#x5982;&#x679C;&#x60F3;&#x8981;&#x5B83;&#x5728;&#x6BCF;&#x884C;&#x7684;&#x5F00;&#x5934;&#x548C;&#x7ED3;&#x5C3E;&#x751F;&#x6548;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x7528;&#x5230;&#x591A;&#x884C;&#x4FEE;&#x9970;&#x7B26; <code>m</code>&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;&#x8868;&#x8FBE;&#x5F0F; <code>/at(.)?$/gm</code> &#x8868;&#x793A;&#x5C0F;&#x5199;&#x5B57;&#x7B26; <code>a</code> &#x540E;&#x8DDF;&#x5C0F;&#x5199;&#x5B57;&#x7B26; <code>t</code> &#xFF0C;&#x672B;&#x5C3E;&#x53EF;&#x9009;&#x9664;&#x6362;&#x884C;&#x7B26;&#x5916;&#x4EFB;&#x610F;&#x5B57;&#x7B26;&#x3002;&#x6839;&#x636E; <code>m</code> &#x4FEE;&#x9970;&#x7B26;&#xFF0C;&#x73B0;&#x5728;&#x8868;&#x8FBE;&#x5F0F;&#x5339;&#x914D;&#x6BCF;&#x884C;&#x7684;&#x7ED3;&#x5C3E;&#x3002;</p>
+<pre>&quot;/.at(.)?$/&quot; =&gt; The fat
+              cat sat
+              on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/hoGMkP/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;/.at(.)?$/gm&quot; =&gt; The <a href="#learn-regex"><strong>fat</strong></a>
+                cat <a href="#learn-regex"><strong>sat</strong></a>
+                on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+<p><a href="https://regex101.com/r/E88WE2/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h3 class="mume-header" id="6-%E8%B4%AA%E5%A9%AA%E5%8C%B9%E9%85%8D%E4%B8%8E%E6%83%B0%E6%80%A7%E5%8C%B9%E9%85%8D-greedy-vs-lazy-matching">6. &#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x4E0E;&#x60F0;&#x6027;&#x5339;&#x914D; (Greedy vs lazy matching)</h3>
+
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x9ED8;&#x8BA4;&#x91C7;&#x7528;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#xFF0C;&#x5728;&#x8BE5;&#x6A21;&#x5F0F;&#x4E0B;&#x610F;&#x5473;&#x7740;&#x4F1A;&#x5339;&#x914D;&#x5C3D;&#x53EF;&#x80FD;&#x957F;&#x7684;&#x5B50;&#x4E32;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>?</code> &#x5C06;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#x8F6C;&#x5316;&#x4E3A;&#x60F0;&#x6027;&#x5339;&#x914D;&#x6A21;&#x5F0F;&#x3002;</p>
+<pre>&quot;/(.*at)/&quot; =&gt; <a href="#learn-regex"><strong>The fat cat sat on the mat</strong></a>. </pre>
+<p><a href="https://regex101.com/r/AyAdgJ/1">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<pre>&quot;/(.*?at)/&quot; =&gt; <a href="#learn-regex"><strong>The fat</strong></a> cat sat on the mat. </pre>
+<p><a href="https://regex101.com/r/AyAdgJ/2">&#x5728;&#x7EBF;&#x7EC3;&#x4E60;</a></p>
+<h2 class="mume-header" id="%E8%B4%A1%E7%8C%AE">&#x8D21;&#x732E;</h2>
+
+<ul>
+<li>&#x62A5;&#x544A;&#x95EE;&#x9898;</li>
+<li>&#x5F00;&#x653E;&#x5408;&#x5E76;&#x8BF7;&#x6C42;</li>
+<li>&#x4F20;&#x64AD;&#x6B64;&#x6587;&#x6863;</li>
+<li>&#x76F4;&#x63A5;&#x548C;&#x6211;&#x8054;&#x7CFB; <a href="mailto:ziishaned@gmail.com">ziishaned@gmail.com</a> &#x6216; <a href="https://twitter.com/ziishaned"><img src="https://img.shields.io/twitter/url/https/twitter.com/ziishaned.svg?style=social&amp;label=Follow%20%40ziishaned" alt="Twitter URL"></a></li>
+</ul>
+<h2 class="mume-header" id="%E8%AE%B8%E5%8F%AF%E8%AF%81">&#x8BB8;&#x53EF;&#x8BC1;</h2>
+
+<p>MIT &#xA9; <a href="https://twitter.com/ziishaned">Zeeshan Ahmad</a></p>
+
+    </div>
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+
+  </body></html>

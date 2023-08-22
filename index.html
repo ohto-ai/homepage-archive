@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>OhtoAi - Home</title>
+    <link rel="stylesheet" href="assets/css/style.main.css" />
+    <link rel="stylesheet" href="assets/css/style.peronal.css" />
+    <link rel="stylesheet" href="assets/css/style.svg_button.css" />
+    <link rel="stylesheet" href="assets/css/style.beian.css" />
+    <link rel="stylesheet" href="assets/css/style.loading-page.css" />
+    <link rel="stylesheet" href="assets/css/font3d.css" />
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+    <script src="//cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+    <script src="//use.fontawesome.com/d1341f9b7a.js"></script>
+    <script src='assets/js/loading-page.js'>    </script>
+    <script src="assets/js/main-page.js"></script>
+    <script src="assets/js/log-website.js"></script>
+    <script src="assets/js/font3d.js"></script>
+</head>
+
+<body>
+    <!-- background -->
+    <div class="blur-div">
+        <!-- use-backround-imag -->
+        <iframe src="components/bilibili/"></iframe>
+    </div>
+
+    <!-- loading page -->
+    <div id="loading">
+        <iframe class="loading-iframe" src="components/overwatch-loader/">
+        </iframe>
+    </div>
+
+    <!-- main page -->
+    <div class="main-page">
+        <div class="main-page-content">
+            <!-- personal-box -->
+            <div class="personal-box">
+                <a>
+                    <span class="avatar">
+                        <img src="//cdn.sep.cc/avatar/abe3aff418f55987552d933a287425af?d=mm&s=320" alt="Ohto-Ai" />
+                    </span>
+                </a>
+
+                <div class="font3d-box" text="Ohto-Ai">
+                </div>
+                <h5><b>C++ Developer</b></h5>
+                <h5>Write Everywhere, <br />Read Nowhere.</h5>
+                <ul>
+                    <li>
+                        <a href="//github.com/Ohto-Ai"><i class="fa fa-github-square" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="//twitter.com/OhtoAi_OvO"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="//www.facebook.com/thatboy.echo"><i class="fa fa-facebook-square"
+                                aria-hidden="true"></i></a>
+                    </li>
+                    <li>
+                        <a href="//steamcommunity.com/id/OhtoAi-02"><i class="fa fa-steam-square"
+                                aria-hidden="true"></i></a>
+                    </li>
+                </ul>
+                <a class="beian" title="不加这个会被警察蜀黍暴打嗷┗|｀O′|┛ ~~" target="_blank" href="https://beian.miit.gov.cn">
+                    <img class="beian-img" src="assets/img/beian.png" />
+                    <div class="beian-text">苏ICP备19061327号-3</div>
+                </a>
+            </div>
+
+            <div class="main-content">
+                <!-- menu -->
+                <div class="main-menu">
+                    <!-- Home button -->
+                    <div class="svg-wrapper" content='Home' id="home_button" no-button-change>
+                    </div>
+                    <!-- Nav button -->
+                    <div class="svg-wrapper" content='Nav' external-link="//nav.ohtoai.top">
+                    </div>
+                    <!-- Blog button -->
+                    <div class="svg-wrapper" content='Blog' external-link="//blog.ohtoai.top">
+                    </div>
+                    <!-- Wiki button -->
+                    <div class="svg-wrapper" content='Wiki' external-link="//wiki.ohtoai.top">
+                    </div>
+                    <!-- Pan button -->
+                    <div class="svg-wrapper" content='Pan' external-link="//pan.ohtoai.top">
+                    </div>
+                    <!-- API button -->
+                    <div class="svg-wrapper" content='API' external-link="//api.ohtoai.top">
+                    </div>
+                    <!-- Hook button -->
+                    <div class="svg-wrapper" content='Hook' external-link="//hook.ohtoai.top">
+                    </div>
+                    <!-- Old Page button -->
+                    <div class="svg-wrapper" content='Home - 2020' external-link="2020/">
+                    </div>
+                    <!-- tip button -->
+                    <div class="svg-wrapper" content='More' id="tip_button" data-src="components/more/">
+                    </div>
+                    <!-- Github button -->
+                    <div class="svg-wrapper" content='Github' external-link="//github.com/Ohto-Ai">
+                    </div>
+                    <!-- mfwzjsq -->
+                    <!-- <div class="svg-wrapper"
+                        content='<img src="https://www.mfwzjsq.com/hit.php?id=zuapxa&nd=1&style=20" border="0"'>
+                    </div> -->
+                </div>
+                <div class="sub-frame-wrapper">
+                    <iframe id="home_frame" current-page class="inner_frames" src="components/book_card/"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
